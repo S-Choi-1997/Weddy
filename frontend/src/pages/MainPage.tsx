@@ -9,7 +9,8 @@ const Main = () => {
 
   return (
     <>
-      <div>Main Page</div>
+    <div>Main Page</div>
+    <button onClick={goTest}>test 이동</button>
     </>
   )
 }
