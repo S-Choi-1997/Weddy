@@ -9,8 +9,7 @@ const Main = () => {
 
   return (
     <>
-    <div>이호영 바보바보</div>
-    <button onClick={goTest}>test 이동</button>
+    <div>Main Page</div>
     </>
   )
 }
