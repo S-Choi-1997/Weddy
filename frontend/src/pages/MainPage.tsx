@@ -1,8 +1,12 @@
+import { MainCarousel } from "../components/MainPage/MainCarousel";
+
+
 const Main = () => {
+  
 
   return (
     <>
-    <div>Main Page</div>
+      <MainCarousel />
     </>
   )
 }
