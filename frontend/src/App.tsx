@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Footer from './common/Footer'
 import Navbar from './common/Navbar'
 import Main from './pages/MainPage'
-import Test from './test/Test'
 import Login from './pages/LoginPage'
 import './index.css'; 
 
@@ -17,7 +16,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/test" element={<Test />}/>
         </Routes>
       </BrowserRouter>
       {location.pathname !== "/login" && (
