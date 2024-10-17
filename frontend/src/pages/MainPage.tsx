@@ -1,16 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { MainCarousel } from "../components/MainPage/MainCarousel";
+
 
 const Main = () => {
-  const navigate = useNavigate();
-
-  const goTest = () => {
-    navigate("/test");
-  }
+  
 
   return (
     <>
-    <div>Main Page</div>
-    <button onClick={goTest}>test 이동</button>
+      <MainCarousel />
     </>
   )
 }
