@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { connect } from "./initMetaMsk";
-
+import { wallet } from "./metaMask";
 const Test = () => {
-  const { initMetaMask } = connect();
+  const { connectWallet } = wallet();
   const [ account, setAccount ] = useState<any>();
 
-  const connectWallet = async () => {
-    const data = await initMetaMask();
+  const handleConnect = async () => {
+    const data = await connectWallet();
     setAccount(data);
   }
 
   return (
     <>
-    <button onClick={connectWallet}>지갑연결</button>
-    <div>{account}</div>
+    <button onClick={handleConnect}>지갑연결</button>
+    <div>지갑 주소 : {account}</div>
     </>
   )
 }
