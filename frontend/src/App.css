@@ -1,42 +1,68 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* App.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box; /* 모든 요소에 패딩과 보더를 포함하여 너비 계산 */
+}
+
+#root {
+  width: 100%; /* 부모 요소가 화면 전체를 차지하도록 */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: small;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+nav .textAlign {
+  margin: 0 20px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+nav .backIcon {
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  align-items: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App {
+  flex: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.content {
+  padding: 70px 20px; /* 네비게이션 바의 높이만큼 패딩 (필요에 따라 조정) */
 }
 
-.card {
-  padding: 2em;
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;  /* 왼쪽부터 시작하도록 명시 */
+  right: 0; /* 오른쪽 끝까지 확장 */
+  width: 100%; /* 부모 요소의 너비만큼 */
+  padding: 1rem 2rem 2rem 2rem;
+  box-sizing: border-box; /* 패딩 포함하여 너비 계산 */
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 살짝 그림자 효과 */
+
 }
 
-.read-the-docs {
-  color: #888;
-} */
