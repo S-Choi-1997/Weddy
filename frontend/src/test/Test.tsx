@@ -14,7 +14,7 @@ const Test = () => {
   const [cid, setCid] = useState<string>();
   const [mint, setMint] = useState<any>();
   const [nfts, setNfts] = useState<any[]>([]);
-
+ 
   const handleConnect = async () => {
     const data = await connectWallet();
     setAccount(data);
