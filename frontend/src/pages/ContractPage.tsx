@@ -2,7 +2,8 @@ import TodoButton from "../common/TodoButton";
 
 const Contract = ()=>{
   return (
-    <div className="bg-bgGreen border border-mainGreen h-auto w-auto mb-20 p-5">
+    <div >
+    <div className="bg-white border rounded-sm p-5">
     <div className="text-center text-lg font-bold">
        계약서
     </div>
@@ -70,10 +71,11 @@ const Contract = ()=>{
         계약일자 : {new Date().getFullYear()}년 {new Date().getMonth() + 1}월 {new Date().getDate()}일
       </span>
     </div>
-    <div className="text-end">
+  </div>
+    <div className="text-end mt-3 mb-24">
     <TodoButton title="전자 서명" colorId={1} />
     </div>
-  </div>
+    </div>
   )
 }
 export default Contract;
