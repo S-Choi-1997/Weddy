@@ -50,6 +50,13 @@ nav .textAlign {
   align-items: center;
 }
 
+.cartIcon {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+}
+
 .App {
   display: flex;
   flex-direction: column;

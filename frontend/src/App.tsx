@@ -10,7 +10,8 @@ import Main from './pages/MainPage'
 import Mypage from './pages/MyPage'
 import Planner from './pages/PlannerPage'
 import Schedule from './pages/SchedulePage'
-import CallBack from './pages/CallBack'
+import BoardDetail from './pages/BoardDetailPage'
+import Cart from './pages/CartPage'
 
 function App() {
 
@@ -21,8 +22,10 @@ function App() {
           <Navbar />)}
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/board" element={<Board />} />
+          <Route path="/board/detail" element={<BoardDetail />} />
           <Route path="/planner" element={<Planner />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/contract" element={<Contract />} />

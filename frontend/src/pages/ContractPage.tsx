@@ -103,7 +103,7 @@ const Contract = () => {
     <div className="text-end mt-3 mb-24" onClick={handleSignature}>
     <TodoButton title="전자 서명" colorId={1} />
     </div>
-  </div>
+    </div>
   )
 }
 export default Contract;
