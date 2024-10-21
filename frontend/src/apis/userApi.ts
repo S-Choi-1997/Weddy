@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = 'http://localhost:8080/api/user'
+const BASE_URL = 'http://localhost:8080/api/users'
 
 //== 카카오 로그인 ==//
 export const kakaoLogin = () => {
@@ -20,15 +20,15 @@ export const logout = () => {
   });
 }
 
-//== 내 정보 조회 ==//
-export const myInfo = async (): Promise<void> => {
-  const response = await axios ({
-    method: 'get',
-    url: `${BASE_URL}/info/`,
+//== 회원 정보 수정 ==//
+export const editInfomation = async (data: any) => {
+  const response = await axios({
+    method: 'patch',
+    url: `${BASE_URL}`,
     headers: {
       Authorization: `Bearer `
-    }
+    },
+    data: data
   });
-
   console.log(response.data);
 }

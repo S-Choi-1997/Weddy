@@ -31,7 +31,9 @@ function App() {
           <Route path="/contract" element={<Contract />} />
           <Route path="/contractlist" element={<ContractList />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/callback" element={<CallBack />}/>
         </Routes>
+        
         {location.pathname !== "/login" && (
           <Footer />)}
       </BrowserRouter>
