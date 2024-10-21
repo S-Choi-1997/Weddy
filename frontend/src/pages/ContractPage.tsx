@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import TodoButton from "../common/TodoButton";
 import { mintNFT } from "../hooks/mintNFT";
-import { signature } from "../hooks/signature";
+import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { makeImage } from "../hooks/makeImage";
+import { signature } from "../apis/contractApi";
 
 const Contract = () => {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -13,14 +14,19 @@ const Contract = () => {
     //== png 파일 생성 ==//
     const contractImage = await makeImage(pageRef);
 
-    //== 전자 서명 ==//
-    await signature();
+    const [ sign, hash ] = await Promise.all([
+      //== 전자 서명 ==//
+      makeSignature(),
+      //== pinata 업로드 ==//
+      uploadToPinata(contractImage)
+    ]);
 
-    //== pinata 업로드 ==//
-    const hash = await uploadToPinata(contractImage);
-
-    //== NFT 민팅 ==//
-    await mintNFT(hash);
+    await Promise.all([
+      //== NFT 민팅 ==//
+      await mintNFT(hash),
+      //== 서명 값 저장 api ==//
+      await signature(sign)
+    ]);
   }
 
   return (
