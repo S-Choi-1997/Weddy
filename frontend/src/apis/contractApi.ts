@@ -1,12 +1,12 @@
 import axios from "axios"
 
-const BASE_URL = 'http://localhost:8080/api'
+const BASE_URL = 'http://localhost:8080/api/contracts'
 
-//== 계약서 정보 가져오기 ==//
-export const contractInfo = async (): Promise<void> => {
+//== 계약서 상세 조회 ==//
+export const contractInfo = async (contractId: number): Promise<void> => {
   const response = await axios({
     method: 'get',
-    url: `${BASE_URL}/`,
+    url: `${BASE_URL}/${contractId}`,
     headers: {
       Authorization: `Bearer `
     }
@@ -16,13 +16,14 @@ export const contractInfo = async (): Promise<void> => {
 }
 
 //== 계약서 전자서명 ==//
-export const sign = async (): Promise<void> => {
+export const signature = async (signature: string): Promise<void> => {
   const response = await axios({
     method: 'patch',
-    url: `${BASE_URL}/`,
+    url: `${BASE_URL}/signature`,
     headers: {
       Authorization: `Bearer `
-    }
+    },
+    data: signature
   });
 
   console.log(response.data);
