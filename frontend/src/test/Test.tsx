@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { wallet } from "../hooks/metaMask";
 import { signature } from "../hooks/signature";
-import { makeNFT } from "../hooks/nftMinting";
-import { uploadToPinata } from "../hooks/upload";
 import { getNFT } from "../hooks/getNFT";
+import { uploadToPinata } from "../hooks/uploadToPinata";
+import { mintNFT } from "../hooks/mintNFT";
 
 const Test = () => {
   const { connectWallet } = wallet();
-  const { uploadData } = uploadToPinata();
-  const { mintNFT } = makeNFT();
 
   const [sign, setSign] = useState<any>();
   const [account, setAccount] = useState<any>();
@@ -36,7 +34,7 @@ const Test = () => {
   }
 
   const handleUpload = async () => {
-    const data = await uploadData(file);
+    const data = await uploadToPinata(file);
     setCid(data);
   }
 
