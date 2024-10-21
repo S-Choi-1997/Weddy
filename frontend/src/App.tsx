@@ -10,6 +10,7 @@ import Main from './pages/MainPage'
 import Mypage from './pages/MyPage'
 import Planner from './pages/PlannerPage'
 import Schedule from './pages/SchedulePage'
+import Test from './test/Test'
 
 function App() {
 
@@ -27,7 +28,9 @@ function App() {
           <Route path="/contract" element={<Contract />} />
           <Route path="/contractlist" element={<ContractList />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path='/test' element={<Test />} />
         </Routes>
+        
         {location.pathname !== "/login" && (
           <Footer />)}
       </BrowserRouter>
