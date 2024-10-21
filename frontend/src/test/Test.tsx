@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { wallet } from "./metaMask";
-import { digitalsign } from "./digitalSign";
-import { makeNFT } from "./nftMinting";
-import { uploadToPinata } from "./upload";
+import { wallet } from "../hooks/metaMask";
+import { signature } from "../hooks/signature";
+import { makeNFT } from "../hooks/nftMinting";
+import { uploadToPinata } from "../hooks/upload";
+import { getNFT } from "../hooks/getNFT";
 
 const Test = () => {
   const { connectWallet } = wallet();
-  const { signature } = digitalsign();
   const { uploadData } = uploadToPinata();
   const { mintNFT } = makeNFT();
 
-  const [ sign, setSign ] = useState<any>();
-  const [ account, setAccount ] = useState<any>();
-  const [ file, setFile ] = useState<any>();
-  const [ cid, setCid ] = useState<string>();
-  const [ mint, setMint ] = useState<any>();
-  
+  const [sign, setSign] = useState<any>();
+  const [account, setAccount] = useState<any>();
+  const [file, setFile] = useState<any>();
+  const [cid, setCid] = useState<string>();
+  const [mint, setMint] = useState<any>();
+  const [nfts, setNfts] = useState<any[]>([]);
+
   const handleConnect = async () => {
     const data = await connectWallet();
     setAccount(data);
@@ -44,21 +45,38 @@ const Test = () => {
     setMint(data);
   }
 
+  const handleNFT = async () => {
+    const data = await getNFT();
+    console.log(data);
+    setNfts(data);
+
+  }
+
   return (
     <>
-    <button onClick={handleConnect}>지갑연결</button>
-    <div>지갑 주소 : {account}</div>
+      <button onClick={handleConnect}>지갑연결</button>
+      <div>지갑 주소 : {account}</div>
 
-    <button onClick={handleSignature}>전자서명 요청</button>
-    <div>전자서명 값 : {sign}</div>
+      <button onClick={handleSignature}>전자서명 요청</button>
+      <div>전자서명 값 : {sign}</div>
 
-    <input type="file" onChange={handleFile}/>
-    <br />
-    <button onClick={handleUpload}>pinata 업로드</button>
-    <div>CID : {cid}</div>
+      <input type="file" onChange={handleFile} />
+      <br />
+      <button onClick={handleUpload}>pinata 업로드</button>
+      <div>CID : {cid}</div>
 
-    <button onClick={handleMiniting}>NFT Minting</button>
-    <div>mint : {mint}</div>
+      <button onClick={handleMiniting}>NFT Minting</button>
+      <div>mint : {mint}</div>
+
+      <button onClick={handleNFT}>NFT 가져오기</button>
+      <div>
+        {nfts.map((nft, index) => (
+          <div key={index}>
+            <img src={nft.image} alt={nft.name} />
+            <h3>{nft.name}</h3>
+          </div>
+        ))}
+      </div>
     </>
   )
 }
