@@ -24,6 +24,7 @@ html, body, #root {
 
 nav {
   position: fixed;
+  height: 50px;
   top: 0; 
   left: 0;
   right: 0;
@@ -32,7 +33,7 @@ nav {
   align-items: center;
   justify-content: center;
   font-size: small;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
   z-index: 1000;
   background-color: white;
 }
@@ -42,7 +43,7 @@ nav .textAlign {
   text-align: center;
 }
 
-nav .backIcon {
+.backIcon {
   position: absolute;
   left: 1rem;
   display: flex;
