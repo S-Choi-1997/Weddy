@@ -1,6 +1,10 @@
+// import { useQuery } from "react-query";
 import ContractListBox from "../components/ContractListPage/ContractListBox";
+// import { myContract } from "@/apis/contractApi";
 
 const ContractList = () => {
+  // const { data: contractList } = useQuery('myContract', myContract);
+
   return (
     <div className="m-5">
       <ContractListBox title="스튜디오" />
