@@ -1,4 +1,5 @@
 import axios from "axios"
+import { EditUserInfo } from "./user.type";
 
 const BASE_URL = 'http://localhost:8080/api/users'
 
@@ -12,14 +13,14 @@ export const getToken = async (userId: string): Promise<void> => {
 };
 
 //== 회원 정보 수정 ==//
-export const editInfomation = async (info: any): Promise<void> => {
+export const editInfomation = async (userInfo?: EditUserInfo): Promise<void> => {
   const response = await axios({
     method: 'patch',
     url: BASE_URL,
     headers: {
       Authorization: `Bearer `
     },
-    data: info
+    data: userInfo
   });
   console.log(response.data);
 };

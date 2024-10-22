@@ -2,18 +2,6 @@ import axios from "axios";
 
 const BASE_URL = 'http://localhost:8080/api/users'
 
-//== 커플 코드 생성 ==//
-export const createCoupleCode = async (): Promise<void> => {
-  const response = await axios({
-    method: 'post',
-    url: `${BASE_URL}/code`,
-    headers: {
-      Authorization: `Bearer `
-    }
-  });
-  console.log(response.data);
-}
-
 //== 커플 코드 조회 ==//
 export const getCoupleCode = async (): Promise<void> => {
   const response = await axios({
