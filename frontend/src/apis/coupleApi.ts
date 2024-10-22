@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = 'http://localhost:8080/api/users'
 
 //== 커플 코드 생성 ==//
-export const createCoupleCode = async () => {
+export const createCoupleCode = async (): Promise<void> => {
   const response = await axios({
     method: 'post',
     url: `${BASE_URL}/code`,
@@ -11,12 +11,11 @@ export const createCoupleCode = async () => {
       Authorization: `Bearer `
     }
   });
-
   console.log(response.data);
 }
 
 //== 커플 코드 조회 ==//
-export const getCoupleCode = async () => {
+export const getCoupleCode = async (): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/couple-code`,
@@ -28,13 +27,14 @@ export const getCoupleCode = async () => {
 }
 
 //== 커플 코드 연결 ==//
-export const connectCoupleCode = async () => {
+export const connectCoupleCode = async (code: string): Promise<void> => {
   const response = await axios({
     method: 'patch',
     url: `${BASE_URL}/couple-connect`,
     headers: {
       Authorization: `Bearer `
-    }
+    },
+    data: code
   });
   console.log(response.data);
 }
