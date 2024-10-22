@@ -8,19 +8,19 @@ import { useQuery } from "react-query";
 import { addProductToCart, detailProduct } from "../apis/productApi";
 
 const BoardDetail = () => {
-  const { productId } = useParams();
+  // const { productId } = useParams();
 
-  //== 상품 상세 데이터 ==//
-  const { data: productDetail, isLoading } = useQuery(
-    ['detailProduct', productId],
-    () => detailProduct(productId),
-    {enabled: !!productId}
-  );
+  // //== 상품 상세 데이터 ==//
+  // const { data: productDetail, isLoading } = useQuery(
+  //   ['detailProduct', productId],
+  //   () => detailProduct(productId),
+  //   {enabled: !!productId}
+  // );
 
-  //== 장바구니 추가 ==//
-  const addCart = async () => {
-    await addProductToCart(productId);
-  };
+  // //== 장바구니 추가 ==//
+  // const addCart = async () => {
+  //   await addProductToCart(productId);
+  // };
 
   const dummyData = [
     '/dummy/test1.jpg',
@@ -29,9 +29,9 @@ const BoardDetail = () => {
     '/dummy/test2.jpg',
   ];
 
-  if (isLoading) {
-    return <p>Loading</p>;
-  };
+  // if (isLoading) {
+  //   return <p>Loading</p>;
+  // };
 
   return (
     <div>

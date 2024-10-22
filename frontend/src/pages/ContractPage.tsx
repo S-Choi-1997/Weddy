@@ -9,15 +9,15 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 
 const Contract = () => {
-  const { contractId } = useParams();
+  // const { contractId } = useParams();
   const pageRef = useRef<HTMLDivElement>(null);
 
-  //== 계약서 정보 ==//
-  const { data: contractData, isLoading } = useQuery(
-    ['contractInfo', contractId],
-    () => contractInfo(contractId),
-    {enabled: !!contractId}
-  );
+  // //== 계약서 정보 ==//
+  // const { data: contractData, isLoading } = useQuery(
+  //   ['contractInfo', contractId],
+  //   () => contractInfo(contractId),
+  //   {enabled: !!contractId}
+  // );
 
   //== 전자서명 후 NFT 민팅 ==//
   const handleSignature = async () => {
@@ -34,9 +34,9 @@ const Contract = () => {
     ]);
   };
 
-  if (isLoading) {
-    return <p>Loading</p>;
-  };
+  // if (isLoading) {
+  //   return <p>Loading</p>;
+  // };
 
   return (
     <div>
