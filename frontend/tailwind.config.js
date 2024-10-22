@@ -5,13 +5,13 @@ export default {
   theme: {
   	extend: {
   		colors: {
-  			mainbg: '#FFFFE6',	// yellow
-  			main1: '#FFFFC8',	// yellow
-  			main2: '#FCCD2A',	// yellow
-  			main3: '#F8F1FF', // purple
-				main4: '#FFF0F7', // light pink
-				main5: '#F10674', // hot pink
-				main6: '#5B00B7', // dark purple
+  			mainbg: '#FFFFE6',
+  			main1: '#FFFFC8',
+  			main2: '#FCCD2A',
+  			main3: '#F8F1FF',
+  			main4: '#FFF0F7',
+  			main5: '#F10674',
+  			main6: '#5B00B7',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -57,6 +57,28 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },
