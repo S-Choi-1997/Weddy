@@ -1,10 +1,10 @@
 import axios from "axios"
-import { Review } from "./product.type";
+import { Product, Review } from "./product.type";
 
 const BASE_URL = 'http://localhost:8080/api/products'
 
 //== 상품 조회 ==//
-export const allProduct = async (): Promise<void> => {
+export const allProduct = async (): Promise<Product[]> => {
   const response = await axios({
     method: 'get',
     url: BASE_URL,
@@ -13,6 +13,7 @@ export const allProduct = async (): Promise<void> => {
     }
   });
   console.log(response.data);
+  return response.data;
 };
 
 //== 상품 상세 조회 ==//

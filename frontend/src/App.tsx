@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Footer from './common/Footer'
 import Navbar from './common/Navbar'
@@ -13,31 +14,36 @@ import Schedule from './pages/SchedulePage'
 import BoardDetail from './pages/BoardDetailPage'
 import Cart from './pages/CartPage'
 import CallBack from './pages/CallBack'
+import { CalendarDemo } from "./test/Test";
 
 function App() {
+  const queryClient = new QueryClient();
 
   return (
     <div className='content'>
-      <BrowserRouter>
-        {location.pathname !== "/login" && (
-          <Navbar />)}
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/board" element={<Board />} />
-          <Route path="/board/detail" element={<BoardDetail />} />
-          <Route path="/planner" element={<Planner />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/contract" element={<Contract />} />
-          <Route path="/contractlist" element={<ContractList />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/callback" element={<CallBack />}/>
-        </Routes>
-        
-        {location.pathname !== "/login" && (
-          <Footer />)}
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          {location.pathname !== "/login" && (
+            <Navbar />)}
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/board/detail" element={<BoardDetail />} />
+            <Route path="/planner" element={<Planner />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/contract" element={<Contract />} />
+            <Route path="/contractlist" element={<ContractList />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/callback" element={<CallBack />}/>
+            <Route path="/test" element={<CalendarDemo />}/>
+          </Routes>
+          
+          {location.pathname !== "/login" && (
+            <Footer />)}
+        </BrowserRouter>
+      </QueryClientProvider>
     </div>
 
   )

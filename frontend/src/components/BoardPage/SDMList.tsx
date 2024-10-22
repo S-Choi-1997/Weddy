@@ -1,6 +1,7 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import SDM from "./SDM";
 import { useNavigate } from "react-router-dom";
+
 interface SDMListProps {
   value: string;
 }
@@ -10,7 +11,7 @@ const SDMList = ({ value }: SDMListProps) => {
   const sdmItems = Array.from({ length: 10 });
   const navigate = useNavigate();
   const toDetail = () => {
-    navigate("/board/detail");cccc
+    navigate("/board/detail");
   }
   return (
       

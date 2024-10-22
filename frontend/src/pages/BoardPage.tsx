@@ -1,8 +1,16 @@
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { allProduct } from "../apis/productApi";
+import { useQuery } from "react-query";
 
 const Board = () => {
+  // const { data: productList, isLoading } = useQuery('allProduct', allProduct);
+
+  // if (isLoading) {
+  //   return <p>Loading</p>;
+  // };
+
     //dummy data
     const regions = [
         {
