@@ -1,11 +1,8 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import BoardAsk from "../components/BoardDetailPage/BoardAsk";
 import BoardContent from "../components/BoardDetailPage/BoardContent";
 import BoardReview from "../components/BoardDetailPage/BoardReview";
 import { MainCarousel } from "../components/MainPage/MainCarousel";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { addProductToCart, detailProduct } from "../apis/productApi";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 
 const BoardDetail = () => {
   // const { productId } = useParams();
