@@ -1,6 +1,6 @@
 const Cart = () => {
   return (
-    <div>
+    <div className="m-5">
       cart page
     </div>
   )
