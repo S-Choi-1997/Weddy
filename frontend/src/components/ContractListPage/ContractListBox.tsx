@@ -7,10 +7,12 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const toDetail = () => {
-    navigate('/board/detail')
-  }
+    navigate('/board/detail');
+  };
+  
   return (
     <>
     <div className="w-auto h-[100px] bg-white rounded-3xl p-5 flex items-center justify-between my-5">

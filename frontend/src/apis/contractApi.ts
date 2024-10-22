@@ -1,9 +1,10 @@
 import axios from "axios"
+import { ContractData } from "./contract.type";
 
 const BASE_URL = 'http://localhost:8080/api/product/contracts'
 
 //== 계약서 상세 조회 ==//
-export const contractInfo = async (contractId: number): Promise<void> => {
+export const contractInfo = async (contractId?: string): Promise<ContractData> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${contractId}`,
@@ -12,6 +13,7 @@ export const contractInfo = async (contractId: number): Promise<void> => {
     }
   });
   console.log(response.data);
+  return response.data;
 };
 
 //== 계약서 전자서명 ==//
