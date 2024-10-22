@@ -3,8 +3,20 @@ import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { allProduct } from "../apis/productApi";
 import { useQuery } from "react-query";
+import { Product } from "../apis/product.type";
 
 const Board = () => {
+  // const { data: productList, isLoading } = useQuery('allProduct', allProduct);
+
+  // if (isLoading) {
+  //   return <p>Loading</p>;
+  // };
+  
+  // //== 스드메 필터링 ==//
+  // const studioProducts = productList.filter((product: Product) => product.type === 'studio');
+  // const dressProducts = productList.filter((product: Product) => product.type === 'dress');
+  // const makeupProducts = productList.filter((product: Product) => product.type === 'makeup');
+
   //dummy data
   const regions = [
     {
@@ -36,6 +48,7 @@ const Board = () => {
       label: "울산",
     },
   ];
+
   const prices = [
     {
       value: "5,000,000",
@@ -67,12 +80,15 @@ const Board = () => {
         <TabsContent value="studio">
           <SDMList value="studio" />
         </TabsContent>
+
         <TabsContent value="dress">
           <SDMList value="dress" />
         </TabsContent>
+        
         <TabsContent value="makeup">
           <SDMList value="makeup" />
         </TabsContent>
+
       </Tabs>
     </div>
   );

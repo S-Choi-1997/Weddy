@@ -14,7 +14,6 @@ import Schedule from './pages/SchedulePage'
 import BoardDetail from './pages/BoardDetailPage'
 import Cart from './pages/CartPage'
 import CallBack from './pages/CallBack'
-import { CalendarDemo } from "./test/Test";
 
 function App() {
   const queryClient = new QueryClient();
@@ -37,7 +36,6 @@ function App() {
             <Route path="/contractlist" element={<ContractList />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/callback" element={<CallBack />}/>
-            <Route path="/test" element={<CalendarDemo />}/>
           </Routes>
           
           {location.pathname !== "/login" && (
