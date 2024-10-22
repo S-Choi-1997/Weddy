@@ -1,9 +1,10 @@
 import CalenderBox from "../components/SchedulePage/CalenderBox";
 
-const Schedule = ()=>{
+const Schedule = () => {
   return (
     <div className="m-5">
       <CalenderBox />
+
     </div>
   )
 }
