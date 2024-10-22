@@ -11,7 +11,6 @@ export const contractInfo = async (contractId: number): Promise<void> => {
       Authorization: `Bearer `
     }
   });
-
   console.log(response.data);
 };
 
@@ -25,7 +24,6 @@ export const signature = async (signature: string): Promise<void> => {
     },
     data: signature
   });
-
   console.log(response.data);
 };
 

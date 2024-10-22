@@ -1,4 +1,5 @@
 import axios from "axios"
+import { Review } from "./product.type";
 
 const BASE_URL = 'http://localhost:8080/api/products'
 
@@ -75,14 +76,14 @@ export const reviewList = async (productId: number): Promise<void> => {
 };
 
 //== 리뷰 등록 ==//
-export const submitReview = async (productId: number, data: any): Promise<void> => {
+export const submitReview = async (productId: number, reviewData: Review): Promise<void> => {
   const response = await axios({
     method: 'post',
     url: `${BASE_URL}/${productId}/review`,
     headers: {
       Authorization: `Bearer `
     },
-    data: data
+    data: reviewData
   });
   console.log(response.data);
 };

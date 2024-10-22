@@ -11,7 +11,6 @@ export const createCoupleCode = async (): Promise<void> => {
       Authorization: `Bearer `
     }
   });
-
   console.log(response.data);
 }
 
