@@ -4,7 +4,7 @@ import { Schedule } from "./schedule.type";
 const BASE_URL = 'http://localhost:8080/api/schedules';
 
 //== 일정 등록 ==//
-export const schedule = async (scheduleData: Schedule): Promise<void> => {
+export const schedule = async (scheduleData?: Schedule): Promise<void> => {
   const response = await axios({
     method: 'post',
     url: BASE_URL,

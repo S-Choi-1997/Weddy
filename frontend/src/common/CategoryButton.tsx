@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const CategoryButton=()=>{
+interface categoryProps {
+  changeCategory: (category: string) => void;
+};
+
+const CategoryButton=({ changeCategory }: categoryProps)=>{
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   const handleButtonClick = (buttonName: string) => {
-    // 클릭한 버튼의 이름을 상태로 저장
     setSelectedButton(buttonName);
   };
+
+  useEffect(() => {
+    if (selectedButton){
+      changeCategory(selectedButton);
+    };
+  }, [selectedButton]);
+
   return (
     <div className="flex justify-center">
     <button
