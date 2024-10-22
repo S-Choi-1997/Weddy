@@ -12,7 +12,12 @@ import {
   PopoverTrigger,
 } from "../ui/popover"
 
-const DatePick = () => {
+interface DatePickProps {
+  title:string;
+}
+
+
+const DatePick = ({title}:DatePickProps) => {
   const [date, setDate] = React.useState<Date>()
   return (
     <>
@@ -21,12 +26,12 @@ const DatePick = () => {
           <Button
             variant={"outline"}
             className={cn(
-              "w-[240px] justify-start text-left font-normal",
+              "w-[150px] justify-start text-left mx-2 my-1 font-normal",
               !date && "text-muted-foreground"
             )}
           >
             <CalendarIcon />
-            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            {date ? format(date, "yyyy-MM-dd") : <span>{title}</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
