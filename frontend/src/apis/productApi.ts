@@ -17,7 +17,7 @@ export const allProduct = async (): Promise<Product[]> => {
 };
 
 //== 상품 상세 조회 ==//
-export const detailProduct = async (productId: number): Promise<void> => {
+export const detailProduct = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}`,
@@ -41,7 +41,7 @@ export const getPhone = async (productId: string): Promise<void> => {
 };
 
 //== 상품 담기 ==//
-export const productCart = async (productId: string): Promise<void> => {
+export const addProductToCart = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'post',
     url: `${BASE_URL}/${productId}/cart`,
@@ -53,7 +53,7 @@ export const productCart = async (productId: string): Promise<void> => {
 };
 
 //== 장바구니 리스트 조회 ==//
-export const myCart = async (): Promise<void> => {
+export const getCartItems = async (): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/my`,

@@ -4,10 +4,20 @@ import { mintNFT } from "../hooks/mintNFT";
 import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { makeImage } from "../hooks/makeImage";
-import { signature } from "../apis/contractApi";
+import { contractInfo, signature } from "../apis/contractApi";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 
 const Contract = () => {
+  const { contractId } = useParams();
   const pageRef = useRef<HTMLDivElement>(null);
+
+  //== 계약서 정보 ==//
+  const { data: contractData, isLoading } = useQuery(
+    ['contractInfo', contractId],
+    () => contractInfo(contractId),
+    {enabled: !!contractId}
+  );
 
   //== 전자서명 후 NFT 민팅 ==//
   const handleSignature = async () => {
@@ -22,7 +32,11 @@ const Contract = () => {
       mintNFT(hash),
       signature(sign)
     ]);
-  }
+  };
+
+  if (isLoading) {
+    return <p>Loading</p>;
+  };
 
   return (
     <div>
