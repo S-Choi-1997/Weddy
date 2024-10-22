@@ -1,6 +1,6 @@
 export interface Schedule {
   type: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | null;
+  endDate: Date | null;
   content: string;
 };
