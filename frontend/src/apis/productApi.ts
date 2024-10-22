@@ -17,7 +17,7 @@ export const allProduct = async (): Promise<Product[]> => {
 };
 
 //== 상품 상세 조회 ==//
-export const detailProduct = async (productId: number): Promise<void> => {
+export const detailProduct = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}`,
