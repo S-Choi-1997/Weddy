@@ -26,6 +26,42 @@ export const detailProduct = async (productId: number): Promise<void> => {
   console.log(response.data);
 };
 
+//== 전화번호 조회 ==//
+export const getPhone = async (productId: string): Promise<void> => {
+  const response = await axios({
+    method: 'get',
+    url: `${BASE_URL}/${productId}/comment`,
+    headers: {
+      Authorization: `Bearer `
+    }
+  });
+  console.log(response.data);
+};
+
+//== 상품 담기 ==//
+export const productCart = async (productId: string): Promise<void> => {
+  const response = await axios({
+    method: 'post',
+    url: `${BASE_URL}/${productId}/cart`,
+    headers: {
+      Authorization: `Bearer `
+    }
+  });
+  console.log(response.data);
+};
+
+//== 장바구니 리스트 조회 ==//
+export const myCart = async (): Promise<void> => {
+  const response = await axios({
+    method: 'get',
+    url: `${BASE_URL}/my`,
+    headers: {
+      Authorization: `Bearer `
+    }
+  });
+  console.log(response.data);
+};
+
 //== 리뷰 리스트 ==//
 export const reviewList = async (productId: number): Promise<void> => {
   const response = await axios({
