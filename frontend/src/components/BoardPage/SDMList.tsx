@@ -10,7 +10,7 @@ const SDMList = ({ value }: SDMListProps) => {
   const sdmItems = Array.from({ length: 10 });
   const navigate = useNavigate();
   const toDetail = () => {
-    navigate("/board/detail");cccc
+    navigate("/board/detail");
   }
   return (
       
