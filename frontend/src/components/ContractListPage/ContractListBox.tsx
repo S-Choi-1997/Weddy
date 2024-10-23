@@ -15,7 +15,7 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
   
   return (
     <>
-    <div className="w-auto h-[100px] bg-white rounded-3xl p-5 flex items-center justify-between my-5">
+    <div className="w-auto h-[100px] bg-white rounded-3xl p-5 flex items-center justify-between my-10">
       <div className="flex items-center" onClick={toDetail}>
       <h1 className="font-bold mr-4">{title}</h1>
       <SearchIcon />

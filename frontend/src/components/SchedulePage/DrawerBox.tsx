@@ -1,4 +1,8 @@
+import { Schedule } from "@/apis/schedule.type";
+import { schedule } from "@/apis/scheduleApi";
 import CategoryButton from "@/common/CategoryButton";
+import React, { useState } from "react";
+import styled from 'styled-components';
 import { Button } from "../ui/button";
 import {
   Drawer,
@@ -10,16 +14,19 @@ import {
   DrawerTitle,
 } from "../ui/drawer";
 import DatePick from "./DatePick";
-import React, { useState } from "react";
-import { Schedule } from "@/apis/schedule.type";
-import { schedule } from "@/apis/scheduleApi";
 
 interface DrawerBoxProps {
   isOpen: boolean;
   onClose: () => void;
 };
 
+const FlexCenterWrapper = styled.div`
+display: flex;
+justify-content: center;
+`;
 const DrawerBox: React.FC<DrawerBoxProps> = ({ isOpen, onClose }) => {
+
+  // Schedule 타입의 초기 상태를 빈 객체로 설정
   const [scheduleInfo, setScheduleInfo] = useState<Schedule>({
     startDate: null,
     endDate: null,
@@ -31,7 +38,7 @@ const DrawerBox: React.FC<DrawerBoxProps> = ({ isOpen, onClose }) => {
   const updateScheduleInfo = (key: keyof Schedule, value: any) => {
     setScheduleInfo((prev) => {
       const formattedValue = (key === "startDate" || key === "endDate") && value instanceof Date ?
-       value.toISOString().split("T")[0] : value;
+        value.toISOString().split("T")[0] : value;
 
       return { ...prev, [key]: formattedValue };
     });
@@ -51,15 +58,17 @@ const DrawerBox: React.FC<DrawerBoxProps> = ({ isOpen, onClose }) => {
             <DatePick title="시작일" changeDate={(date) => updateScheduleInfo("startDate", date)} />
             <DatePick title="종료일" changeDate={(date) => updateScheduleInfo("endDate", date)} />
           </DrawerDescription>
-          <DrawerDescription>
+          <div>
             <input
               type="text"
               placeholder="일정을 입력하세요."
-              className="w-[320px] border rounded-md p-3 my-2"
+              className="w-[320px] border rounded-md p-3 my-2 text-[16px]"
               onChange={(e) => updateScheduleInfo("content", e.target.value)}
             />
-            <CategoryButton changeCategory={(category) => updateScheduleInfo("type", category)} />
-          </DrawerDescription>
+            <FlexCenterWrapper>
+              <CategoryButton changeCategory={(category) => updateScheduleInfo("type", category)} />
+            </FlexCenterWrapper>
+          </div>
         </DrawerHeader>
         <DrawerFooter>
           <Button onClick={updateSchedule}>추가</Button>
