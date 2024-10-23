@@ -1,5 +1,5 @@
-import { useQuery } from "react-query";
-import { getCartItems } from "../apis/productApi";
+// import { useQuery } from "react-query";
+// import { getCartItems } from "../apis/productApi";
 
 const Cart = () => {
   //== 장바구니 목록 데이터 ==//
