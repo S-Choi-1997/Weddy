@@ -8,7 +8,7 @@ const BoardDetail = () => {
   // const { productId } = useParams();
 
   // //== 상품 상세 데이터 ==//
-  // const { data: productDetail, isLoading } = useQuery(
+  // const { data: productDetail } = useQuery(
   //   ['detailProduct', productId],
   //   () => detailProduct(productId),
   //   {enabled: !!productId}
@@ -25,10 +25,6 @@ const BoardDetail = () => {
     '/dummy/test1.jpg',
     '/dummy/test2.jpg',
   ];
-
-  // if (isLoading) {
-  //   return <p>Loading</p>;
-  // };
 
   return (
     <div>

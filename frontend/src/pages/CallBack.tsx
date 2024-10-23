@@ -1,21 +1,23 @@
-import { useEffect } from "react";
+import { getToken } from "@/apis/userApi";
+import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getToken } from "../apis/userApi";
 
 const CallBack = () => {
   const navigate = useNavigate();
   const params = new URLSearchParams(useLocation().search);
   const userId = params.get('userId');
 
-  useEffect(() => {
-    const updateToken = async () => {
-      if (userId != undefined) {
-        await getToken(userId);
+  //== 토큰 정보 ==//
+  useQuery(
+    ['getToken', userId],
+    () => getToken(userId),
+    {
+      enabled: !userId,
+      onSuccess: () => {
         navigate('/');
-      };
-    };
-    updateToken();
-  }, [userId]);
+      },
+    }
+  );
 
   return null;
 }
