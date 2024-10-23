@@ -44,8 +44,8 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
   >
     메이크업
   </button>
-    </>
-    // </div>
+  </>
+  // {/* </div> */}
   )
 }
 
