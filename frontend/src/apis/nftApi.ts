@@ -3,7 +3,7 @@ import axios from "axios"
 const BASE_URL = 'https://api.pinata.cloud/pinning'
 
 //== 계약서 업로드 ==//
-export const contractUpload = async (formData: FormData, category: string): Promise<string> => {
+export const contractUpload = async (formData: FormData, category?: string): Promise<string> => {
   const response = await axios({
     method: 'post',
     url: `${BASE_URL}/pinFileToIPFS`,
@@ -21,7 +21,7 @@ export const contractUpload = async (formData: FormData, category: string): Prom
 };
 
 //== 계약서 JSON 업로드 ==//
-export const metadataUpload = async (imageCID: string, category: string): Promise<string> => {
+export const metadataUpload = async (imageCID: string, category?: string): Promise<string> => {
   const metadata = {
     name: category,
     description: 'description',
