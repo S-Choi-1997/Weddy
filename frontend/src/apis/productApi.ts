@@ -65,7 +65,7 @@ export const getCartItems = async (): Promise<void> => {
 };
 
 //== 리뷰 리스트 ==//
-export const reviewList = async (productId: number): Promise<void> => {
+export const getReviewList = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}/review`,
