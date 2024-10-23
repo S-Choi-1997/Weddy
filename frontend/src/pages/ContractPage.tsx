@@ -5,11 +5,12 @@ import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { makeImage } from "../hooks/makeImage";
 import { signature } from "../apis/contractApi";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // import { useQuery } from "react-query";
 
 const Contract = () => {
-  // const { contractId } = useParams();
+  const { category } = useParams();
+
   const pageRef = useRef<HTMLDivElement>(null);
 
   // //== 계약서 정보 ==//
@@ -25,7 +26,7 @@ const Contract = () => {
 
     const [ sign, hash ] = await Promise.all([
       makeSignature(),
-      uploadToPinata(contractImage)
+      uploadToPinata(contractImage, category)
     ]);
 
     await Promise.all([
