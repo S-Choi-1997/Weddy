@@ -1,4 +1,9 @@
+// import { Product } from "@/apis/product.type";
 import Separate from "../../common/Separate";
+
+// interface BoardContentProp {
+//   boardDetail: Product | undefined
+// };
 
 const BoardContent = () => {
   return (

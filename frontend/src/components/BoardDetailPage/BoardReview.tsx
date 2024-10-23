@@ -1,3 +1,8 @@
+// import { Review } from "@/apis/product.type";
+
+// interface BoardReviewProp {
+//   reviewList: Review[]
+// };
 
 const BoardReview = () => {
   return (

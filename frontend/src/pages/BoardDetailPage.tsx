@@ -1,8 +1,11 @@
+// import { useQuery } from "react-query";
 import BoardAsk from "../components/BoardDetailPage/BoardAsk";
 import BoardContent from "../components/BoardDetailPage/BoardContent";
 import BoardReview from "../components/BoardDetailPage/BoardReview";
 import { MainCarousel } from "../components/MainPage/MainCarousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+// import { addProductToCart, detailProduct, getPhone, getReviewList } from "@/apis/productApi";
+// import { useParams } from "react-router-dom";
 
 const BoardDetail = () => {
   // const { productId } = useParams();
@@ -11,6 +14,20 @@ const BoardDetail = () => {
   // const { data: productDetail } = useQuery(
   //   ['detailProduct', productId],
   //   () => detailProduct(productId),
+  //   {enabled: !!productId}
+  // );
+
+  // //== 리뷰 리스트 ==//
+  // const { data: reviewList } = useQuery(
+  //   ['getReviewList', productId],
+  //   () => getReviewList(productId),
+  //   {enabled: !!productId}
+  // );
+
+  // //== 문의 하기 ==//
+  // const { data: phone } = useQuery(
+  //   ['getPhone', productId],
+  //   () => getPhone(productId),
   //   {enabled: !!productId}
   // );
 
@@ -35,6 +52,7 @@ const BoardDetail = () => {
           <TabsTrigger value="review">리뷰</TabsTrigger>
           <TabsTrigger value="ask">문의 정보</TabsTrigger>
         </TabsList>
+
         {/* 각 탭에 대응하는 콘텐츠를 렌더링 */}
         <TabsContent value="info">
           <BoardContent />
@@ -45,6 +63,17 @@ const BoardDetail = () => {
         <TabsContent value="ask">
           <BoardAsk />
         </TabsContent>
+
+        {/* api 연결 후 */}
+        {/* <TabsContent value="info">
+          <BoardContent boardDetail={productDetail}/>
+        </TabsContent>
+        <TabsContent value="review">
+          <BoardReview reviewList={reviewList ?? []}/>
+        </TabsContent>
+        <TabsContent value="ask">
+          <BoardAsk phone={phone}/>
+        </TabsContent> */}
       </Tabs>
     </div>
   )
