@@ -17,7 +17,7 @@ export const allProduct = async (): Promise<Product[]> => {
 };
 
 //== 상품 상세 조회 ==//
-export const detailProduct = async (productId?: string): Promise<void> => {
+export const detailProduct = async (productId?: string): Promise<Product> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}`,
@@ -26,10 +26,11 @@ export const detailProduct = async (productId?: string): Promise<void> => {
     }
   });
   console.log(response.data);
+  return response.data;
 };
 
 //== 전화번호 조회 ==//
-export const getPhone = async (productId: string): Promise<void> => {
+export const getPhone = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}/comment`,
