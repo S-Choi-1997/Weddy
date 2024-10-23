@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import SearchIcon from "@/icons/searchIcon";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface PlannerBoxProps {
   title: string;
@@ -34,11 +35,11 @@ const PlannerBox = (({ title }: PlannerBoxProps) => {
         <Checkbox />
         <h1 className="font-bold mx-4">{title}</h1>
         </div>
-        <div className="flex items-center">
+        <Link to='/planner/list' className="flex items-center">
         {/* 업체 선택되었으면, 선택하기 버튼 없애기 */}
         <p className="mr-1">선택하기</p>
         <SearchIcon />
-        </div>
+        </Link>
         </div>
 
       </AccordionSummary>

@@ -10,6 +10,7 @@ import MySelectIcon from "../icons/MySelectIcon";
 
 const Footer = () => {
   const location = useLocation().pathname.split('/')[1];
+  
   return (
     <footer className="flex justify-between">
       {location === "" ? (

@@ -10,9 +10,6 @@ const Navbar = () => {
   const navigateBack = () => {
     navigate(-1);
   };
-  const goCart = () => {
-    navigate('/cart');
-  }
 
   return (
     <nav>
@@ -21,7 +18,7 @@ const Navbar = () => {
           <BackIcon />
         </div>
       )}
-      {(location === "" || location === "board" || location === "planner" ) && (locationDetail===undefined) && (
+      {(location === "" || location === "board" || location === "planner") && (locationDetail === undefined) && (
         <>
           <Link to='/board'>
             <div className="textAlign">스드메</div>
@@ -41,17 +38,20 @@ const Navbar = () => {
         <div>마이페이지</div>
       )}
       {location === "cart" && (
-        <div>장바구니</div>
+        <div>견적함</div>
       )}
 
-      {location === "board" && locationDetail==="detail" && (
+      {location === "board" && locationDetail === "detail" && (
         <div>제품 상세</div>
+      )}
+      {location === "planner" && locationDetail === "list" && (
+        <div>WEDDY 플래너</div>
       )}
 
       {location != "contract" && (
-        <div className="cartIcon" onClick={goCart}>
+        <Link className="cartIcon" to='/cart'>
           <CartIcon />
-        </div>
+        </Link>
       )}
     </nav>
   );

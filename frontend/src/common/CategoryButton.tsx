@@ -18,7 +18,7 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
   }, [selectedButton]);
 
   return (
-    <div className="flex justify-center">
+    <>
     <button
     onClick={() => handleButtonClick('스튜디오')}
     className={`bg-main3 w-[90px] h-[30px] text-black flex items-center justify-center rounded-2xl p-1 m-1 ${
@@ -44,7 +44,6 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
     메이크업
   </button>
   </>
-  // {/* </div> */}
   )
 }
 
