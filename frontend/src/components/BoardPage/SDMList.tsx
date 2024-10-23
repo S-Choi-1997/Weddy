@@ -1,9 +1,11 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import SDM from "./SDM";
 import { useNavigate } from "react-router-dom";
+// import { Product } from "@/apis/product.type";
 
 interface SDMListProps {
   value: string;
+  // productList: Product[]
 }
 
 const SDMList = ({ value }: SDMListProps) => {
@@ -27,6 +29,14 @@ const SDMList = ({ value }: SDMListProps) => {
           </div>
         ))}
       </TabsContent>
+
+      {/* api 연결 후 */}
+
+      {/* <TabsContent value={value} className="flex flex-wrap justify-center gap-8">
+        {productList.map((product) => (
+          <SDM src={} name={} price={}/>
+        ))}
+      </TabsContent> */}
     </div>
   );
 }

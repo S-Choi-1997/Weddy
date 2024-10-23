@@ -1,14 +1,17 @@
+// import { useQuery } from "react-query";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+// import { allProduct } from "@/apis/productApi";
+// import { Product } from "@/apis/product.type";
 
 const Board = () => {
   // const { data: productList } = useQuery('allProduct', allProduct);
-  
-  // //== 스드메 필터링 ==//
-  // const studioProducts = productList.filter((product: Product) => product.type === 'studio');
-  // const dressProducts = productList.filter((product: Product) => product.type === 'dress');
-  // const makeupProducts = productList.filter((product: Product) => product.type === 'makeup');
+
+  // // == 스드메 필터링 ==//
+  // const studioProducts = productList?.filter((product: Product) => product.type === 'studio');
+  // const dressProducts = productList?.filter((product: Product) => product.type === 'dress');
+  // const makeupProducts = productList?.filter((product: Product) => product.type === 'makeup');
 
   //dummy data
   const regions = [
@@ -69,7 +72,9 @@ const Board = () => {
           <ComboboxDemo lists={regions} title="지역" />
           <ComboboxDemo lists={prices} title="가격" />
         </div>
+
         {/* 각 탭에 대응하는 콘텐츠를 렌더링 */}
+
         <TabsContent value="studio">
           <SDMList value="studio" />
         </TabsContent>
@@ -77,10 +82,24 @@ const Board = () => {
         <TabsContent value="dress">
           <SDMList value="dress" />
         </TabsContent>
-        
+
         <TabsContent value="makeup">
           <SDMList value="makeup" />
         </TabsContent>
+
+        {/* api 연결 */}
+
+        {/* <TabsContent value="studio">
+          <SDMList value="studio" products={studioProducts ?? []}/>
+        </TabsContent>
+
+        <TabsContent value="dress">
+          <SDMList value="dress" products={dressProducts ?? []}/>
+        </TabsContent>
+
+        <TabsContent value="makeup">
+          <SDMList value="makeup" products={makeupProducts ?? []}/>
+        </TabsContent> */}
 
       </Tabs>
     </div>
