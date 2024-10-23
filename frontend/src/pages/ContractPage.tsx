@@ -4,7 +4,7 @@ import { mintNFT } from "../hooks/mintNFT";
 import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { makeImage } from "../hooks/makeImage";
-import { contractInfo, signature } from "../apis/contractApi";
+import { signature } from "../apis/contractApi";
 // import { useParams } from "react-router-dom";
 // import { useQuery } from "react-query";
 
@@ -13,7 +13,7 @@ const Contract = () => {
   const pageRef = useRef<HTMLDivElement>(null);
 
   // //== 계약서 정보 ==//
-  // const { data: contractData, isLoading } = useQuery(
+  // const { data: contractData } = useQuery(
   //   ['contractInfo', contractId],
   //   () => contractInfo(contractId),
   //   {enabled: !!contractId}
@@ -33,10 +33,6 @@ const Contract = () => {
       signature(sign)
     ]);
   };
-
-  // if (isLoading) {
-  //   return <p>Loading</p>;
-  // };
 
   return (
     <div>
