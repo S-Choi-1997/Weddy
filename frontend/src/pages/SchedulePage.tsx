@@ -1,9 +1,13 @@
 import CategoryButton from "@/common/CategoryButton";
 import CalenderBox from "../components/SchedulePage/CalenderBox";
+// import { useQuery } from "react-query";
+// import { getSchedule } from "@/apis/scheduleApi";
 
 const Schedule = () => {
-  const selectCategory = () => {
-    
+  // const { data:schedulList } = useQuery('getSchedule', getSchedule);
+
+  const selectCategory = (category: string) => {
+    console.log(category);
   };
 
   return (

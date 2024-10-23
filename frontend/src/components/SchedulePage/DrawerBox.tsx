@@ -20,7 +20,6 @@ interface DrawerBoxProps {
 };
 
 const DrawerBox: React.FC<DrawerBoxProps> = ({ isOpen, onClose }) => {
-  // Schedule 타입의 초기 상태를 빈 객체로 설정
   const [scheduleInfo, setScheduleInfo] = useState<Schedule>({
     startDate: null,
     endDate: null,
