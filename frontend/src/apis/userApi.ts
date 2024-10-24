@@ -1,5 +1,5 @@
 import axios from "axios"
-import { EditUserInfo } from "./user.type";
+import { userInformation } from "./user.type";
 
 const BASE_URL = 'http://localhost:8080/api/users'
 
@@ -12,8 +12,29 @@ export const getToken = async (userId: string | null): Promise<void> => {
   console.log(response.data);
 };
 
+//== 회원 정보 ==//
+export const getUserInfo = async (): Promise<userInformation> => {
+  // const response = await axios({
+  //   method: 'get',
+  //   url: `${BASE_URL}/userinfo`,
+  //   headers: {
+  //     Authorization: `Bearer `
+  //   }
+  // });
+  // console.log(response.data);
+  // return response.data;
+  
+  //== dumy ==//
+  return {
+    'name': '이병수',
+    'phone': '010-1234-5678',
+    'email' : 'lbs@naver.com',
+    'address' : '광주광역시 광산구 하남동 1234'
+  };
+};
+
 //== 회원 정보 수정 ==//
-export const editInfomation = async (userInfo?: EditUserInfo): Promise<void> => {
+export const editInfomation = async (userInfo?: userInformation): Promise<void> => {
   const response = await axios({
     method: 'patch',
     url: BASE_URL,
