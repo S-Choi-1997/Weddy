@@ -1,9 +1,10 @@
+// import { Product } from "@/apis/product.type";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 interface CartBoxProps {
   title: string;
+  // product: Product;
 }
-
 
 const CartBox = ({ title }: CartBoxProps) => {
 

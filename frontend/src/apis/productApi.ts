@@ -54,7 +54,7 @@ export const addProductToCart = async (productId?: string): Promise<void> => {
 };
 
 //== 장바구니 리스트 조회 ==//
-export const getCartItems = async (): Promise<void> => {
+export const getCartItems = async (): Promise<Product[]> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/my`,
@@ -63,6 +63,7 @@ export const getCartItems = async (): Promise<void> => {
     }
   });
   console.log(response.data);
+  return response.data;
 };
 
 //== 리뷰 리스트 ==//
