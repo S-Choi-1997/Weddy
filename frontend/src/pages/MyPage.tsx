@@ -1,11 +1,9 @@
-// import { connectCoupleCode, getCoupleCode } from "@/apis/coupleApi";
-import { editInfomation, getUserInfo } from "@/apis/userApi";
+import { getCoupleCode } from "@/apis/coupleApi";
 import { userInformation } from "@/apis/user.type";
-import { useEffect, useState } from "react";
-// import { useQuery } from "react-query";
+import { editInfomation, getUserInfo } from "@/apis/userApi";
 import TodoButton from "@/common/TodoButton";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-
 
 const Mypage = () => {
   const [ userInfo, setUserInfo ] = useState<userInformation>({
@@ -35,15 +33,13 @@ const Mypage = () => {
     setUserInfo((prev) => { return { ...prev, [key]: value} });
   };
 
-  // //== 커플 코드 조회 ==//
-  // const { data: myCode } = useQuery('getCoupleCode', getCoupleCode);
+  //== 커플 코드 조회 ==//
+  const { data: myCode } = useQuery('getCoupleCode', getCoupleCode);
 
   // //== 커플 코드 연결 ==//
   // const handleConnect = async (code: string) => {
   //   await connectCoupleCode(code);
   // };
-
-  
 
   return (
     <div className="m-5 bg-white h-[630px] rounded-xl p-5">
@@ -98,7 +94,7 @@ const Mypage = () => {
       </div>
       <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 rounded-xl">
         <h1 className="mb-5">커플 커넥트</h1>
-        <span className="font-bold text-lg">커플 코드</span>
+        <span className="font-bold text-lg">{myCode}</span>
       </div>
     </div>
   )

@@ -30,7 +30,7 @@ export const signature = async (signature: string): Promise<void> => {
 };
 
 //== 나의 계약 리스트 ==//
-export const myContract = async (): Promise<void> => {
+export const myContract = async (): Promise<ContractData[]> => {
   const response = await axios({
     method: 'get',
     url: BASE_URL,
@@ -39,4 +39,5 @@ export const myContract = async (): Promise<void> => {
     }
   });
   console.log(response.data);
+  return response.data;
 };

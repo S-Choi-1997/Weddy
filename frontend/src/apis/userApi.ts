@@ -24,7 +24,7 @@ export const getUserInfo = async (): Promise<userInformation> => {
   // console.log(response.data);
   // return response.data;
   
-  //== dumy ==//
+  //== dummy ==//
   return {
     'name': '이병수',
     'phone': '010-1234-5678',

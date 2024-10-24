@@ -3,15 +3,20 @@ import axios from "axios";
 const BASE_URL = 'http://localhost:8080/api/users'
 
 //== 커플 코드 조회 ==//
-export const getCoupleCode = async (): Promise<void> => {
-  const response = await axios({
-    method: 'get',
-    url: `${BASE_URL}/couple-code`,
-    headers: {
-      Authorization: `Bearer `
-    }
-  });
-  console.log(response.data);
+export const getCoupleCode = async (): Promise<string> => {
+  // const response = await axios({
+  //   method: 'get',
+  //   url: `${BASE_URL}/couple-code`,
+  //   headers: {
+  //     Authorization: `Bearer `
+  //   }
+  // });
+  // console.log(response.data);
+
+  // return response.data;
+
+  //== dummy ==//
+  return '123456789';
 }
 
 //== 커플 코드 연결 ==//
