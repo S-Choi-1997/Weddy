@@ -55,7 +55,6 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
           )
         )
       )} */}
-    </div>
     </>
   )
 }
