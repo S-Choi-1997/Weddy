@@ -53,6 +53,18 @@ export const addProductToCart = async (productId?: string): Promise<void> => {
   console.log(response.data);
 };
 
+//== 장바구니 삭제 ==//
+export const deleteFromCart = async (): Promise<void> => {
+  const response = await axios({
+    method: 'delete',
+    url: `${BASE_URL}/`,
+    headers: {
+      Authorization: `Bearer `
+    }
+  });
+  console.log(response.data);
+};
+
 //== 장바구니 리스트 조회 ==//
 export const getCartItems = async (): Promise<Product[]> => {
   const response = await axios({
