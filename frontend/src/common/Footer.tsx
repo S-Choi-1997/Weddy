@@ -32,10 +32,10 @@ const Footer = () => {
 
       )}
 
-      {location === "contractlist" ? (
+      {location === "contract" ? (
         <FileSelectIcon w={25} h={25} />
       ) : (
-        <Link to='/contractlist'>
+        <Link to='/contract/list'>
           <FileIcon w={25} h={25} />
         </Link>
       )}
