@@ -1,13 +1,39 @@
 // import { connectCoupleCode, getCoupleCode } from "@/apis/coupleApi";
-// import { EditUserInfo } from "@/apis/user.type";
-// import { editInfomation } from "@/apis/userApi";
-// import { useState } from "react";
+import { editInfomation, getUserInfo } from "@/apis/userApi";
+import { userInformation } from "@/apis/user.type";
+import { useEffect, useState } from "react";
 // import { useQuery } from "react-query";
-
 import TodoButton from "@/common/TodoButton";
+import { useQuery } from "react-query";
+
 
 const Mypage = () => {
-  // const [ userInfo, setUserInfo ] = useState<EditUserInfo>();
+  const [ userInfo, setUserInfo ] = useState<userInformation>({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+  });
+
+  //== 회원 정보 ==//
+  const { data: userData, isSuccess } = useQuery('getUserInfo', getUserInfo);
+
+  //== userdata 업데이트 후 userInfo 업데이트 ==//
+  useEffect(() => {
+    if (isSuccess && userData) {
+      setUserInfo(userData);
+    }
+  }, [isSuccess, userData]);
+
+  //== 회원 정보 수정 ==//
+  const handleUpdate = async () => {
+    await editInfomation(userInfo);
+  };
+
+  //== 상태 업데이트 ==//
+  const updateUserInfo = (key: keyof userInformation, value: string) => {
+    setUserInfo((prev) => { return { ...prev, [key]: value} });
+  };
 
   // //== 커플 코드 조회 ==//
   // const { data: myCode } = useQuery('getCoupleCode', getCoupleCode);
@@ -17,12 +43,7 @@ const Mypage = () => {
   //   await connectCoupleCode(code);
   // };
 
-  // //== 회원 정보 수정 ==//
-  // const handleUpdate = async () => {
-  //   await editInfomation(userInfo);
-  // };
-
-
+  
 
   return (
     <div className="m-5 bg-white h-[630px] rounded-xl p-5">
@@ -43,14 +64,36 @@ const Mypage = () => {
           <span className="my-2 text-gray-600">이름</span>
           <span className="my-3 text-gray-600">전화번호</span>
           <span className="my-3 text-gray-600">이메일</span>
+          <span className="my-3 text-gray-600">쥬소</span>
         </div>
         <div className="flex flex-col mt-10">
-          <input defaultValue={'김싸피'} className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]" type="text" />
-          <input defaultValue={'010-1234-5678'} className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]" type="text" />
-          <input defaultValue={'ssafy@ssafy.com'} className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]" type="text" />
+          <input
+            defaultValue={userInfo.name}
+            className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]"
+            type="text"
+            onChange={(e) => updateUserInfo('name', e.target.value)}
+          />
+          <input 
+            defaultValue={userInfo.phone} 
+            className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]" 
+            type="text" 
+            onChange={(e) => updateUserInfo('phone', e.target.value)}
+          />
+          <input 
+            defaultValue={userInfo.email} 
+            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]" 
+            type="text"
+            onChange={(e) => updateUserInfo('email', e.target.value)}
+          />
+          <input 
+            defaultValue={userInfo.address} 
+            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]" 
+            type="text"
+            onChange={(e) => updateUserInfo('address', e.target.value)}
+          />
         </div>
       </div>
-      <div className="text-end my-5">
+      <div className="text-end my-5" onClick={handleUpdate}>
         <TodoButton title="수정하기" colorId={1} />
       </div>
       <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 rounded-xl">
