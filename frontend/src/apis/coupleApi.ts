@@ -15,7 +15,7 @@ export const getCoupleCode = async (): Promise<string> => {
 
   // return response.data;
 
-  //== dumy ==//
+  //== dummy ==//
   return '123456789';
 }
 

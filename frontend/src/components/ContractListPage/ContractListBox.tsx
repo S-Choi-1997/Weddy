@@ -4,6 +4,7 @@ import SearchIcon from "../../icons/searchIcon";
 
 interface ContractListBoxProps {
   title: string;
+  // contractData: ContractData;
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {

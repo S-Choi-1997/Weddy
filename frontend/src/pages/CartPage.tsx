@@ -1,8 +1,4 @@
-import { useQuery } from "react-query";
-import { getCartItems } from "../apis/productApi";
-
 import CartBox from "@/components/CartPage/CartBox";
-// import { Product } from "@/apis/product.type";
 
 const Cart = () => {
   // //== 장바구니 목록 데이터 ==//

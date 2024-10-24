@@ -1,4 +1,3 @@
-// import { Product } from "@/apis/product.type";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 interface CartBoxProps {
