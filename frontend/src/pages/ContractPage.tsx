@@ -102,7 +102,7 @@ const Contract = () => {
           </span>
         </div>
     </div>
-    <div className="text-end mt-3 mb-24 mr-5" onClick={handleSignature}>
+    <div className="flex justify-end mt-3 mb-24 mr-5" onClick={handleSignature}>
     <TodoButton title="전자 서명" colorId={1} />
     </div>
     </div>

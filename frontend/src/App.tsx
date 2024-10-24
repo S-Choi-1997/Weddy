@@ -37,11 +37,11 @@ function AppContent() {
         <Route path="/planner/list" element={<PlannerList />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/contract" element={<Contract />} />
-        <Route path="/contractlist" element={<ContractList />} />
+        <Route path="/contract/list" element={<ContractList />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/callback" element={<CallBack />} />
       </Routes>
-      {currentPath !== "login" && (currentPath !== "board" && currentDetail!=="datail") && <Footer />}
+      {(currentPath !== "login") && currentDetail!=="datail" && <Footer />}
       {currentPath === "board" && currentDetail === "detail" && <FooterButton />}
     </>
   );
@@ -51,7 +51,7 @@ function App() {
   const queryClient = new QueryClient();
 
   return (
-    <div className='content'>
+    <div className='container'>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AppContent />

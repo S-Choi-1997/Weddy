@@ -53,8 +53,14 @@ const Navbar = () => {
       {location === "planner" && locationDetail === "list" && (
         <div>WEDDY 플래너</div>
       )}
+      {location === "contract" && locationDetail === "list" && (
+        <div>나의 계약</div>
+      )}
       {location === "review" && (
         <div>리뷰 작성</div>
+      )}
+      {location === "contract" && locationDetail === undefined &&(
+        <div>계약서 작성</div>
       )}
 
       {location != "contract" && (
