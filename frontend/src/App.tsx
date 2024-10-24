@@ -16,6 +16,7 @@ import Mypage from './pages/MyPage';
 import PlannerList from "./pages/PlannerListPage";
 import Planner from './pages/PlannerPage';
 import Schedule from './pages/SchedulePage';
+import Review from "./pages/ReviewPage";
 
 function AppContent() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function AppContent() {
       {currentPath !== "login" && <Navbar />}
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/review" element={<Review />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/board" element={<Board />} />
