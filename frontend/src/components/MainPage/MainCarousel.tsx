@@ -33,7 +33,9 @@ export const MainCarousel = ({dummyData}:MainCarouselProps) => {
             <CarouselItem key={index}>
                 <Card>
                   <CardContent>
+                  <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contractlist'}>
                       <img className="w-full h-full object-cover" src={imgdata} alt="제품 상세 이미지" />
+                  </a>
                   </CardContent>
                 </Card>
             </CarouselItem>

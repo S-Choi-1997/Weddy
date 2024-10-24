@@ -42,7 +42,7 @@ const Mypage = () => {
   // };
 
   return (
-    <div className="m-5 bg-white h-[630px] rounded-xl p-5">
+    <div className="m-5 bg-white h-auto rounded-xl p-5 mb-20">
       <div className="relative inline-block">
         <img
           className="bg-main1 rounded-full h-[100px] w-[100px] mt-3"
@@ -92,9 +92,11 @@ const Mypage = () => {
       <div className="text-end my-5" onClick={handleUpdate}>
         <TodoButton title="수정하기" colorId={1} />
       </div>
-      <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 rounded-xl">
+      <div className="flex justify-center">
+      <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 mb-12 rounded-xl">
         <h1 className="mb-5">커플 커넥트</h1>
         <span className="font-bold text-lg">{myCode}</span>
+      </div>
       </div>
     </div>
   )
