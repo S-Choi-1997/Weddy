@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import SearchIcon from "../../icons/searchIcon";
-import { ContractData } from "@/apis/contract.type";
+// import { ContractData } from "@/apis/contract.type";
 
 interface ContractListBoxProps {
   title: string;
-  contractInfo: ContractData;
+  // contractInfo: ContractData;
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {
