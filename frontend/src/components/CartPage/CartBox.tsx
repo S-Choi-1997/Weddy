@@ -1,3 +1,4 @@
+import { deleteFromCart } from "@/apis/productApi";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 interface CartBoxProps {
@@ -6,6 +7,9 @@ interface CartBoxProps {
 }
 
 const CartBox = ({ title }: CartBoxProps) => {
+  const handleDelete = async () => {
+    await deleteFromCart();
+  };
 
   return (
     <Accordion
@@ -31,7 +35,7 @@ const CartBox = ({ title }: CartBoxProps) => {
       >
         <div className="flex justify-between w-[300px]">
           <h1 className="font-bold mx-4">{title}</h1>
-          <button className="w-[50px] h-[25px] text-sm bg-main2 rounded-lg">삭제</button>
+          <button className="w-[50px] h-[25px] text-sm bg-main2 rounded-lg" onClick={handleDelete}>삭제</button>
         </div>
 
       </AccordionSummary>
