@@ -7,7 +7,7 @@ spring:
     import: optional:configserver:http://15.164.159.172:8888
 
 management:
-  endpoints:
+endpoints:
     web:
       exposure:
         include: refresh
