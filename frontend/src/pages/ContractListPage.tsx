@@ -1,9 +1,11 @@
-// import { useQuery } from "react-query";
 import ContractListBox from "../components/ContractListPage/ContractListBox";
-// import { myContract } from "@/apis/contractApi";
 
 const ContractList = () => {
   // const { data: contractList } = useQuery('myContract', myContract);
+
+  // const studioContract = contractList?.find((contract: ContractData) => contract.type === 'studio');
+  // const dressContract = contractList?.find((contract: ContractData) => contract.type === 'dress');
+  // const makeupContract = contractList?.find((contract: ContractData) => contract.type === 'makeup');
 
   return (
     <div className="my-12 mx-5">
