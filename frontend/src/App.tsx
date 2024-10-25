@@ -14,8 +14,9 @@ import Main from './pages/MainPage';
 import Mypage from './pages/MyPage';
 import PlannerList from "./pages/PlannerListPage";
 import Planner from './pages/PlannerPage';
-import Schedule from './pages/SchedulePage';
 import Review from "./pages/ReviewPage";
+import Schedule from './pages/SchedulePage';
+
 
 function AppContent() {
   const location = useLocation();
@@ -49,6 +50,8 @@ function App() {
   const queryClient = new QueryClient();
 
   return (
+    <>
+   
     <div className='container'>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
@@ -56,6 +59,7 @@ function App() {
         </BrowserRouter>
       </QueryClientProvider>
     </div>
+    </>
   );
 }
 

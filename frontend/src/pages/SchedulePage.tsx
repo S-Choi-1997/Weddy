@@ -14,8 +14,9 @@ const Schedule = () => {
     <div className="m-5 flex flex-col">
       <CalenderBox />
       <div className="my-5 flex justify-center">
-      <CategoryButton changeCategory={selectCategory}/>
+        <CategoryButton changeCategory={selectCategory} />
       </div>
+
     </div>
   )
 }

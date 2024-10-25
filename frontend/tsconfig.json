@@ -14,6 +14,12 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "esnext", "webworker"],
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
   }
 }
