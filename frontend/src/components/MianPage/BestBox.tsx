@@ -1,4 +1,5 @@
 import BestIcon from "@/icons/BestIcon";
+
 interface BestBoxProps {
   src: string;
   title: string;
@@ -7,6 +8,9 @@ interface BestBoxProps {
 }
 
 const BestBox = ({src, title, price, index}:BestBoxProps) => {
+  // //== 베스트 ==//
+  // const { data: getRankedProductList } = useQuery('getRankedProducts', getRankedProducts);
+
   return(
     <div className="flex flex-col relative">
       <img className="w-[150px] h-[150px] rounded-md" src={src} alt="" />
