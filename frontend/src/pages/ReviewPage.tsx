@@ -7,8 +7,8 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Review = () => {
-  const { productId } = useParams();
   const navigate = useNavigate();
+  const { productId } = useParams();
   const formattedDate = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\./g, '-').replace(/\s/g, '').slice(0, 10);
 
   const [reviewData, setReviewData] = useState<ReviewData>({
@@ -16,6 +16,13 @@ const Review = () => {
     date: formattedDate,
     score: 0
   });
+
+  // //== 상품 정보 ==//
+  // const { data: product } = useQuery(
+  //   ['detailProduct', productId],
+  //   () => detailProduct(productId),
+  //   {enabled: !!productId}
+  // );
 
   //== 상태 업데이트 ==//
   const updateReviewData = (key: keyof ReviewData, value: any) => {
