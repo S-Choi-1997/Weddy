@@ -36,26 +36,26 @@ const Review = () => {
         <span>상품명</span>
         <span>총금액</span>
       </div>
-        <div className="bg-white h-[120px] rounded-2xl p-5 m-5 flex flex-col items-center mb-3">
+      <div className="bg-white h-[120px] rounded-2xl p-5 m-5 flex flex-col items-center mb-3">
         <h1 className="mb-1">상품은 만족하셨나요?</h1>
-        <RatingBox />
+        <RatingBox getScore={(score) => updateReviewData("score", score)} />
         <span className="text-gray-400 text-xs my-2">선택해주세요.</span>
-        </div>
+      </div>
       <div className="bg-white h-[350px] m-5 rounded-2xl p-5">
         <div className="flex flex-col items-center ">
-        <h1>어떤 점이 좋았나요?</h1>
-        <textarea
-          className="border border-gray-400 rounded-lg p-5 h-[250px] w-[280px] mt-5"
-          name="review"
-          id="review"
-          onChange={(e) => updateReviewData('content', e.target.value)}
-        >
-        </textarea>
+          <h1>어떤 점이 좋았나요?</h1>
+          <textarea
+            className="border border-gray-400 rounded-lg p-5 h-[250px] w-[280px] mt-5"
+            name="review"
+            id="review"
+            onChange={(e) => updateReviewData('content', e.target.value)}
+          >
+          </textarea>
         </div>
       </div>
-        <div className="flex justify-end mt-3 mx-5" onClick={handleSubmit}>
-          <TodoButton title="리뷰 등록" colorId={1} />
-        </div>
+      <div className="flex justify-end mt-3 mx-5" onClick={handleSubmit}>
+        <TodoButton title="리뷰 등록" colorId={1} />
+      </div>
     </div>
   )
 }

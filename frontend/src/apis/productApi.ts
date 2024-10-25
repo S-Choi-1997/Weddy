@@ -105,13 +105,14 @@ export const getReviewList = async (productId?: string): Promise<void> => {
 
 //== 리뷰 등록 ==//
 export const submitReview = async (reviewData: ReviewData, productId?: string): Promise<void> => {
-  const response = await axios({
-    method: 'post',
-    url: `${BASE_URL}/${productId}/review`,
-    headers: {
-      Authorization: `Bearer `
-    },
-    data: reviewData
-  });
-  console.log(response.data);
+  console.log(reviewData);
+  // const response = await axios({
+  //   method: 'post',
+  //   url: `${BASE_URL}/${productId}/review`,
+  //   headers: {
+  //     Authorization: `Bearer `
+  //   },
+  //   data: reviewData
+  // });
+  // console.log(response.data);
 };
