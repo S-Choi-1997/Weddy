@@ -13,6 +13,10 @@ const Cart = () => {
       <CartBox title="스튜디오 업체명" />
       <CartBox title="드레스 업체명" />
       <CartBox title="헤어/메이크업 업체명" />
+
+      {/* <CartBox title={studio.name} />
+      <CartBox title={dress.name} />
+      <CartBox title={makeup.name} /> */}
     </div>
   )
 }
