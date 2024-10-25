@@ -1,18 +1,11 @@
 // import { useQuery } from "react-query";
-import SearchIcon from "@/icons/searchIcon";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 // import { allProduct } from "@/apis/productApi";
-// import { Product } from "@/apis/product.type";
 
 const Board = () => {
   // const { data: productList } = useQuery('allProduct', allProduct);
-
-  // // == 스드메 필터링 ==//
-  // const studioProducts = productList?.filter((product: Product) => product.type === 'studio');
-  // const dressProducts = productList?.filter((product: Product) => product.type === 'dress');
-  // const makeupProducts = productList?.filter((product: Product) => product.type === 'makeup');
 
   //dummy data
   const regions = [
@@ -61,20 +54,20 @@ const Board = () => {
     },
   ];
 
+  // // == 스드메 필터링 ==//
+  // const studioProducts = productList?.filter((product: Product) => product.type === 'studio');
+  // const dressProducts = productList?.filter((product: Product) => product.type === 'dress');
+  // const makeupProducts = productList?.filter((product: Product) => product.type === 'makeup');
+
   return (
     <div className="mb-20 mt-5">
-      <Tabs defaultValue="studio">
+      <Tabs defaultValue="studio" >
         <TabsList className="flex justify-center">
           <TabsTrigger value="studio">스튜디오</TabsTrigger>
           <TabsTrigger value="dress">드레스</TabsTrigger>
           <TabsTrigger value="makeup">메이크업</TabsTrigger>
         </TabsList>
-        <div className="flex relative justify-center items-center mt-3">
-          <input className="w-[280px] h-[40px] rounded-lg border border-gray-300 p-2" type="text" />
-          <div className="absolute right-20 top-1/2 transform -translate-y-1/2">
-          <SearchIcon />
-          </div>
-        </div>
+
         <div className="flex text-gray-600 justify-center gap-4 mt-5">
           <ComboboxDemo lists={regions} title="지역" />
           <ComboboxDemo lists={prices} title="가격" />
