@@ -15,7 +15,8 @@ const SDMList = ({ value }: SDMListProps) => {
   
   const toDetail = () => {
     navigate("/board/detail");
-  }
+  };
+  
   return (
       
     <div>

@@ -1,5 +1,5 @@
 // import { useQuery } from "react-query";
-import SearchIcon from "@/icons/SearchIcon";
+import SearchIcon from "@/icons/searchIcon";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
