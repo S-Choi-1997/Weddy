@@ -5,9 +5,8 @@ export interface Product {
   location: string;
 };
 
-export interface Review {
+export interface ReviewData {
   content: string;
-  date: Date;
+  date: string;
   score: number;
-  image: string[];
 };
