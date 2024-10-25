@@ -1,8 +1,10 @@
 export interface Product {
+  productId: number;
   type: string;
   name: string;
   price: string;
-  location: string;
+  address: string;
+  vendorName: string;
 };
 
 export interface ReviewData {

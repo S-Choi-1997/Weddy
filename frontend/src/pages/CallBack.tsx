@@ -12,7 +12,7 @@ const CallBack = () => {
     ['getToken', userId],
     () => getToken(userId),
     {
-      enabled: !userId,
+      enabled: !!userId,
       onSuccess: () => {
         navigate('/');
       },
