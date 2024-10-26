@@ -9,7 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleOutPutPort {
-    Optional<List<Schedule>> getSchedules();
+    Optional<List<Schedule>> getSchedules(String coupleId);
+    Optional<Schedule> getSchedule(Long scheduleId);
     Schedule save(Schedule schedule);
 
 }

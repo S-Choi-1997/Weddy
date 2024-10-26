@@ -20,7 +20,7 @@ public class ScheduleOutputDto {
     private LocalDate endDate;
     private String content;
     private Long contractId;
-
+    private String code;
 
     /**
      *
@@ -32,7 +32,7 @@ public class ScheduleOutputDto {
      * @return
      */
 
-    public ScheduleOutputDto mapToDto(Schedule schedule) {
+    public static ScheduleOutputDto mapToDto(Schedule schedule) {
         return ScheduleOutputDto.builder()
                 .id(schedule.getId())
                 .contractType(schedule.getType())
@@ -40,6 +40,7 @@ public class ScheduleOutputDto {
                 .endDate(schedule.getEndDate())
                 .content(schedule.getContent())
                 .contractId(schedule.getContract_id())
+                .code(schedule.getCode())
                 .build();
     }
 
