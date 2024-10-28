@@ -36,7 +36,7 @@ function AppContent() {
         <Route path="/planner" element={<Planner />} />
         <Route path="/planner/list" element={<PlannerList />} />
         <Route path="/schedule" element={<Schedule />} />
-        <Route path="/contract" element={<Contract />} />
+        <Route path="/contract/:category" element={<Contract />} />
         <Route path="/contract/list" element={<ContractList />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/callback" element={<CallBack />} />
