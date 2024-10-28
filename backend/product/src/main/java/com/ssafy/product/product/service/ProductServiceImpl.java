@@ -40,6 +40,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public ProductResponseDto registProduct(final ProductRegistRequestDto productRegistRequestDto,
                                             final List<MultipartFile> images) {
         Product product = productRepository.save(Product.builder().productRegistRequestDto(productRegistRequestDto).build());
