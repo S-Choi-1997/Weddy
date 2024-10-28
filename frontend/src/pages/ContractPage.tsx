@@ -33,6 +33,7 @@ const Contract = () => {
       signature(sign)
     ]);
   };
+  
   const type = {
     studio: "촬영",
     dress: "드레스",
