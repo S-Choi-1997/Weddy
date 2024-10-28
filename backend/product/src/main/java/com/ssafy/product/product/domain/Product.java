@@ -34,6 +34,9 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductImage> productImages;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Review> reviews;
+
     public ProductResponseDto getProduct(Product product) {
         List<ProductImageResponseDto> images = product.productImages.stream()
                 .map(image -> ProductImageResponseDto.builder()
