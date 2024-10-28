@@ -10,7 +10,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import styled from "styled-components";
@@ -18,11 +17,12 @@ import DatePick from "./DatePick";
 
 interface AlertDialogDemoProps {
   isOpen: boolean;
-  onClose: () => void; // 다이얼로그를 닫을 때 사용할 콜백 함수
+  onClose: () => void;
 }
+
 const FlexCenterWrapper = styled.div`
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
@@ -33,34 +33,41 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
     type: '',
   });
 
-  //== 상태 업데이트 ==//
   const updateScheduleInfo = (key: keyof Schedule, value: any) => {
     setScheduleInfo((prev) => {
-      const formattedValue = (key === "startDate" || key === "endDate") && value instanceof Date ?
-        value.toISOString().split("T")[0] : value;
+      const formattedValue =
+        (key === "startDate" || key === "endDate") && value instanceof Date
+          ? value.toISOString().split("T")[0]
+          : value;
 
       return { ...prev, [key]: formattedValue };
     });
   };
 
-  //== 일정 업데이트 ==//
+
+
   const updateSchedule = async () => {
-    schedule(scheduleInfo);
+    await schedule(scheduleInfo);
     onClose();
   };
-  
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogTrigger asChild>
-      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>일정 추가</AlertDialogTitle>
           <AlertDialogDescription>
-              <DatePick title="시작일" changeDate={(date) => updateScheduleInfo("startDate", date)} />
-              <DatePick title="종료일" changeDate={(date) => updateScheduleInfo("endDate", date)} />
+            <DatePick
+              type="start"
+              title="시작일"
+              changeDate={(date) => updateScheduleInfo("startDate", date)}
+            />
+            <DatePick
+              type="end"
+              title="종료일"
+              changeDate={(date) => updateScheduleInfo("endDate", date)}
+            />
           </AlertDialogDescription>
-
           <FlexCenterWrapper>
             <input
               type="text"
@@ -69,11 +76,9 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
               onChange={(e) => updateScheduleInfo("content", e.target.value)}
             />
           </FlexCenterWrapper>
-
           <FlexCenterWrapper>
             <CategoryButton changeCategory={(category) => updateScheduleInfo("type", category)} />
           </FlexCenterWrapper>
-
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>취소</AlertDialogCancel>
@@ -81,5 +86,5 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

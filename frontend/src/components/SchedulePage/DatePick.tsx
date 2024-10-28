@@ -14,11 +14,13 @@ import { useEffect, useState } from "react"
 interface DatePickProps {
   title:string;
   changeDate: (newDate: Date) => void;
+  type: "start" | "center" | "end"; 
 };
 
-const DatePick = ({title, changeDate}:DatePickProps ) => {
+const DatePick = ({title, changeDate,type}:DatePickProps ) => {
   const [date, setDate] = useState<Date>();
   
+
   useEffect(() => {
     if(date) {
       changeDate(date);
@@ -40,7 +42,7 @@ const DatePick = ({title, changeDate}:DatePickProps ) => {
             {date ? format(date, "yyyy-MM-dd") : <span>{title}</span>}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0" align={type}>
           <Calendar
             mode="single"
             selected={date}
