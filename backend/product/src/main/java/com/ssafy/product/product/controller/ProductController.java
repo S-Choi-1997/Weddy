@@ -50,4 +50,10 @@ public class ProductController {
 
     }
 
+    @GetMapping("/ranking")
+    public ResponseEntity<List<ProductResponseDto>> getRankingProducts() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(productService.rankingList());
+    }
+
 }
