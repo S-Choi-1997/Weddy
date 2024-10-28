@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
+import { useEffect, useState } from "react";
 // import { ContractData } from "@/apis/contract.type";
 
 interface ContractListBoxProps {
@@ -9,12 +10,23 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {
+  const [ category, setCategory ] = useState<string>("");
   const navigate = useNavigate();
 
   const toDetail = () => {
     navigate('/board/detail');
   };
 
+  useEffect(() => {
+    if (title === '스튜디오') {
+      setCategory('studio');
+    } else if (title === '드레스') {
+      setCategory('dress');
+    } else {
+      setCategory('makeup');
+    }
+  }, [title]);
+  
   return (
     <>
       <div className="w-auto h-[100px] bg-white rounded-3xl p-5 flex items-center justify-between my-10">
@@ -33,7 +45,7 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
         </Link> */}
         {/* <TodoButton title="계약 요청" colorId={1} /> */}
         {/* <TodoButton title="계약 요청중" colorId={2} /> */}
-        <Link to='/contract'>
+        <Link to={`/contract/${category}`}>
           <TodoButton title="서명하기" colorId={1} />
         </Link>
         {/* <TodoButton title="결제하기" colorId={1} /> */}
