@@ -1,17 +1,17 @@
-import axios from "axios"
+import axios from "axios";
 import { Schedule } from "./schedule.type";
 
-const BASE_URL = 'http://localhost:8080/api/schedules';
+const BASE_URL = "http://localhost:8080/api/schedules";
 
 //== 일정 등록 ==//
 export const schedule = async (scheduleData?: Schedule): Promise<void> => {
   const response = await axios({
-    method: 'post',
+    method: "post",
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer `
+      Authorization: `Bearer `,
     },
-    data: scheduleData
+    data: scheduleData,
   });
   console.log(response.data);
 };
@@ -19,11 +19,11 @@ export const schedule = async (scheduleData?: Schedule): Promise<void> => {
 //== 일정 조회 ==//
 export const getSchedule = async (): Promise<void> => {
   const response = await axios({
-    method: 'get',
+    method: "get",
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer `
-    }
+      Authorization: `Bearer `,
+    },
   });
   console.log(response.data);
 };

@@ -10,23 +10,23 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {
-  const [ category, setCategory ] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const navigate = useNavigate();
 
   const toDetail = () => {
-    navigate('/board/detail');
+    navigate("/board/detail");
   };
 
   useEffect(() => {
-    if (title === '스튜디오') {
-      setCategory('studio');
-    } else if (title === '드레스') {
-      setCategory('dress');
+    if (title === "스튜디오") {
+      setCategory("studio");
+    } else if (title === "드레스") {
+      setCategory("dress");
     } else {
-      setCategory('makeup');
+      setCategory("makeup");
     }
   }, [title]);
-  
+
   return (
     <>
       <div className="w-auto h-[100px] bg-white rounded-3xl p-5 flex items-center justify-between my-10">
@@ -50,24 +50,20 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
         </Link>
         {/* <TodoButton title="결제하기" colorId={1} /> */}
 
-        {/* {contractInfo.status === 'CONTRACT_PENDING' ? (
-        <TodoButton title="계약 요청" colorId={1} />
-        // <TodoButton title="계약 요청중" colorId={2} />
-        ) : (
-          contractInfo.status === 'CONTRACT_COMPLETED' ? (
-            <Link to='/contract'>
+        {/* {contractInfo.status === "CONTRACT_PENDING" ? (
+          <TodoButton title="계약 요청" colorId={1} />
+        ) : // <TodoButton title="계약 요청중" colorId={2} />
+        contractInfo.status === "CONTRACT_COMPLETED" ? (
+          <Link to={`/contract/${category}`}>
             <TodoButton title="서명하기" colorId={1} />
-            </Link>
-            ) : (
-              contractInfo.status === 'SIGN_COMPLETED' ? (
-                <TodoButton title="결제하기" colorId={1} />
-                ) : (
-                  <TodoButton title="결제완료" colorId={1} />
-                  )
-                  )
-                  )} */}
+          </Link>
+        ) : contractInfo.status === "SIGN_COMPLETED" ? (
+          <TodoButton title="결제하기" colorId={1} />
+        ) : (
+          <TodoButton title="결제완료" colorId={1} />
+        )} */}
       </div>
     </>
-  )
-}
-export default ContractListBox
+  );
+};
+export default ContractListBox;

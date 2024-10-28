@@ -1,14 +1,15 @@
 export interface Product {
-  productId: number;
+  id: string;
   type: string;
   name: string;
   price: string;
   address: string;
   vendorName: string;
-};
+  vendorId: string;
+}
 
 export interface ReviewData {
   content: string;
   date: string;
   score: number;
-};
+}
