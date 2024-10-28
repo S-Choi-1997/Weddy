@@ -1,4 +1,4 @@
-import BestBox from "@/components/MianPage/BestBox";
+import BestBox from "@/components/MainPage/BestBox";
 import { MainCarousel } from "../components/MainPage/MainCarousel";
 import { useNavigate } from "react-router-dom";
 
