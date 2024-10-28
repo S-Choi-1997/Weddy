@@ -14,11 +14,11 @@ interface MainCarouselProps {
 }
 
 
-export const MainCarousel = ({dummyData}:MainCarouselProps) => {
+export const MainCarousel = ({ dummyData }: MainCarouselProps) => {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   )
- 
+
   return (
     <>
       <Carousel
@@ -31,13 +31,13 @@ export const MainCarousel = ({dummyData}:MainCarouselProps) => {
           {/* 이미지 리스트 넣기 */}
           {dummyData.map((imgdata, index) => (
             <CarouselItem key={index}>
-                <Card>
-                  <CardContent>
-                  <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contractlist'}>
-                      <img className="w-full h-full object-cover" src={imgdata} alt="제품 상세 이미지" />
+              <Card>
+                <CardContent>
+                  <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contract/list'}>
+                    <img className="w-full h-full object-cover" src={imgdata} alt="제품 상세 이미지" />
                   </a>
-                  </CardContent>
-                </Card>
+                </CardContent>
+              </Card>
             </CarouselItem>
           ))}
         </CarouselContent>
