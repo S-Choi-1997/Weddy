@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { signature } from "../apis/contractApi";
 import TodoButton from "../common/TodoButton";
 import { makeImage } from "../hooks/makeImage";
@@ -10,7 +10,6 @@ import { uploadToPinata } from "../hooks/uploadToPinata";
 
 const Contract = () => {
   const { category } = useParams();
-
   const pageRef = useRef<HTMLDivElement>(null);
 
   // //== 계약서 정보 ==//
@@ -34,8 +33,11 @@ const Contract = () => {
       signature(sign)
     ]);
   };
-  const location = useLocation();
-  const type = location.state?.type;
+  const type = {
+    studio: "촬영",
+    dress: "드레스",
+    makeup: "메이크업"
+  }[category as "studio" | "dress" | "makeup"];
 
   return (
     <div>
