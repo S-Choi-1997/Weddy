@@ -11,6 +11,7 @@ interface SDMListProps {
 }
 
 const SDMList = ({ value }: SDMListProps) => {
+  // const [ searchTerm, setSearchTerm ] = useState<string>();
   // const [filteredList, setFilteredList] = useState<Product[]>([]);
 
   // dummy data
@@ -20,6 +21,7 @@ const SDMList = ({ value }: SDMListProps) => {
     console.log(searchTerm);
     // const data = productList.filter((product: Product) => product.vendorName === searchTerm);
     // setFilteredList(data);
+    // setSearchTerm(searchTerm);
   };
 
   return (
@@ -44,18 +46,23 @@ const SDMList = ({ value }: SDMListProps) => {
       >
         <Search search={search} />
 
-        {filteredList.length > 0
-          ? filteredList.map((product: Product) => (
+        {searchTerm ? (
+          filteredList.length > 0 ? (
+            filteredList.map((product: Product) => (
               <Link to={`board/detail/${product.id}`} key={product.id}>
                 <SDM src={"./dummy/test1.jpg"} name="업체명" price={1000000} />
               </Link>
             ))
-          : productList.map((product: Product) => (
-              <Link to={`board/detail/${product.id}`} key={product.id}>
-                <SDM src={"./dummy/test1.jpg"} name="업체명" price={1000000} />
-              </Link>
-            ))}
-
+          ) : (
+            <p>해당 상품이 없습니다.</p>
+          )
+        ) : (
+          productList.map((product: Product) => (
+            <Link to={`board/detail/${product.id}`} key={product.id}>
+              <SDM src={"./dummy/test1.jpg"} name="업체명" price={1000000} />
+            </Link>
+          ))
+        )}
       </TabsContent> */}
     </div>
   );
