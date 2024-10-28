@@ -3,6 +3,7 @@ import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 // import { allProduct } from "@/apis/productApi";
+// import { Product } from "@/apis/product.type";
 
 const Board = () => {
   // const { data: productList } = useQuery('allProduct', allProduct);
@@ -90,15 +91,15 @@ const Board = () => {
         {/* api 연결 */}
 
         {/* <TabsContent value="studio">
-          <SDMList value="studio" products={studioProducts ?? []}/>
+          <SDMList value="studio" productList={studioProducts ?? []}/>
         </TabsContent>
 
         <TabsContent value="dress">
-          <SDMList value="dress" products={dressProducts ?? []}/>
+          <SDMList value="dress" productList={dressProducts ?? []}/>
         </TabsContent>
 
         <TabsContent value="makeup">
-          <SDMList value="makeup" products={makeupProducts ?? []}/>
+          <SDMList value="makeup" productList={makeupProducts ?? []}/>
         </TabsContent> */}
 
       </Tabs>
