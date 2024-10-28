@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ScheduleJpaAdapter implements ScheduleOutPutPort {
 
-    private ScheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
 
 
     @Override

@@ -5,7 +5,6 @@ import com.ssafy.schedule.domain.model.Schedule;
 import com.ssafy.schedule.framework.web.dto.output.ScheduleOutputDto;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -14,8 +13,9 @@ import java.time.LocalDate;
 public class CreateScheduleInputDto {
 
     private ContractType contractType;
-    private LocalDate starDate;
+    private LocalDate startDate;
     private LocalDate endDate;
+    private ContractType type;
     private String content;
     private Long contractId;
     private Long userId;
@@ -23,14 +23,20 @@ public class CreateScheduleInputDto {
 
     public ScheduleOutputDto mapToDto(Schedule schedule) {
         return ScheduleOutputDto.builder()
+                .id(schedule.getId())
 
                 .contractType(schedule.getType())
-                .starDate(schedule.getStartDate())
+                .startDate(schedule.getStartDate())
                 .endDate(schedule.getEndDate())
                 .content(schedule.getContent())
                 .contractId(schedule.getContract_id())
                 .code(schedule.getCode())
+                .contractType(schedule.getType())
                 .build();
     }
 
+    public void updateUserInfo(Long userId, String code) {
+        this.userId = userId;
+        this.code = code;
+    }
 }
