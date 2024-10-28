@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
-import { useEffect, useState } from "react";
 // import { ContractData } from "@/apis/contract.type";
 
 interface ContractListBoxProps {
@@ -10,22 +9,17 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ title }: ContractListBoxProps) => {
-  const [category, setCategory] = useState<string>("");
   const navigate = useNavigate();
 
   const toDetail = () => {
     navigate("/board/detail");
   };
 
-  useEffect(() => {
-    if (title === "스튜디오") {
-      setCategory("studio");
-    } else if (title === "드레스") {
-      setCategory("dress");
-    } else {
-      setCategory("makeup");
-    }
-  }, [title]);
+  const category = {
+    스튜디오: "studio",
+    드레스: "dress",
+    메이크업: "makeup"
+  }[title as "스튜디오" | "드레스" | "메이크업"];
 
   return (
     <>
