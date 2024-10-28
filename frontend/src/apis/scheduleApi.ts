@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Schedule } from "./schedule.type";
+import { GetSchedule, Schedule } from "./schedule.type";
 
 const BASE_URL = "http://localhost:8080/api/schedules";
 
@@ -17,7 +17,7 @@ export const schedule = async (scheduleData?: Schedule): Promise<void> => {
 };
 
 //== 일정 조회 ==//
-export const getSchedule = async (): Promise<void> => {
+export const getSchedule = async (): Promise<GetSchedule[]> => {
   const response = await axios({
     method: "get",
     url: BASE_URL,
@@ -26,4 +26,5 @@ export const getSchedule = async (): Promise<void> => {
     },
   });
   console.log(response.data);
+  return response.data;
 };
