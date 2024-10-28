@@ -47,8 +47,8 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
   const updateSchedule = async () => {
     schedule(scheduleInfo);
     onClose();
-    console.log(scheduleInfo);
   };
+  
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogTrigger asChild>
