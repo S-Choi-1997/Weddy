@@ -4,7 +4,7 @@ import GotoIcon from "../../icons/Goto";
 // import { ContractData } from "@/apis/contract.type";
 
 interface ContractListBoxProps {
-  title: string;
+  title: "스튜디오" | "드레스" | "메이크업";
   // contractInfo: ContractData;
 }
 
@@ -14,6 +14,12 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
   const toDetail = () => {
     navigate('/board/detail');
   };
+
+  const contractType = {
+    스튜디오: "촬영",
+    드레스: "드레스",
+    메이크업: "메이크업",
+  }[title];
 
   return (
     <>
@@ -33,7 +39,8 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
         </Link> */}
         {/* <TodoButton title="계약 요청" colorId={1} /> */}
         {/* <TodoButton title="계약 요청중" colorId={2} /> */}
-        <Link to='/contract'>
+        <Link to="/contract"
+          state={{ type: contractType }}>
           <TodoButton title="서명하기" colorId={1} />
         </Link>
         {/* <TodoButton title="결제하기" colorId={1} /> */}

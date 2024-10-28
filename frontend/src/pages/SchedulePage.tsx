@@ -1,4 +1,4 @@
-import CategoryButton from "@/common/CategoryButton";
+// import CategoryButton from "@/common/CategoryButton";
 import CalenderBox from "../components/SchedulePage/CalenderBox";
 import ScheduleBox from "../components/SchedulePage/ScheduleBox";
 import PlusIcon from "../icons/PlusIcon";
@@ -22,9 +22,8 @@ const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const handleDateChange = (date: Date) => {
-    setSelectedDate(date); // 선택된 날짜를 부모 상태로 설정
+    setSelectedDate(date);
   };
-
   return (
     <div className="m-5 flex flex-col">
       <CalenderBox onDateChange={handleDateChange}/>
