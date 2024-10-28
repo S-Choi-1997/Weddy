@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // import { ContractData } from "@/apis/contract.type";
 
 interface ContractListBoxProps {
-  title: string;
+  title: "스튜디오" | "드레스" | "메이크업";
   // contractInfo: ContractData;
 }
 
