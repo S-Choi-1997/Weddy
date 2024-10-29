@@ -36,14 +36,11 @@ public class ApiResponse<T> {
 
 
      */
-    public static <T> ApiResponse<T> success(T data,String message) {
-        return new ApiResponse<T>(HttpStatus.OK, message, data);
+    public static <T> ApiResponse<T> success(HttpStatus status , T data,String message) {
+        return new ApiResponse<T>(status, message, data);
     }
     public static <T> ApiResponse<T> error(ErrorCode errorCode) {
         return new ApiResponse<T>(errorCode.getStatus(),errorCode.getMessage(),null);
-    }
-    public static <T> ApiResponse<T> error(HttpStatus status , T data,String message) {
-        return new ApiResponse<T>(status,message,data);
     }
 
     public static <T> ApiResponse<T> error(HttpStatus status, String message) {

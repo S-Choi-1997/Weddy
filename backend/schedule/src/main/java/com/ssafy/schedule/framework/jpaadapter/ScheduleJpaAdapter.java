@@ -5,6 +5,7 @@ import com.ssafy.schedule.domain.model.Schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +22,18 @@ public class ScheduleJpaAdapter implements ScheduleOutPutPort {
     private final ScheduleRepository scheduleRepository;
 
 
+    /**
+     * 전체 일정 조회
+     * @ 작성자   : 이병수
+     * @ 작성일   : 2024-10-29
+     * @ 설명     : endDate를 기준으로 전체 일정 조회
+     * @param coupleCode
+     * @param date
+     * @return
+     */
     @Override
-    public Optional<List<Schedule>> getSchedules(String coupleCode) {
-        return scheduleRepository.findByCode(coupleCode);
+    public Optional<List<Schedule>> getSchedules(String coupleCode, LocalDateTime date) {
+        return scheduleRepository.findByCodeAndDate(coupleCode,date);
     }
 
     @Override
@@ -33,6 +43,6 @@ public class ScheduleJpaAdapter implements ScheduleOutPutPort {
 
     @Override
     public Schedule save(Schedule schedule) {
-        return scheduleRepository.save(schedule);
+            return scheduleRepository.save(schedule);
     }
 }
