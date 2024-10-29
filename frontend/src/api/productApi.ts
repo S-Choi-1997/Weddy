@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 import { Product, ReviewData } from "./product.type";
 
 const BASE_URL = 'http://localhost:8080/api/products'
@@ -42,18 +42,6 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
   return response.data;
 };
 
-//== 전화번호 조회 ==//
-export const getPhone = async (productId?: string): Promise<void> => {
-  const response = await axios({
-    method: 'get',
-    url: `${BASE_URL}/${productId}/comment`,
-    headers: {
-      Authorization: `Bearer `
-    }
-  });
-  console.log(response.data);
-};
-
 //== 상품 담기 ==//
 export const addProductToCart = async (productId?: string): Promise<void> => {
   const response = await axios({
@@ -91,7 +79,7 @@ export const getCartItems = async (): Promise<Product[]> => {
   return response.data;
 };
 
-//== 리뷰 리스트 ==//
+//== 리뷰 조회 ==//
 export const getReviewList = async (productId?: string): Promise<void> => {
   const response = await axios({
     method: 'get',
