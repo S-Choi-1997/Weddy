@@ -33,7 +33,7 @@ const Main = () => {
   return (
     <div className="flex flex-col items-center mb-24">
       <MainCarousel dummyData={dummyMain} />
-      <div className="grid grid-cols-2 gap-8 mt-10"> {/* 그리드 적용 */}
+      <div className="grid grid-cols-2 gap-8 mt-10">
 
         {dummyData.map((src, index) => (
           <div key={index} onClick={toDetail}>

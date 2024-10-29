@@ -3,7 +3,6 @@ import ScheduleBox from "../components/SchedulePage/ScheduleBox";
 import PlusIcon from "../icons/PlusIcon";
 import { AlertDialogDemo } from "../components/SchedulePage/DrawerBox";
 import { useEffect, useState } from "react";
-
 import { useQuery } from "react-query";
 import { getSchedule } from "@/apis/scheduleApi";
 import { GetSchedule } from "@/apis/schedule.type";
@@ -12,12 +11,12 @@ const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ selectedDate, setSelectedDate ] = useState<Date>(new Date());
   const [ filteredList, setFilteredList ] = useState<GetSchedule[]>([]);
-  console.log(selectedDate);
+  console.log(selectedDate.toISOString());
 
   const { data: scheduleList } = useQuery(
-    ['getSchedule', selectedDate],
-    () => getSchedule(selectedDate),
-    { enabled: !!selectedDate}
+    ['getSchedule', selectedDate.toISOString()],
+    () => getSchedule(selectedDate.toISOString()),
+    { enabled: !!selectedDate.toISOString()}
   );
 
   const handleCloseDialog = () => {
@@ -36,7 +35,6 @@ const Schedule = () => {
         setFilteredList(data);
       }
     };
-    
     update();
   }, [selectedDate]);
 
