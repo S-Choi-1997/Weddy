@@ -14,7 +14,7 @@ const Board = () => {
   // const [ makeupList, setMakeupList ] = useState<Product[]>([]);
 
   // const { data: productList } = useQuery(
-  //   ['allProducts', selectedRegion, selectedPrice],
+  //   ['allProducts', selectedPrice, selectedRegion],
   //   () => allProducts(selectedPrice, selectedRegion),
   //   {
   //     enabled: !!selectedPrice && !!selectedRegion,
@@ -24,11 +24,13 @@ const Board = () => {
   const handleregionSelect = (value: string) => {
     setSelectedRegion(value);
     console.log(selectedRegion);
+    console.log(value);
   };
 
   const handlePriceSelect = (value: string) => {
     setSelectedPrice(value);
     console.log(selectedPrice);
+    console.log(value);
   };
 
   //dummy data
