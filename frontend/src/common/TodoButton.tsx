@@ -1,7 +1,7 @@
 
 interface TodoButtonProps {
   title: string;
-  colorId: number;
+  colorId?: number;
 }
 
 const TodoButton = ({ title, colorId }: TodoButtonProps) => {

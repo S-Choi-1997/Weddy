@@ -46,6 +46,9 @@ const Navbar = () => {
       {location === "cart" && (
         <div>견적함</div>
       )}
+       {location === "sketch" && (
+        <div>3D 드레스 스케치</div>
+      )}
 
       {location === "board" && locationDetail === "detail" && (
         <div>제품 상세</div>

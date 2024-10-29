@@ -1,7 +1,7 @@
-import { TabsContent } from "@radix-ui/react-tabs";
-import SDM from "./SDM";
-import { Link } from "react-router-dom";
 import Search from "@/common/Search";
+import { TabsContent } from "@radix-ui/react-tabs";
+import { Link } from "react-router-dom";
+import SDMBox from "./SDMbox";
 // import { Product } from "@/apis/product.type";
 // import { useState } from "react";
 
@@ -33,7 +33,7 @@ const SDMList = ({ value }: SDMListProps) => {
         <Search search={search} />
         {sdmItems.map((_, index) => (
           <Link to={"/board/detail"} key={index}>
-            <SDM src={"./dummy/test1.jpg"} name="업체명" price={1000000} />
+            <SDMBox src={"./dummy/test1.jpg"} name="업체명" price={1000000} />
           </Link>
         ))}
       </TabsContent>

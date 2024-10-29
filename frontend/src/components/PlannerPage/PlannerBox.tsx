@@ -1,13 +1,26 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface PlannerBoxProps {
   title: string;
+
+
 }
 
 const PlannerBox = (({ title }: PlannerBoxProps) => {
+  const category = {
+    스튜디오: 'studio',
+    드레스: 'dress',
+    메이크업: 'makeup',
+  }[title];
+
+  const navigate = useNavigate()
+  const goRecommend = () => {
+    navigate(`/planner/list/${category}`)
+  }
+
   return (
     <Accordion
       sx={{
@@ -35,11 +48,11 @@ const PlannerBox = (({ title }: PlannerBoxProps) => {
             <Checkbox />
             <h1 className="font-bold mx-4">{title}</h1>
           </div>
-          <Link to='/planner/list' className="flex items-center">
+          <div onClick={goRecommend} className="flex items-center">
             {/* 업체 선택되었으면, 선택하기 버튼 없애기 */}
-            <p className="mr-1">선택하기</p>
+            <p className="mr-1">상품 보러가기</p>
             <GotoIcon />
-          </Link>
+          </div>
         </div>
 
       </AccordionSummary>

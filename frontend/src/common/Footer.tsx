@@ -1,3 +1,5 @@
+import DressIcon from "@/icons/DressIcon";
+import DressSelectIcon from "@/icons/DressSelectIcon";
 import { Link, useLocation } from "react-router-dom";
 import CalenderIcon from "../icons/CalenderIcon";
 import CalenderSelectIcon from "../icons/CalenderSelectIcon";
@@ -8,9 +10,10 @@ import HomeSelectIcon from "../icons/HomeSelectIcon";
 import MyIcon from "../icons/MyIcon";
 import MySelectIcon from "../icons/MySelectIcon";
 
+
 const Footer = () => {
   const location = useLocation().pathname.split('/')[1];
-  
+
   return (
     <footer className="flex justify-between">
       {location === "" ? (
@@ -32,6 +35,14 @@ const Footer = () => {
 
       )}
 
+      {location === "sketch" ? (
+        <DressSelectIcon />
+      ) : (
+        <Link to='/sketch'>
+          <DressIcon/>
+        </Link>
+      )}
+
       {location === "contract" ? (
         <FileSelectIcon w={25} h={25} />
       ) : (
@@ -49,6 +60,7 @@ const Footer = () => {
         </Link>
 
       )}
+
     </footer>
   );
 };
