@@ -17,7 +17,7 @@ export const schedule = async (scheduleData?: Schedule): Promise<void> => {
 };
 
 //== 일정 조회 ==//
-export const getSchedule = async (selectedDate: Date): Promise<GetSchedule[]> => {
+export const getSchedule = async (selectedDate: string): Promise<GetSchedule[]> => {
   const response = await axios({
     method: "get",
     url: BASE_URL,
