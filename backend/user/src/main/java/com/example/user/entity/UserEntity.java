@@ -25,5 +25,4 @@ public class UserEntity {
     private String role;
 
 
-//    get authoruity()/?
-//}
+}
