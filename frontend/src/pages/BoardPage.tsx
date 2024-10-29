@@ -1,36 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-// import { allProducts } from "@/apis/productApi";
-// import { Product } from "@/apis/product.type";
-// import { useQuery } from "react-query";
+import { allProducts } from "@/apis/productApi";
+import { Product } from "@/apis/product.type";
+import { useQuery } from "react-query";
 
 const Board = () => {
+  const [ productList, setProductList ] = useState<Product[]>([]);
   const [ selectedRegion, setSelectedRegion ] = useState<string>("");
   const [ selectedPrice, setSelectedPrice ] = useState<string>("");
-  // const [ studioList, setStudioList ] = useState<Product[]>([]);
-  // const [ dressList, setDressList ] = useState<Product[]>([]);
-  // const [ makeupList, setMakeupList ] = useState<Product[]>([]);
+  const [ studioList, setStudioList ] = useState<Product[]>([]);
+  const [ dressList, setDressList ] = useState<Product[]>([]);
+  const [ makeupList, setMakeupList ] = useState<Product[]>([]);
 
-  // const { data: productList } = useQuery(
-  //   ['allProducts', selectedPrice, selectedRegion],
-  //   () => allProducts(selectedPrice, selectedRegion),
-  //   {
-  //     enabled: !!selectedPrice && !!selectedRegion,
-  //   }
-  // );
+  const { data: allProductList } = useQuery('allProducts', allProducts);
 
   const handleregionSelect = (value: string) => {
     setSelectedRegion(value);
-    console.log(selectedRegion);
-    console.log(value);
   };
 
   const handlePriceSelect = (value: string) => {
     setSelectedPrice(value);
-    console.log(selectedPrice);
-    console.log(value);
   };
 
   //dummy data
@@ -79,14 +70,25 @@ const Board = () => {
       label: "15,000,000",
     },
   ];
+
+  useEffect(() => {
+    if (allProductList) {
+      setProductList(allProductList);
+    }
+  }, [allProductList]);
+
+  useEffect(() => {
+    const data = productList?.filter((product: Product) => product.address.includes(selectedRegion) && product.price <= selectedPrice);
+    setProductList(data);
+  }, [selectedPrice, selectedRegion]);
   
-  // useEffect(() => {
-  //   if (productList) {
-  //     setStudioList(productList?.filter((product: Product) => product.type === 'studio'));
-  //     setDressList(productList?.filter((product: Product) => product.type === 'dress'));
-  //     setMakeupList(productList?.filter((product: Product) => product.type === 'makeup'));
-  //   }
-  // }, [productList]);
+  useEffect(() => {
+    if (productList) {
+      setStudioList(productList?.filter((product: Product) => product.type === 'studio'));
+      setDressList(productList?.filter((product: Product) => product.type === 'dress'));
+      setMakeupList(productList?.filter((product: Product) => product.type === 'makeup'));
+    }
+  }, [productList]);
 
   return (
     <div className="mb-20 mt-5">
