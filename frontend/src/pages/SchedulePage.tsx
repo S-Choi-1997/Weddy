@@ -10,12 +10,11 @@ import { GetSchedule } from "@/apis/schedule.type";
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ selectedDate, setSelectedDate ] = useState<Date>(new Date());
-  console.log(selectedDate.toISOString());
 
   const { data: scheduleList } = useQuery(
-    ['getSchedule', selectedDate.toISOString()],
-    () => getSchedule(selectedDate.toISOString()),
-    { enabled: !!selectedDate.toISOString()}
+    ['getSchedule', selectedDate.toISOString().slice(0, 10)],
+    () => getSchedule(selectedDate.toISOString().slice(0, 10)),
+    { enabled: !!selectedDate.toISOString().slice(0, 10)}
   );
 
   const handleCloseDialog = () => {
@@ -42,18 +41,18 @@ const Schedule = () => {
         <ScheduleBox type="etc" title="일정이 없습니다." /> 
       ) : (
         scheduleList?.map((schedule: GetSchedule) => {
-          switch (schedule.product.type) {
-            case 'studio':
-              return <ScheduleBox key={schedule.id} type="studio" title="스튜디오 촬영" />;
+          switch (schedule.contractType) {
+            case 'STUDIO':
+              return <ScheduleBox key={schedule.id} type="studio" title={schedule.content} />;
             
-            case 'dress':
+            case 'DRESS':
               return <ScheduleBox key={schedule.id} type="dress" title="드레스 피팅" />;
 
-            case 'makeup':
+            case 'MAKEUP':
               return <ScheduleBox key={schedule.id} type="makeup" title="메이크업" />;
 
             default:
-              return <ScheduleBox key={schedule.id} type="etc" title="기타 일정" />;
+              return <ScheduleBox key={schedule.id} type="etc" title={schedule.content} />;
           }
         })
       )}
