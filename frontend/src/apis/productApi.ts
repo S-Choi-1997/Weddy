@@ -4,7 +4,7 @@ import { Product, ReviewData } from "./product.type";
 const BASE_URL = 'http://localhost:8080/api/products'
 
 //== 모든 상품 조회 ==//
-export const allProduct = async (): Promise<Product[]> => {
+export const allProducts = async (): Promise<Product[]> => {
   const response = await axios({
     method: 'get',
     url: BASE_URL,

@@ -14,6 +14,7 @@ const PlannerList = () => {
   }[category];
 
   const navigate = useNavigate();
+
   const goPlanner =()=>{
     navigate('/planner')
   }

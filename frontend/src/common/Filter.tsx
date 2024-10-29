@@ -1,20 +1,9 @@
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import * as React from "react"
-
 import { Button } from "../components/ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandList
-} from "../components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "../components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 interface ComboboxDemoProps {
   lists: {
@@ -22,11 +11,19 @@ interface ComboboxDemoProps {
     label: string
   }[];
   title: string;
+  onSelect: (selectedValue: string) => void;
 }
 
-export function ComboboxDemo({ lists,title }: ComboboxDemoProps) {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+export function ComboboxDemo({ lists,title, onSelect }: ComboboxDemoProps) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  const handleSelect = ( currentValue: string ) => {
+    const newValue = currentValue === value ? "" : currentValue;
+    setValue(newValue);
+    setOpen(false);
+    onSelect(newValue);
+  };
 
   return (
     <div className="mb-4">
@@ -53,10 +50,7 @@ export function ComboboxDemo({ lists,title }: ComboboxDemoProps) {
                 <CommandItem
                   key={list.value}
                   value={list.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
+                  onSelect={handleSelect}
                 >
                   {list.label}
                   <CheckIcon
