@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const PlannerList = () => {
-  const [, setSelectedValue] = useState<string>();
+  const [selectedValue, setSelectedValue] = useState<string>();
   const category = useParams().category ?? '';
   const renderCategory = {
     'studio': '스튜디오',
@@ -13,17 +13,17 @@ const PlannerList = () => {
     'makeup': '메이크업',
   }[category];
 
-  const handleValueChange = (value: string) => {
-    setSelectedValue(value);
-    console.log("선택된 값:", value);
-  };
-
   const navigate = useNavigate();
 
   const goPlanner =()=>{
     navigate('/planner')
   }
   
+  const handleSelect = (value: string) => {
+    setSelectedValue(value);
+    console.log("선택된 값:", value); // 콘솔에 선택된 값 출력
+  };
+
   const dummyList = [
     {
       src: "/dummy/test1.jpg",
@@ -47,12 +47,12 @@ const PlannerList = () => {
     },
   ]
   return (
-    <RadioGroup onValueChange={handleValueChange}>
+    <RadioGroup value={selectedValue} onValueChange={handleSelect}>
       <h1 className="text-center mt-10">{renderCategory}</h1>
       <div className="flex flex-wrap justify-center gap-8 mt-5 mb-5">
         {dummyList.map((dummy, index) => (
           <div key={index}>
-            <RecommendBox src={dummy.src} name={dummy.name} price={dummy.price} />
+            <RecommendBox isSelected={selectedValue === dummy.name} onSelect={handleSelect} src={dummy.src} name={dummy.name} price={dummy.price} />
           </div>
         ))}
       </div>
