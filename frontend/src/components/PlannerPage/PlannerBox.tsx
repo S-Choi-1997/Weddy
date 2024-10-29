@@ -1,15 +1,17 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PlannerBoxProps {
   title: string;
-
-
+  company: string;
+  price: number;
+  content:string;
 }
 
-const PlannerBox = (({ title }: PlannerBoxProps) => {
+const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
   const category = {
     스튜디오: 'studio',
     드레스: 'dress',
@@ -20,6 +22,13 @@ const PlannerBox = (({ title }: PlannerBoxProps) => {
   const goRecommend = () => {
     navigate(`/planner/list/${category}`)
   }
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  // company가 있는 경우 체크 상태를 true로 설정
+  useEffect(() => {
+    setIsChecked(!!company); // company가 존재하면 true
+  }, [company]);
 
   return (
     <Accordion
@@ -45,19 +54,32 @@ const PlannerBox = (({ title }: PlannerBoxProps) => {
       >
         <div className="flex justify-between w-[300px]">
           <div className="flex">
-            <Checkbox />
+            <Checkbox checked={isChecked} />
             <h1 className="font-bold mx-4">{title}</h1>
           </div>
+
+          {isChecked === false &&(
           <div onClick={goRecommend} className="flex items-center">
             {/* 업체 선택되었으면, 선택하기 버튼 없애기 */}
             <p className="mr-1">상품 보러가기</p>
             <GotoIcon />
           </div>
+          )}
         </div>
 
       </AccordionSummary>
       <AccordionDetails sx={{ border: "none" }}>
-        업체 세부 정보
+        <div className="flex flex-col">
+          <span className="font-bold text-lg text-main2">
+            {company}
+          </span>
+          <span>
+            {content}
+          </span>
+          <span className="font-bold">
+            {price.toLocaleString()}원
+          </span>
+        </div>
       </AccordionDetails>
     </Accordion>
   );
