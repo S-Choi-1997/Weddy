@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { signature } from "../apis/contractApi";
+import { signature } from "../api/contractApi";
 import TodoButton from "../common/TodoButton";
 import { makeImage } from "../hooks/makeImage";
 import { mintNFT } from "../hooks/mintNFT";
@@ -47,7 +47,7 @@ const Contract = () => {
     studio: "촬영",
     dress: "드레스",
     makeup: "메이크업"
-  } [category as "studio" | "dress" | "makeup"];
+  }[category as "studio" | "dress" | "makeup"];
 
   return (
     <div>

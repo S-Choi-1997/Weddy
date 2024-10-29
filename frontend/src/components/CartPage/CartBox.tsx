@@ -1,4 +1,4 @@
-import { deleteFromCart } from "@/apis/productApi";
+import { deleteFromCart } from "@/api/productApi";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 interface CartBoxProps {

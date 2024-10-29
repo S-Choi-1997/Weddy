@@ -1,11 +1,11 @@
-import CalenderBox from "../components/SchedulePage/CalenderBox";
-import ScheduleBox from "../components/SchedulePage/ScheduleBox";
-import PlusIcon from "../icons/PlusIcon";
-import { AlertDialogDemo } from "../components/SchedulePage/DrawerBox";
+import { GetSchedule } from "@/api/schedule.type";
+import { getSchedule } from "@/api/scheduleApi";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { getSchedule } from "@/apis/scheduleApi";
-import { GetSchedule } from "@/apis/schedule.type";
+import CalenderBox from "../components/SchedulePage/CalenderBox";
+import { AlertDialogDemo } from "../components/SchedulePage/DrawerBox";
+import ScheduleBox from "../components/SchedulePage/ScheduleBox";
+import PlusIcon from "../icons/PlusIcon";
 
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ const Schedule = () => {
 
   return (
     <div className="m-5 flex flex-col">
-      <CalenderBox onDateChange={handleDateChange}/>
+      <CalenderBox onDateChange={handleDateChange} />
       <div className="my-5 mx-3 font-bold">
         {selectedDate.toLocaleDateString("ko-KR", {
           weekday: "long",
@@ -38,7 +38,7 @@ const Schedule = () => {
       <div></div>
 
       {!scheduleList || scheduleList?.length <= 0 ? (
-        <ScheduleBox type="etc" title="일정이 없습니다." /> 
+        <ScheduleBox type="etc" title="일정이 없습니다." />
       ) : (
         scheduleList?.map((schedule: GetSchedule) => {
           switch (schedule.contractType) {
@@ -61,7 +61,7 @@ const Schedule = () => {
         <PlusIcon />
       </div>
 
-        <AlertDialogDemo isOpen={isOpen} onClose={handleCloseDialog} />
+      <AlertDialogDemo isOpen={isOpen} onClose={handleCloseDialog} />
     </div>
   )
 }
