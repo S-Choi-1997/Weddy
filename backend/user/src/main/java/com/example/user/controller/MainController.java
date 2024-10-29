@@ -8,8 +8,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController {
 
     @GetMapping("/")
-    @ResponseBody
+//    @ResponseBody
     public String mainAPI(){
-        return "main route";
+        return "index";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @GetMapping("/auth")
+    public String auth(){
+        return "auth";
     }
 }
