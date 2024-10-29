@@ -16,6 +16,7 @@ import PlannerList from "./pages/PlannerListPage";
 import Planner from './pages/PlannerPage';
 import Review from "./pages/ReviewPage";
 import Schedule from './pages/SchedulePage';
+import Sketch from './pages/SketchPage'
 
 
 function AppContent() {
@@ -34,8 +35,9 @@ function AppContent() {
         <Route path="/board" element={<Board />} />
         <Route path="/board/detail" element={<BoardDetail />} />
         <Route path="/planner" element={<Planner />} />
-        <Route path="/planner/list" element={<PlannerList />} />
+        <Route path="/planner/list/:category" element={<PlannerList />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="/sketch" element={<Sketch />} />
         <Route path="/contract/:category" element={<Contract />} />
         <Route path="/contract/list" element={<ContractList />} />
         <Route path="/mypage" element={<Mypage />} />
