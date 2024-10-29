@@ -30,13 +30,6 @@ const BoardDetail = () => {
   //   {enabled: !!productId}
   // );
 
-  // //== 문의 하기 ==//
-  // const { data: phone } = useQuery(
-  //   ['getPhone', productId],
-  //   () => getPhone(productId),
-  //   {enabled: !!productId}
-  // );
-
   const dummyData = [
     '/dummy/test1.jpg',
     '/dummy/test2.jpg',
@@ -73,7 +66,7 @@ const BoardDetail = () => {
           <BoardReview reviewList={reviewList ?? []}/>
         </TabsContent>
         <TabsContent value="ask">
-          <BoardAsk phone={phone}/>
+          <BoardAsk />
         </TabsContent> */}
 
         <div onClick={addToCart}>

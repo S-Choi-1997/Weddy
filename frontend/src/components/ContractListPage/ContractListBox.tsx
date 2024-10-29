@@ -44,18 +44,7 @@ const ContractListBox = ({ title }: ContractListBoxProps) => {
         </Link>
         {/* <TodoButton title="결제하기" colorId={1} /> */}
 
-        {/* {contractInfo.status === "CONTRACT_PENDING" ? (
-          <TodoButton title="계약 요청" colorId={1} />
-        ) : // <TodoButton title="계약 요청중" colorId={2} />
-        contractInfo.status === "CONTRACT_COMPLETED" ? (
-          <Link to={`/contract/${category}`}>
-            <TodoButton title="서명하기" colorId={1} />
-          </Link>
-        ) : contractInfo.status === "SIGN_COMPLETED" ? (
-          <TodoButton title="결제하기" colorId={1} />
-        ) : (
-          <TodoButton title="결제완료" colorId={1} />
-        )} */}
+        {}
       </div>
     </>
   );

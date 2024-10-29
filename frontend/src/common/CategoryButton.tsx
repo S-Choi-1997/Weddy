@@ -8,7 +8,13 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   const handleButtonClick = (buttonName: string) => {
-    setSelectedButton(buttonName);
+    const category = {
+      스튜디오: "STUDIO",
+      드레스: "DRESS",
+      메이크업: "MAKEUP",
+    } [buttonName as "스튜디오" | "드레스" | "메이크업"];
+
+    setSelectedButton(category);
   };
 
   useEffect(() => {
@@ -22,7 +28,7 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
     <button
     onClick={() => handleButtonClick('스튜디오')}
     className={`bg-main3 w-[90px] h-[30px] text-black flex items-center justify-center rounded-2xl p-1 m-1 ${
-      selectedButton === '스튜디오' ? 'border-2 border-main6' : ''
+      selectedButton === 'STUDIO' ? 'border-2 border-main6' : ''
     }`}
   >
     스튜디오
@@ -30,7 +36,7 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
   <button
     onClick={() => handleButtonClick('드레스')}
     className={`bg-main1 w-[90px] h-[30px] text-black flex items-center justify-center rounded-2xl p-1 m-1 ${
-      selectedButton === '드레스' ? 'border-2 border-main2' : ''
+      selectedButton === 'DRESS' ? 'border-2 border-main2' : ''
     }`}
   >
     드레스
@@ -38,7 +44,7 @@ const CategoryButton=({ changeCategory }: categoryProps)=>{
   <button
     onClick={() => handleButtonClick('메이크업')}
     className={`bg-main4 w-[90px] h-[30px] text-black flex items-center justify-center rounded-2xl p-1 m-1 ${
-      selectedButton === '메이크업' ? 'border-2 border-main5' : ''
+      selectedButton === 'MAKEUP' ? 'border-2 border-main5' : ''
     }`}
   >
     메이크업
