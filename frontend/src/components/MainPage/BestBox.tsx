@@ -8,8 +8,6 @@ interface BestBoxProps {
 }
 
 const BestBox = ({src, title, price, index}:BestBoxProps) => {
-  // //== 베스트 ==//
-  // const { data: getRankedProductList } = useQuery('getRankedProducts', getRankedProducts);
 
   return(
     <div className="flex flex-col relative">

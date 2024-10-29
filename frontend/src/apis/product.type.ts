@@ -6,6 +6,7 @@ export interface Product {
   address: string;
   vendorName: string;
   vendorId: string;
+  productImage: string[];
 }
 
 export interface ReviewData {
