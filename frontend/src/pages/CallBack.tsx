@@ -1,4 +1,4 @@
-import { getToken } from "@/apis/userApi";
+import { getToken } from "@/api/userApi";
 import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 

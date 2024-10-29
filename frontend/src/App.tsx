@@ -16,8 +16,7 @@ import PlannerList from "./pages/PlannerListPage";
 import Planner from './pages/PlannerPage';
 import Review from "./pages/ReviewPage";
 import Schedule from './pages/SchedulePage';
-import Sketch from './pages/SketchPage'
-
+import Sketch from './pages/SketchPage';
 
 function AppContent() {
   const location = useLocation();
@@ -51,16 +50,17 @@ function AppContent() {
 function App() {
   const queryClient = new QueryClient();
 
+
   return (
     <>
-   
-    <div className='container'>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </div>
+
+      <div className='container'>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </div>
     </>
   );
 }

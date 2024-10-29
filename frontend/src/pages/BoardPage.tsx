@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { allProducts } from "@/apis/productApi";
-import { Product } from "@/apis/product.type";
+import { allProducts } from "@/api/productApi";
+import { Product } from "@/api/product.type";
 import { useQuery } from "react-query";
 
 const Board = () => {
@@ -23,7 +23,6 @@ const Board = () => {
   const handlePriceSelect = (value: string) => {
     setSelectedPrice(value);
   };
-
   //dummy data
   const regions = [
     {
@@ -104,23 +103,7 @@ const Board = () => {
           <ComboboxDemo lists={prices} title="가격" onSelect={handlePriceSelect}/>
         </div>
 
-        {/* 각 탭에 대응하는 콘텐츠를 렌더링 */}
-
         <TabsContent value="studio">
-          <SDMList value="studio" />
-        </TabsContent>
-
-        <TabsContent value="dress">
-          <SDMList value="dress" />
-        </TabsContent>
-
-        <TabsContent value="makeup">
-          <SDMList value="makeup" />
-        </TabsContent>
-
-        {/* api 연결 */}
-
-        {/* <TabsContent value="studio">
           <SDMList value="studio" productList={studioList ?? []}/>
         </TabsContent>
 
@@ -130,7 +113,7 @@ const Board = () => {
 
         <TabsContent value="makeup">
           <SDMList value="makeup" productList={makeupList ?? []}/>
-        </TabsContent> */}
+        </TabsContent>
 
       </Tabs>
     </div>

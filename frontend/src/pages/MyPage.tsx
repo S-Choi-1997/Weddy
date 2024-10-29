@@ -1,12 +1,12 @@
-import { getCoupleCode } from "@/apis/coupleApi";
-import { userInformation } from "@/apis/user.type";
-import { editInfomation, getUserInfo } from "@/apis/userApi";
+import { getCoupleCode } from "@/api/coupleApi";
+import { userInformation } from "@/api/user.type";
+import { editInfomation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 const Mypage = () => {
-  const [ userInfo, setUserInfo ] = useState<userInformation>({
+  const [userInfo, setUserInfo] = useState<userInformation>({
     name: '',
     phone: '',
     email: '',
@@ -30,7 +30,7 @@ const Mypage = () => {
 
   //== 상태 업데이트 ==//
   const updateUserInfo = (key: keyof userInformation, value: string) => {
-    setUserInfo((prev) => { return { ...prev, [key]: value} });
+    setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
 
   //== 커플 코드 조회 ==//
@@ -69,21 +69,21 @@ const Mypage = () => {
             type="text"
             onChange={(e) => updateUserInfo('name', e.target.value)}
           />
-          <input 
-            defaultValue={userInfo.phone} 
-            className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]" 
-            type="text" 
+          <input
+            defaultValue={userInfo.phone}
+            className="my-2 p-2 w-[150px] border border-gray-400 rounded-lg h-[30px]"
+            type="text"
             onChange={(e) => updateUserInfo('phone', e.target.value)}
           />
-          <input 
-            defaultValue={userInfo.email} 
-            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]" 
+          <input
+            defaultValue={userInfo.email}
+            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('email', e.target.value)}
           />
-          <input 
-            defaultValue={userInfo.address} 
-            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]" 
+          <input
+            defaultValue={userInfo.address}
+            className="my-2 border p-2 w-[150px] border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('address', e.target.value)}
           />
@@ -93,10 +93,10 @@ const Mypage = () => {
         <TodoButton title="수정하기" colorId={1} />
       </div>
       <div className="flex justify-center">
-      <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 mb-12 rounded-xl">
-        <h1 className="mb-5">커플 커넥트</h1>
-        <span className="font-bold text-lg">{myCode}</span>
-      </div>
+        <div className="bg-main1 flex flex-col items-center p-5 h-[150px] w-[310px] mt-12 mb-12 rounded-xl">
+          <h1 className="mb-5">커플 커넥트</h1>
+          <span className="font-bold text-lg">{myCode}</span>
+        </div>
       </div>
     </div>
   )

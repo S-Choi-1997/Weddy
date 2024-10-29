@@ -1,5 +1,5 @@
-import { Schedule } from "@/apis/schedule.type";
-import { schedule } from "@/apis/scheduleApi";
+import { Schedule } from "@/api/schedule.type";
+import { schedule } from "@/api/scheduleApi";
 import CategoryButton from "@/common/CategoryButton";
 import {
   AlertDialog,

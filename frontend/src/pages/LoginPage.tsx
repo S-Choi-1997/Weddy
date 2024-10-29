@@ -1,4 +1,4 @@
-import { googleLogin, kakaoLogin } from "../apis/authApi";
+import { googleLogin, kakaoLogin } from "../api/authApi";
 
 const Login = () => {
   return (

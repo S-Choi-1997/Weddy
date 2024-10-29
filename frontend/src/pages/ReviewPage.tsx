@@ -1,5 +1,5 @@
-import { ReviewData } from "@/apis/product.type";
-import { submitReview } from "@/apis/productApi";
+import { ReviewData } from "@/api/product.type";
+import { submitReview } from "@/api/productApi";
 import Separate from "@/common/Separate";
 import TodoButton from "@/common/TodoButton";
 import RatingBox from "@/components/ReviewPage/RatingBox";
