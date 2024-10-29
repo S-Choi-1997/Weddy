@@ -5,7 +5,7 @@ import com.ssafy.schedule.domain.model.Schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +32,7 @@ public class ScheduleJpaAdapter implements ScheduleOutPutPort {
      * @return
      */
     @Override
-    public Optional<List<Schedule>> getSchedules(String coupleCode, LocalDateTime date) {
+    public Optional<List<Schedule>> getSchedules(String coupleCode, LocalDate date) {
         return scheduleRepository.findByCodeAndDate(coupleCode,date);
     }
 
