@@ -12,8 +12,13 @@ const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ selectedDate, setSelectedDate ] = useState<Date>(new Date());
   const [ filteredList, setFilteredList ] = useState<GetSchedule[]>([]);
+  console.log(selectedDate);
 
-  const { data:scheduleList } = useQuery('getSchedule', getSchedule);
+  const { data: scheduleList } = useQuery(
+    ['getSchedule', selectedDate],
+    () => getSchedule(selectedDate),
+    { enabled: !!selectedDate}
+  );
 
   const handleCloseDialog = () => {
     setIsOpen(false);
