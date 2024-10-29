@@ -1,12 +1,35 @@
-// import { useQuery } from "react-query";
+import { useState } from "react";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-// import { allProduct } from "@/apis/productApi";
+// import { allProducts } from "@/apis/productApi";
 // import { Product } from "@/apis/product.type";
+// import { useQuery } from "react-query";
 
 const Board = () => {
-  // const { data: productList } = useQuery('allProduct', allProduct);
+  const [ selectedRegion, setSelectedRegion ] = useState<string>("");
+  const [ selectedPrice, setSelectedPrice ] = useState<string>("");
+  // const [ studioList, setStudioList ] = useState<Product[]>([]);
+  // const [ dressList, setDressList ] = useState<Product[]>([]);
+  // const [ makeupList, setMakeupList ] = useState<Product[]>([]);
+
+  // const { data: productList } = useQuery(
+  //   ['allProducts', selectedRegion, selectedPrice],
+  //   () => allProducts(selectedPrice, selectedRegion),
+  //   {
+  //     enabled: !!selectedPrice && !!selectedRegion,
+  //   }
+  // );
+
+  const handleregionSelect = (value: string) => {
+    setSelectedRegion(value);
+    console.log(selectedRegion);
+  };
+
+  const handlePriceSelect = (value: string) => {
+    setSelectedPrice(value);
+    console.log(selectedPrice);
+  };
 
   //dummy data
   const regions = [
@@ -54,11 +77,14 @@ const Board = () => {
       label: "15,000,000",
     },
   ];
-
-  // // == 스드메 필터링 ==//
-  // const studioProducts = productList?.filter((product: Product) => product.type === 'studio');
-  // const dressProducts = productList?.filter((product: Product) => product.type === 'dress');
-  // const makeupProducts = productList?.filter((product: Product) => product.type === 'makeup');
+  
+  // useEffect(() => {
+  //   if (productList) {
+  //     setStudioList(productList?.filter((product: Product) => product.type === 'studio'));
+  //     setDressList(productList?.filter((product: Product) => product.type === 'dress'));
+  //     setMakeupList(productList?.filter((product: Product) => product.type === 'makeup'));
+  //   }
+  // }, [productList]);
 
   return (
     <div className="mb-20 mt-5">
@@ -70,8 +96,8 @@ const Board = () => {
         </TabsList>
 
         <div className="flex text-gray-600 justify-center gap-4 mt-5">
-          <ComboboxDemo lists={regions} title="지역" />
-          <ComboboxDemo lists={prices} title="가격" />
+          <ComboboxDemo lists={regions} title="지역" onSelect={handleregionSelect}/>
+          <ComboboxDemo lists={prices} title="가격" onSelect={handlePriceSelect}/>
         </div>
 
         {/* 각 탭에 대응하는 콘텐츠를 렌더링 */}
@@ -91,15 +117,15 @@ const Board = () => {
         {/* api 연결 */}
 
         {/* <TabsContent value="studio">
-          <SDMList value="studio" productList={studioProducts ?? []}/>
+          <SDMList value="studio" productList={studioList ?? []}/>
         </TabsContent>
 
         <TabsContent value="dress">
-          <SDMList value="dress" productList={dressProducts ?? []}/>
+          <SDMList value="dress" productList={dressList ?? []}/>
         </TabsContent>
 
         <TabsContent value="makeup">
-          <SDMList value="makeup" productList={makeupProducts ?? []}/>
+          <SDMList value="makeup" productList={makeupList ?? []}/>
         </TabsContent> */}
 
       </Tabs>
