@@ -33,12 +33,12 @@ const Contract = () => {
       signature(sign)
     ]);
   };
-  
+
   const type = {
     studio: "촬영",
     dress: "드레스",
     makeup: "메이크업"
-  }[category as "studio" | "dress" | "makeup"];
+  } [category as "studio" | "dress" | "makeup"];
 
   return (
     <div>
