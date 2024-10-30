@@ -12,8 +12,7 @@ export const allProducts = async (): Promise<Product[]> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 //== 상품 랭킹 ==//
@@ -25,8 +24,7 @@ export const getRankedProducts = async (): Promise<Product[]> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 //== 상품 상세 조회 ==//
@@ -38,8 +36,7 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 //== 상품 담기 ==//
@@ -80,7 +77,7 @@ export const getCartItems = async (): Promise<Product[]> => {
 };
 
 //== 리뷰 조회 ==//
-export const getReviewList = async (productId?: string): Promise<void> => {
+export const getReviewList = async (productId?: string): Promise<ReviewData[]> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}/review`,
@@ -88,12 +85,13 @@ export const getReviewList = async (productId?: string): Promise<void> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
+  console.log(response.data.data);
+  return response.data.data;
 };
 
 //== 리뷰 등록 ==//
 export const submitReview = async (reviewData: ReviewData, productId?: string): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: 'post',
     url: `${BASE_URL}/${productId}/review`,
     headers: {
@@ -101,5 +99,4 @@ export const submitReview = async (reviewData: ReviewData, productId?: string): 
     },
     data: reviewData
   });
-  console.log(response.data);
 };

@@ -1,9 +1,10 @@
 import { ReviewData } from "@/api/product.type";
-import { submitReview } from "@/api/productApi";
+import { detailProduct, submitReview } from "@/api/productApi";
 import Separate from "@/common/Separate";
 import TodoButton from "@/common/TodoButton";
 import RatingBox from "@/components/ReviewPage/RatingBox";
 import { useState } from "react";
+import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Review = () => {
@@ -17,12 +18,14 @@ const Review = () => {
     score: 0
   });
 
-  // //== 상품 정보 ==//
-  // const { data: product } = useQuery(
-  //   ['detailProduct', productId],
-  //   () => detailProduct(productId),
-  //   {enabled: !!productId}
-  // );
+  //== 상품 정보 ==//
+  const { data: product } = useQuery(
+    ['detailProduct', productId],
+    () => detailProduct(productId),
+    {enabled: !!productId}
+  );
+
+  const price = product?.price.toLocaleString();
 
   //== 상태 업데이트 ==//
   const updateReviewData = (key: keyof ReviewData, value: any) => {
@@ -38,10 +41,10 @@ const Review = () => {
   return (
     <div className="mb-24">
       <div className="bg-white flex flex-col h-[200px] justify-center m-5 rounded-2xl p-10">
-        <span>업체명</span>
+        <span>{product?.vendorName}</span>
         <Separate />
-        <span>상품명</span>
-        <span>총금액</span>
+        <span>{product?.name}</span>
+        <span>{price} 원</span>
       </div>
       <div className="bg-white h-[120px] rounded-2xl p-5 m-5 flex flex-col items-center mb-3">
         <h1 className="mb-1">상품은 만족하셨나요?</h1>

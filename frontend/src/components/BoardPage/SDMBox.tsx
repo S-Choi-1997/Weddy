@@ -1,7 +1,7 @@
 interface SDMProps {
   src: string;
   name: string;
-  price: number;
+  price: string;
 }
 
 const SDMBox = ({ src, name, price }: SDMProps) => {

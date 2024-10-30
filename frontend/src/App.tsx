@@ -29,11 +29,11 @@ function AppContent() {
       {currentPath !== "login" && <Navbar />}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/review/:productId" element={<Review />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/board" element={<Board />} />
-        <Route path="/board/detail" element={<BoardDetail />} />
+        <Route path="/board/detail/:productId" element={<BoardDetail />} />
         <Route path="/prompt" element={<Prompt />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/planner/list/:category" element={<PlannerList />} />
