@@ -83,10 +83,11 @@ const Board = () => {
   
   useEffect(() => {
     if (productList) {
-      setStudioList(productList?.filter((product: Product) => product.type === 'studio'));
-      setDressList(productList?.filter((product: Product) => product.type === 'dress'));
-      setMakeupList(productList?.filter((product: Product) => product.type === 'makeup'));
+      setStudioList(productList.filter((product: Product) => product.type === '  STUDIO'));
+      setDressList(productList.filter((product: Product) => product.type === 'DRESS'));
+      setMakeupList(productList.filter((product: Product) => product.type === 'MAKEUP'));
     }
+
   }, [productList]);
 
   return (
@@ -104,15 +105,15 @@ const Board = () => {
         </div>
 
         <TabsContent value="studio">
-          <SDMList value="studio" productList={studioList ?? []}/>
+          <SDMList value="studio" productList={studioList}/>
         </TabsContent>
 
         <TabsContent value="dress">
-          <SDMList value="dress" productList={dressList ?? []}/>
+          <SDMList value="dress" productList={dressList}/>
         </TabsContent>
 
         <TabsContent value="makeup">
-          <SDMList value="makeup" productList={makeupList ?? []}/>
+          <SDMList value="makeup" productList={makeupList}/>
         </TabsContent>
 
       </Tabs>

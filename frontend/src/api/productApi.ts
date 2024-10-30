@@ -12,8 +12,7 @@ export const allProducts = async (): Promise<Product[]> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 //== 상품 랭킹 ==//
