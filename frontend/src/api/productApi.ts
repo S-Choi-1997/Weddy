@@ -87,13 +87,12 @@ export const getReviewList = async (productId?: string): Promise<ReviewData[]> =
     }
   });
   console.log(response.data.data);
-  return [{ content: '너무 좋아요', date: '2021-09-01', score: 5 }, { content: '너무 좋아요', date: '2021-09-01', score: 5 }];
   return response.data.data;
 };
 
 //== 리뷰 등록 ==//
 export const submitReview = async (reviewData: ReviewData, productId?: string): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: 'post',
     url: `${BASE_URL}/${productId}/review`,
     headers: {
@@ -101,5 +100,4 @@ export const submitReview = async (reviewData: ReviewData, productId?: string): 
     },
     data: reviewData
   });
-  console.log(response.data);
 };
