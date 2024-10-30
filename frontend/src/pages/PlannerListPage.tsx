@@ -21,7 +21,7 @@ const PlannerList = () => {
   
   const handleSelect = (value: string) => {
     setSelectedValue(value);
-    console.log("선택된 값:", value); // 콘솔에 선택된 값 출력
+    console.log("선택된 값:", value);
   };
 
   const dummyList = [
