@@ -17,6 +17,7 @@ import Planner from './pages/PlannerPage';
 import Review from "./pages/ReviewPage";
 import Schedule from './pages/SchedulePage';
 import Sketch from './pages/SketchPage';
+import Prompt from './pages/PromptPage';
 
 function AppContent() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/board" element={<Board />} />
         <Route path="/board/detail" element={<BoardDetail />} />
+        <Route path="/prompt" element={<Prompt />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/planner/list/:category" element={<PlannerList />} />
         <Route path="/schedule" element={<Schedule />} />
