@@ -1,10 +1,10 @@
-// import { Review } from "@/apis/product.type";
+import { ReviewData } from "@/api/product.type";
 
-// interface BoardReviewProp {
-//   reviewList: Review[]
-// };
+interface BoardReviewProp {
+  reviewList: ReviewData[]
+};
 
-const BoardReview = () => {
+const BoardReview = ({ reviewList }: BoardReviewProp) => {
   return (
     <div className="m-5">리뷰 페이지</div>
   )

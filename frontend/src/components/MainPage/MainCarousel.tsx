@@ -9,12 +9,16 @@ import {
   CarouselPrevious
 } from "../ui/carousel"
 
+interface ImageData {
+  imageUrl: string;
+}
+
 interface MainCarouselProps {
-  dummyData: string[];
+  imageList: ImageData[] | undefined;
 }
 
 
-export const MainCarousel = ({ dummyData }: MainCarouselProps) => {
+export const MainCarousel = ({ imageList }: MainCarouselProps) => {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   )
@@ -28,18 +32,17 @@ export const MainCarousel = ({ dummyData }: MainCarouselProps) => {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-          {/* 이미지 리스트 넣기 */}
-          {dummyData.map((imgdata, index) => (
-            <CarouselItem key={index}>
-              <Card>
-                <CardContent>
-                  <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contract/list'}>
-                    <img className="w-full h-full object-cover" src={imgdata} alt="제품 상세 이미지" />
-                  </a>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
+        {imageList?.map((imgdata, index) => (
+          <CarouselItem key={index}>
+            <Card>
+              <CardContent>
+                <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contract/list'}>
+                  <img className="w-full h-full object-cover" src={imgdata.imageUrl} alt="제품 상세 이미지" />
+                </a>
+              </CardContent>
+            </Card>
+          </CarouselItem>
+        ))}
         </CarouselContent>
         <CarouselPrevious />
       </Carousel>

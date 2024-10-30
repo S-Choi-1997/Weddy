@@ -37,8 +37,7 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 //== 상품 담기 ==//
