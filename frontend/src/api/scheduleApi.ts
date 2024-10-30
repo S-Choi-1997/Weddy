@@ -12,7 +12,7 @@ export const schedule = async (scheduleData?: Schedule): Promise<void> => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    data: scheduleData,
+    data: scheduleData
   });
 };
 

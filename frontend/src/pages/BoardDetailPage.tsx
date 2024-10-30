@@ -30,13 +30,6 @@ const BoardDetail = () => {
     { enabled: !!productId }
   );
 
-  // const dummyData = [
-  //   "/dummy/test1.jpg",
-  //   "/dummy/test2.jpg",
-  //   "/dummy/test1.jpg",
-  //   "/dummy/test2.jpg",
-  // ];
-
   return (
     <div>
       <MainCarousel imageList={productDetail?.images} />
@@ -47,18 +40,6 @@ const BoardDetail = () => {
           <TabsTrigger value="ask">문의 정보</TabsTrigger>
         </TabsList>
 
-        {/* 각 탭에 대응하는 콘텐츠를 렌더링 */}
-        {/* <TabsContent value="info">
-          <BoardContent />
-        </TabsContent>
-        <TabsContent value="review">
-          <BoardReview />
-        </TabsContent>
-        <TabsContent value="ask">
-          <BoardAsk />
-        </TabsContent> */}
-
-        {/* api 연결 후 */}
         <TabsContent value="info">
           <BoardContent product={productDetail} />
         </TabsContent>
