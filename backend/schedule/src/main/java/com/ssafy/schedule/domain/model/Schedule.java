@@ -36,7 +36,7 @@ public class Schedule {
                 .startDate(createScheduleInputDto.getStartDate())
                 .endDate(createScheduleInputDto.getEndDate())
                 .content(createScheduleInputDto.getContent())
-                .type(createScheduleInputDto.getContractType())
+                .type(createScheduleInputDto.getType())
                 .product_id(createScheduleInputDto.getProductId())
                 .code(createScheduleInputDto.getCode())
                 .build();
