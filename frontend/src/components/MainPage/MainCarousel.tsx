@@ -14,7 +14,7 @@ interface ImageData {
 }
 
 interface MainCarouselProps {
-  imageList: ImageData[] | undefined;
+  imageList: ImageData[] | string[] | undefined;
 }
 
 
@@ -32,17 +32,22 @@ export const MainCarousel = ({ imageList }: MainCarouselProps) => {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-        {imageList?.map((imgdata, index) => (
+        {imageList?.map((item, index) => (
           <CarouselItem key={index}>
             <Card>
               <CardContent>
                 <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contract/list'}>
-                  <img className="w-full h-full object-cover" src={imgdata.imageUrl} alt="제품 상세 이미지" />
+                  <img
+                    className="w-full h-full object-cover"
+                    src={typeof item === 'string' ? item : item.imageUrl}
+                    alt="제품 상세 이미지"
+                  />
                 </a>
               </CardContent>
             </Card>
           </CarouselItem>
         ))}
+
         </CarouselContent>
         <CarouselPrevious />
       </Carousel>
