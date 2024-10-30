@@ -19,7 +19,7 @@ const Navbar = () => {
           <BackIcon />
         </div>
       )}
-       {location === "" && (
+      {location === "" && (
         <div className="backIcon">
           <span className="font-bold text-main2">WEDDY</span>
         </div>
@@ -29,7 +29,7 @@ const Navbar = () => {
           <Link to='/board'>
             <div className="textAlign">스드메</div>
           </Link>
-          <Link to='planner'>
+          <Link to='/prompt'>
             <div className="textAlign">WEDDY 플래너</div>
           </Link>
         </>
@@ -46,14 +46,14 @@ const Navbar = () => {
       {location === "cart" && (
         <div>견적함</div>
       )}
-       {location === "sketch" && (
+      {location === "sketch" && (
         <div>3D 드레스 스케치</div>
       )}
 
       {location === "board" && locationDetail === "detail" && (
         <div>제품 상세</div>
       )}
-      {location === "planner" && locationDetail === "list" && (
+      {(location === "planner" && locationDetail === "list") || location === "prompt" && (
         <div>WEDDY 플래너</div>
       )}
       {location === "contract" && locationDetail === "list" && (
@@ -62,7 +62,7 @@ const Navbar = () => {
       {location === "review" && (
         <div>리뷰 작성</div>
       )}
-      {location === "contract" && locationDetail === undefined &&(
+      {location === "contract" && locationDetail === undefined && (
         <div>계약서 작성</div>
       )}
 

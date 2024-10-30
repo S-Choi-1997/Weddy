@@ -126,6 +126,7 @@ footer {
    /* nav 및 footer 위에 위치 */
 }
 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
