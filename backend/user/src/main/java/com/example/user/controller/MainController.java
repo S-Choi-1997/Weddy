@@ -18,6 +18,7 @@ public class MainController {
         return "login";
     }
     @GetMapping("/api/auth")
+    @ResponseBody
     public String auth(){
         return "auth";
     }
