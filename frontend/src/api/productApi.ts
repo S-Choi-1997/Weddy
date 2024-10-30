@@ -78,7 +78,7 @@ export const getCartItems = async (): Promise<Product[]> => {
 };
 
 //== 리뷰 조회 ==//
-export const getReviewList = async (productId?: string): Promise<void> => {
+export const getReviewList = async (productId?: string): Promise<ReviewData[]> => {
   const response = await axios({
     method: 'get',
     url: `${BASE_URL}/${productId}/review`,
@@ -86,7 +86,9 @@ export const getReviewList = async (productId?: string): Promise<void> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data);
+  console.log(response.data.data);
+  return [{ content: '너무 좋아요', date: '2021-09-01', score: 5 }, { content: '너무 좋아요', date: '2021-09-01', score: 5 }];
+  return response.data.data;
 };
 
 //== 리뷰 등록 ==//
