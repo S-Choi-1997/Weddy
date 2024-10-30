@@ -36,7 +36,7 @@ export const MainCarousel = ({ imageList }: MainCarouselProps) => {
           <CarouselItem key={index}>
             <Card>
               <CardContent>
-                <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : '/contract/list'}>
+                <a href={index === 0 ? '/board' : index === 1 ? '/schedule' : index === 2 ?'/contract/list': '/prompt'}>
                   <img
                     className="w-full h-full object-cover"
                     src={typeof item === 'string' ? item : item.imageUrl}
