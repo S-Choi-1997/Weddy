@@ -5,6 +5,7 @@ import com.example.user.OAuth2.CustomSuccessHandler;
 import com.example.user.jwt.JWTFilter;
 import com.example.user.jwt.JWTUtil;
 import com.example.user.jwt.LogFilter;
+import com.example.user.repository.UserRepository;
 import com.example.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class SecurityConfig {
         this.jwtUtil = jwtUtil;
     }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserRepository userRepository) throws Exception {
 
         //cors
         http
@@ -60,7 +61,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
-                                "/**",
+                                "/",
+                                "/login",
                                 "/api/login",
                                 "/api/oauth2/**",
                                 "/api/login/**",
@@ -84,7 +86,7 @@ public class SecurityConfig {
 //                .addFilterBefore(new LogFilter(), UsernamePasswordAuthenticationFilter.class);
         //JWTFilter 추가
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), UsernamePasswordAuthenticationFilter.class);
 
         //oauth2
         //api/user/login?
