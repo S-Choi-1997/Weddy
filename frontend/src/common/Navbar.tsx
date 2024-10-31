@@ -44,7 +44,7 @@ const Navbar = () => {
         <div>마이페이지</div>
       )}
       {location === "cart" && (
-        <div>견적함</div>
+        <div>장바구니</div>
       )}
       {location === "sketch" && (
         <div>3D 드레스 스케치</div>
