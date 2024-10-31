@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MainController {
 
-    @GetMapping("/")
+//    @GetMapping("/")
+////    @ResponseBody
+//    public String mainAPI(){
+//        return "index";
+//    }
+//
+//    @GetMapping("/login")
+//    public String login(){
+//        return "login";
+//    }
+//
+//    @GetMapping("/api/auth")
 //    @ResponseBody
-    public String mainAPI(){
-        return "index";
-    }
-
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-    @GetMapping("/api/auth")
-    @ResponseBody
-    public String auth(){
-        return "auth";
-    }
+//    public String auth(){
+//        return "auth";
+//    }
 }

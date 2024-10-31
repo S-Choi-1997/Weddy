@@ -51,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
-            System.out.println("token null or invalid format");
+            //System.out.println("token null or invalid format");
             filterChain.doFilter(request, response);
             return;
         }
