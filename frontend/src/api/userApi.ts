@@ -1,15 +1,19 @@
 import axios from "axios";
 import { userInformation } from "./user.type";
 
-const BASE_URL = "http://localhost:8080/api/users/reissue";
+const BASE_URL = "http://localhost:8080/api/users/token/super";
 
 //== 토큰 정보 ==//
 export const getToken = async (userId: string | null): Promise<void> => {
   const response = await axios({
     method: "get",
-    url: `${BASE_URL}/${userId}`,
+    url: BASE_URL,
+    params: {
+      id: userId
+    }
   });
   console.log(response.data);
+  window.localStorage.setItem("token", response.data.accessToken);
 };
 
 //== 회원 정보 ==//
