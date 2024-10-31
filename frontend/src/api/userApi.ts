@@ -12,8 +12,19 @@ export const getToken = async (userId: string | null): Promise<void> => {
       id: userId
     }
   });
-  
+
   window.localStorage.setItem("token", response.data.accessToken);
+};
+
+//== 로그아웃 ==//
+export const logout = () => {
+  axios({
+    method: 'post',
+    url: `${BASE_URL}/logout`,
+    headers: {
+      Authorization: `Bearer `
+    }
+  });
 };
 
 //== 회원 정보 ==//
