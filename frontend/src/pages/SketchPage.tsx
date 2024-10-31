@@ -3,6 +3,8 @@ import React, { useRef, useState, useEffect } from 'react';
 const Sketch = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isErasing, setIsErasing] = useState(false);
+  const [eraserSize, setEraserSize] = useState(10);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,23 +21,45 @@ const Sketch = () => {
   }, []);
 
   const startDrawing = (event: React.MouseEvent | React.TouchEvent) => {
+    event.preventDefault(); // 기본 동작 방지
     setIsDrawing(true);
     const { offsetX, offsetY } = getEventCoordinates(event);
     const ctx = canvasRef.current?.getContext('2d');
-    ctx?.beginPath();
-    ctx?.moveTo(offsetX, offsetY);
+    if (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(offsetX, offsetY);
+      ctx.strokeStyle = isErasing
+        ? getComputedStyle(document.documentElement).getPropertyValue('--color-main1')
+        : 'black';
+      ctx.lineWidth = isErasing ? eraserSize : 5;
+    }
   };
 
   const draw = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing) return;
+    event.preventDefault(); // 기본 동작 방지
     const { offsetX, offsetY } = getEventCoordinates(event);
     const ctx = canvasRef.current?.getContext('2d');
-    ctx?.lineTo(offsetX, offsetY);
-    ctx?.stroke();
+    if (ctx) {
+      ctx.lineTo(offsetX, offsetY);
+      ctx.strokeStyle = isErasing
+        ? getComputedStyle(document.documentElement).getPropertyValue('--color-main1')
+        : 'black';
+      ctx.lineWidth = isErasing ? eraserSize : 5;
+      ctx.stroke();
+    }
   };
 
   const stopDrawing = () => {
     setIsDrawing(false);
+  };
+
+  const toggleEraser = () => {
+    setIsErasing(!isErasing);
+  };
+
+  const handleEraserSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEraserSize(Number(event.target.value));
   };
 
   const getEventCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
@@ -55,17 +79,36 @@ const Sketch = () => {
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      onMouseDown={startDrawing}
-      onMouseMove={draw}
-      onMouseUp={stopDrawing}
-      onMouseLeave={stopDrawing}
-      onTouchStart={startDrawing}
-      onTouchMove={draw}
-      onTouchEnd={stopDrawing}
-      style={{ border: '1px solid black' }}
-    />
+    <div>
+      <button onClick={toggleEraser} style={{ marginBottom: '10px' }}>
+        {isErasing ? '연필 모드' : '지우개 모드'}
+      </button>
+      {isErasing && (
+        <div style={{ marginBottom: '10px' }}>
+          <label>
+            지우개 크기:
+            <input
+              type="range"
+              min="5"
+              max="50"
+              value={eraserSize}
+              onChange={handleEraserSizeChange}
+            />
+          </label>
+        </div>
+      )}
+      <canvas
+        ref={canvasRef}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
+        style={{ border: '1px solid black', width: '414px' }}
+      />
+    </div>
   );
 };
 
