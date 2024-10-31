@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const CallBack = () => {
   const navigate = useNavigate();
   const params = new URLSearchParams(useLocation().search);
-  const userId = params.get('userId');
+  const userId = params.get('Id');
 
   //== 토큰 정보 ==//
   useQuery(
