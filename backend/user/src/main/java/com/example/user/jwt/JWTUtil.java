@@ -18,12 +18,14 @@ public class JWTUtil {
     }
     public String getUsername(String token) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("userName", String.class);
     }
 
-    public String getRole(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    public String getCode(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("code", String.class);
+    }
+    public Long getUserId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", Long.class);
     }
 
     public Boolean isExpired(String token) {
@@ -31,20 +33,22 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createAccessToken(String userId, String role, Long expiredMs) {
+    public String createAccessToken(String username,Long id, String code, Long expiredMs) {
 
         return Jwts.builder()
-                .claim("username", userId)
-                .claim("role", role)
+                .setSubject(id.toString())
+                .claim("userName", username)
+                .claim("code", code)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createRefreshToken(String userId, Long expiredMs) {
+    public String createRefreshToken(String username, Long id, Long expiredMs) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(id.toString())
+                .claim("userName", username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
