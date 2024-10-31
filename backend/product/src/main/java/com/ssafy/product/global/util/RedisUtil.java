@@ -1,5 +1,6 @@
 package com.ssafy.product.global.util;
 
+import com.ssafy.product.product.constant.KeyType;
 import com.ssafy.product.product.dto.response.ProductResponseDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -73,14 +74,6 @@ public class RedisUtil {
     public void addToSortedSet(final ProductResponseDto product) {
         // 새로운 데이터 추가 및 기존데이터 score 증가
         zSetOps.incrementScore(ZSET_KEY, product, INCREASE);
-
-        // 현재 데이터 개수 확인
-        Long size = zSetOps.zCard(ZSET_KEY);
-
-        // 8개 초과 시 가장 낮은 점수의 데이터 삭제
-        if (size != null && size > RANKING_MAX_SIZE + 1) {
-            zSetOps.removeRange(ZSET_KEY, 1, 1); // 상위 8개만 유지
-        }
     }
 
     /**
@@ -93,10 +86,9 @@ public class RedisUtil {
 
     /**
      * HashSet 자료구조 사용 데이터 저장
-     * @param product
      */
-    public void addToHashSet(final ProductResponseDto product) {
-        redisTemplate.opsForHash().put("product", product.id(), product);
+    public void addToHashSet(final KeyType keyType , final Long id, final Object object) {
+        redisTemplate.opsForHash().put(keyType.name(), id, object);
     }
 
     /**
@@ -104,16 +96,16 @@ public class RedisUtil {
      * @param id
      * @return
      */
-    public Object getProduct(Long id) {
-        return redisTemplate.opsForHash().get("product", id);
+    public Object getHashValue(final KeyType keyType, final Long id) {
+        return redisTemplate.opsForHash().get(keyType.name(), id);
     }
 
     /**
      * HashSet 전체 데이터 조회
      * @return
      */
-    public Map<Object, Object> getAllProducts() {
-        return redisTemplate.opsForHash().entries("product");
+    public Map<Object, Object> getAllHashValues(KeyType keyType) {
+        return redisTemplate.opsForHash().entries(keyType.name());
     }
 
 }
