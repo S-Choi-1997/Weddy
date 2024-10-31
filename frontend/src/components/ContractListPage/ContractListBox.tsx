@@ -33,9 +33,6 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
             <GotoIcon />
           </div>
 
-          {contractInfo.status === "CONTRACT_REQUEST" && (
-            <TodoButton title="계약 요청" colorId={1} />
-          )}
           {contractInfo.status === "CONTRACT_PENDING" && (
             <TodoButton title="계약 대기중" colorId={2} />
           )}

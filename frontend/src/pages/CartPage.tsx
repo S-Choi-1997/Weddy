@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
+import { useState } from 'react';
 
 interface dummyProps {
   product: string;
