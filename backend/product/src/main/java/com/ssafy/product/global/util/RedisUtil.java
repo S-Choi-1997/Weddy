@@ -1,7 +1,10 @@
 package com.ssafy.product.global.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.product.product.constant.KeyType;
 import com.ssafy.product.product.dto.response.ProductResponseDto;
+import com.ssafy.product.product.dto.response.ReviewResponseDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -88,6 +91,14 @@ public class RedisUtil {
      * HashSet 자료구조 사용 데이터 저장
      */
     public void addToHashSet(final KeyType keyType , final Long id, final Object object) {
+        if(object instanceof ReviewResponseDto) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            // Java 8 날짜/시간 타입 지원 모듈 등록
+            objectMapper.registerModule(new JavaTimeModule());
+            ReviewResponseDto review = objectMapper.convertValue(object, ReviewResponseDto.class);
+            redisTemplate.opsForHash().put(keyType.name() + ":" + id, review.id(), object);
+            return;
+        }
         redisTemplate.opsForHash().put(keyType.name(), id, object);
     }
 
@@ -104,8 +115,9 @@ public class RedisUtil {
      * HashSet 전체 데이터 조회
      * @return
      */
-    public Map<Object, Object> getAllHashValues(KeyType keyType) {
-        return redisTemplate.opsForHash().entries(keyType.name());
+    public Map<Object, Object> getAllHashValues(String keyType) {
+        return redisTemplate.opsForHash().entries(keyType);
     }
+
 
 }
