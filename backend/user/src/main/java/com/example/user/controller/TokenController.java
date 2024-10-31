@@ -30,7 +30,7 @@ public class TokenController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, String>> reissue(@RequestParam Long id) {
+    public ResponseEntity<Map<String, String>> reissue(@RequestParam("id") Long id) {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
