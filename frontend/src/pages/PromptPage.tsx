@@ -1,4 +1,4 @@
-import { aiRecommend } from "@/api/ai";
+import { aiRecommend } from "@/api/aiApi";
 import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 
