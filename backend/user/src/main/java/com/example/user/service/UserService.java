@@ -31,4 +31,8 @@ public class UserService {
 
         return userResponseDTO;
     }
+
+    public void patchUser(UserEntity userEntity){
+        userRepository.save(userEntity);
+    }
 }

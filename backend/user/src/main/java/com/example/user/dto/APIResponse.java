@@ -10,4 +10,5 @@ import lombok.Getter;
 public class APIResponse<T> {
     private int status;  // HTTP 상태 코드
     private T data;      // 실제 응답 데이터
+    private String message;
 }

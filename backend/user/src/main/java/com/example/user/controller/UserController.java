@@ -35,8 +35,22 @@ public class UserController {
         return  apiResponse;
     }
 
-//    @PatchMapping
-//    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user) {
-//        UserResponseDTO userResponseDTO = userService.
-//    }
+    @PatchMapping
+    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user) {
+        APIResponse apiResponse;
+        try {
+            userService.patchUser(user);
+            apiResponse = APIResponse.builder()
+                    .status(200)
+                    .message("회원 정보 수정 완료")
+                    .build();
+        }
+        catch (Exception e) {
+            apiResponse = APIResponse.builder()
+                    .status(500)
+                    .message("회원 정보 수정 에러")
+                    .build();
+        }
+        return  apiResponse;
+    }
 }
