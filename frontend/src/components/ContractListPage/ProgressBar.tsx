@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 
-// 계약대기:0 서명:40 결제:65 결제완료:100
+// 계약대기:0 서명:40 결제:65 결제완료:100 
 interface ProgressBarProps {
   status: "CONTRACT_PENDING" | "SIGN_PENDING" | "PAYMENT_PENDING" | "PAYMENT_COMPLETED";
 }
