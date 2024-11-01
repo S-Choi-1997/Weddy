@@ -26,7 +26,7 @@ public class UserService {
 
     public UserResponseDTO coupleCode(String coupleCode){
         UserResponseDTO userResponseDTO = UserResponseDTO.builder()
-                .code(coupleCode)
+                .coupleCode(coupleCode)
                 .build();
 
         return userResponseDTO;
