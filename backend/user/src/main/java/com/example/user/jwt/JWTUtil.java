@@ -28,6 +28,10 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", Long.class);
     }
 
+    public Long getExpire(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseClaimsJws(token).getBody().getExpiration().getTime();
+    }
+
     public Boolean isExpired(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
