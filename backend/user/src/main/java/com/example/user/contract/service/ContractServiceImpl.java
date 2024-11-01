@@ -46,7 +46,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public List<Contract> getAllContract(UserEntity userEntity) {
-        return contractRepository.findByCode(userEntity.getCode());
+        return contractRepository.findByUserCode(userEntity.getCode());
 
 
     }
