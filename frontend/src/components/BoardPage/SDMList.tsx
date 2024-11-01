@@ -30,7 +30,7 @@ const SDMList = ({ value, productList }: SDMListProps) => {
           filteredList && filteredList.length > 0 ? (
             filteredList.map((product: Product) => (
               <Link to={`board/detail/${product.id}`} key={product.id}>
-                <SDMBox src={product.images[0]?.imageUrl} name={product.name} price={product.price} />
+                <SDMBox src={product.images[0].imageUrl} name={product.name} price={product.price} />
               </Link>
             ))
           ) : (
@@ -39,7 +39,7 @@ const SDMList = ({ value, productList }: SDMListProps) => {
         ) : productList && productList.length > 0 ? (
           productList.map((product: Product) => (
             <Link to={`/board/detail/${product.id}`} key={product.id}>
-              <SDMBox src={product.images[0]?.imageUrl} name={product.name} price={product.price} />
+              <SDMBox src={product.images[0].imageUrl} name={product.name} price={product.price} />
             </Link>
           ))
         ) : (

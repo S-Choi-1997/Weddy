@@ -1,3 +1,7 @@
+interface Image {
+  imageUrl: string;
+}
+
 export interface Product {
   id: string;
   type: string;
@@ -6,8 +10,10 @@ export interface Product {
   address: string;
   vendorName: string;
   vendorId: string;
-  images: string[];
+  images: Image[];
 }
+
+
 
 export interface ReviewData {
   content: string;
