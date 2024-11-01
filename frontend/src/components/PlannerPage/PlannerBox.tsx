@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface PlannerBoxProps {
   title: string;
   company: string;
-  price: number;
+  price: string;
   content:string;
 }
 

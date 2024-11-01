@@ -1,17 +1,29 @@
-import { aiRecommend } from "@/api/aiApi";
+// import { aiRecommend } from "@/api/recommendApi";
+import { recommendState } from "@/store/recommendState";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
 const Prompt = () => {
   const [placeholder, setPlaceholder] = useState("");
   const text = "모던한 분위기의 500만원대 스튜디오 추천해줘";
-  const [inputValue, setInputValue] = useState("");
+  const [ inputValue, setInputValue] = useState("");
+  const [recommendList, setRecommendList] = useRecoilState(recommendState);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  //== 스토어에 값이 저장되어있으면 바로 planner로 이동 ==//
+  useEffect(() => {
+    if (recommendList.length > 0) {
+      navigate("/planner");
+    }
+  }, []);
 
   const toPlanner = async () => {
-    await aiRecommend(inputValue);
-    // navigate("/planner");
+    console.log(inputValue);
+    // const recommendList = await aiRecommend(inputValue);
+    // setRecommendList(recommendList);
+    navigate("/planner");
   }
 
   useEffect(() => {

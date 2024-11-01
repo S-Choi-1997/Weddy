@@ -1,24 +1,11 @@
-import axios from "axios";
+const BASE_URL = 'http://localhost:8080/api/oauth2/authorization'
 
-const BASE_URL = 'http://localhost:8080/api/users/auth'
-
-//== 카카오 로그인 ==//
-export const kakaoLogin = () => {
-  window.location.href = `http://localhost:8080/api/oauth2/authorization/naver`;
+//== 네이버 로그인 ==//
+export const naverLogin = () => {
+  window.location.href = `${BASE_URL}/naver`;
 };
 
 //== 구글 로그인 ==//
 export const googleLogin = () => {
-  window.location.href = `http://localhost:8080/api/oauth2/authorization/google`;
-};
-
-//== 로그아웃 ==//
-export const logout = () => {
-  axios({
-    method: 'post',
-    url: `${BASE_URL}/logout`,
-    headers: {
-      Authorization: `Bearer `
-    }
-  });
+  window.location.href = `${BASE_URL}/google`;
 };
