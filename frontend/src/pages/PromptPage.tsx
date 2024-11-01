@@ -1,17 +1,22 @@
-import { aiRecommend } from "@/api/aiApi";
+// import { aiRecommend } from "@/api/recommendApi";
+// import { recommendState } from "@/store/recommendState";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { useSetRecoilState } from "recoil";
 
 const Prompt = () => {
   const [placeholder, setPlaceholder] = useState("");
   const text = "모던한 분위기의 500만원대 스튜디오 추천해줘";
-  const [inputValue, setInputValue] = useState("");
+  const [ inputValue, setInputValue] = useState("");
+  // const setRecommendList = useSetRecoilState(recommendState);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const toPlanner = async () => {
-    await aiRecommend(inputValue);
-    // navigate("/planner");
+    console.log(inputValue);
+    // const recommendList = await aiRecommend(inputValue);
+    // setRecommendList(recommendList);
+    navigate("/planner");
   }
 
   useEffect(() => {
