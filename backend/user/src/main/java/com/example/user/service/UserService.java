@@ -26,9 +26,13 @@ public class UserService {
 
     public UserResponseDTO coupleCode(String coupleCode){
         UserResponseDTO userResponseDTO = UserResponseDTO.builder()
-                .code(coupleCode)
+                .coupleCode(coupleCode)
                 .build();
 
         return userResponseDTO;
+    }
+
+    public void patchUser(UserEntity userEntity){
+        userRepository.save(userEntity);
     }
 }

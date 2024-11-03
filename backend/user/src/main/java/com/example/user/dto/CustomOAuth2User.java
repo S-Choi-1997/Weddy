@@ -43,6 +43,6 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     public String getCode(){
-        return userDTO.getCode();
+        return userDTO.getCoupleCode();
     }
 }
