@@ -9,7 +9,7 @@ const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwidXNlck5hbWUiOiJb6rSR7KO8XzHrsJhf
 export const getToken = async (userId: string | null): Promise<void> => {
   const response = await axios({
     method: "get",
-    url: `${BASE_URL}//token/super`,
+    url: `${BASE_URL}/token/super`,
     params: {
       id: userId,
     },
