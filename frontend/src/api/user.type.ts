@@ -3,4 +3,5 @@ export interface userInformation {
   phone: string;
   email: string;
   address: string;
+  dateofWedding: string;
 };
