@@ -35,4 +35,19 @@ public class UserService {
     public void patchUser(UserEntity userEntity){
         userRepository.save(userEntity);
     }
+
+    public void updateUserInfo(Long id, String phone, String name, String address) {
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        userEntity.setPhone(phone);
+        userEntity.setName(name);
+        userEntity.setAddress(address);
+        userRepository.save(userEntity);
+
+    }
+
+    public void patchCoupleCode(String coupleCode,Long id){
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        userEntity.setCoupleCode(coupleCode);
+        userRepository.save(userEntity);
+    }
 }
