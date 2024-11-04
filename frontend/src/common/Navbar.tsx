@@ -24,7 +24,7 @@ const Navbar = () => {
           <span className="font-bold text-main2">WEDDY</span>
         </div>
       )}
-      {(location === "" || location === "board" || location === "planner") && (locationDetail === undefined) && (
+      {(location === "" || location === "board") && (locationDetail === undefined) && (
         <>
           <Link to='/board'>
             <div className="textAlign">스드메</div>
@@ -53,9 +53,10 @@ const Navbar = () => {
       {location === "board" && locationDetail === "detail" && (
         <div>제품 상세</div>
       )}
-      {(location === "planner" && locationDetail === "list") || location === "prompt" && (
+      {(location === "prompt" || location === "planner") && (
         <div>WEDDY 플래너</div>
       )}
+
       {location === "contract" && locationDetail === "list" && (
         <div>나의 계약</div>
       )}
