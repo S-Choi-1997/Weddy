@@ -14,8 +14,6 @@ export interface Product {
   images: Image[];
 }
 
-
-
 export interface ReviewData {
   content: string;
   date: string;
