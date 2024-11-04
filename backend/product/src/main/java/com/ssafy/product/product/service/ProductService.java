@@ -14,4 +14,5 @@ public interface ProductService {
      ProductResponseDto registProduct(final ProductRegistRequestDto productRegistRequestDto, final List<MultipartFile> images);
      List<ReviewResponseDto> reviewList(final Long productId);
      ReviewResponseDto registerReview(final ReviewRequestDto reviewRequestDto, final Long productId);
+     List<ProductResponseDto> rankingList();
 }
