@@ -1,6 +1,6 @@
+import TodoButton from "@/common/TodoButton";
 import PlannerBox from "@/components/PlannerPage/PlannerBox";
 // import { recommendState } from "@/store/recommendState";
-import GiftIcon from "@/icons/GiftIcon";
 // import { useRecoilValue } from "recoil";
 // import { useEffect, useState } from "react";
 // import { Product } from "@/api/product.type";
@@ -16,7 +16,7 @@ const Planner = () => {
   //     const studios: Product[] = [];
   //     const dresses: Product[] = [];
   //     const makeups: Product[] = [];
-  
+
   //     recommendList.forEach((product) => {
   //       switch (product.type) {
   //         case "STUDIO":
@@ -32,7 +32,7 @@ const Planner = () => {
   //           break;
   //       }
   //     });
-  
+
   //     setStudioList(studios);
   //     setDressList(dresses);
   //     setMakeupList(makeups);
@@ -64,16 +64,15 @@ const Planner = () => {
 
 
   return (
-    <div className="relative">
+    <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
         {/* <h1 className="my-3 text-main2">WEDDY 플래너</h1> */}
         <div className="flex items-center mt-5">
-        <span className="text-sm">
-          <span className="text-main2 font-bold">
-          WEDDY 플래너
-          </span>
-          가 추천하는 상품</span>
-          <GiftIcon/>
+          <span className="text-sm">
+            <span className="text-main2 font-bold">
+              WEDDY 플래너&nbsp;
+            </span>
+            추천 상품</span>
         </div>
         {dummyList.map((dummy, index) => (
           <PlannerBox key={index} title={dummy.category} company={dummy.company} price={dummy.price} content={dummy.content} />
@@ -92,7 +91,7 @@ const Planner = () => {
         ))} */}
 
       </div>
-      <div className="flex justify-end mr-10 mt-20 mb-24">
+      <div className="flex justify-end mr-10 mt-14">
         <div className="flex flex-col mr-3">
           {dummyList.map((dummy, index) => (
             <span key={index} className="my-1">
@@ -109,6 +108,9 @@ const Planner = () => {
             {totalPrice.toLocaleString()}원
           </span>
         </div>
+      </div>
+      <div className="flex justify-end mr-10 mt-5 mb-24">
+        <TodoButton title="계약 요청" />
       </div>
     </div>
   )

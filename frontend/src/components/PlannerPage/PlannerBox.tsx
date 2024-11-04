@@ -1,14 +1,14 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import DropdownIcon from "@/icons/DropdownIcon";
 import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PlannerBoxProps {
   title: string;
   company: string;
   price: string;
-  content:string;
+  content: string;
 }
 
 const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
@@ -53,22 +53,33 @@ const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
         }}
       >
         <div className="flex justify-between w-[300px]">
-          <div className="flex">
-            <Checkbox checked={isChecked} />
+          <div className="flex items-center">
+            <button
+              className={`${isChecked ? 'text-main2 bg-mainbg rounded-full h-[35px] w-[35px]' : 'text-gray-400 bg-gray-100 rounded-full h-[35px] w-[35px]'}`}
+            >
+              <div className="flex items-center justify-center">
+                <span className="font-bold text-xs">WEDDY</span>
+              </div>
+            </button>
             <h1 className="font-bold mx-4">{title}</h1>
           </div>
 
-          {isChecked === false &&(
-          <div onClick={goRecommend} className="flex items-center">
-            {/* 업체 선택되었으면, 선택하기 버튼 없애기 */}
-            <p className="mr-1">상품 보러가기</p>
-            <GotoIcon />
-          </div>
+          {isChecked == true ?(
+            <div className="flex items-center">
+            <DropdownIcon />
+            </div>
+          ):
+          (
+            <div onClick={goRecommend} className="flex items-center">
+              <p className="mr-1">상품 보러가기</p>
+              <GotoIcon />
+            </div>
           )}
         </div>
 
       </AccordionSummary>
       <AccordionDetails sx={{ border: "none" }}>
+        <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <span className="font-bold text-lg text-main2">
             {company}
@@ -79,6 +90,8 @@ const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
           <span className="font-bold">
             {price.toLocaleString()}원
           </span>
+        </div>
+        <button className="mr-3 rounded-full w-[35px] h-[35px] bg-gray-100">삭제</button>
         </div>
       </AccordionDetails>
     </Accordion>
