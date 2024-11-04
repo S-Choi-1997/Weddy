@@ -40,7 +40,7 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
             </div>
           </div>
           <div>
-            {item.price.toLocaleString()}원
+            {Number(item.price).toLocaleString()}원
           </div>
           <div>
             <button className="text-sm">삭제</button>

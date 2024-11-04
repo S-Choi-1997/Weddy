@@ -4,7 +4,7 @@ import { userInformation } from "./user.type";
 const BASE_URL = "http://localhost:8080/api/users";
 
 //== 토큰 정보 ==//
-export const getToken = async (userId: string | null): Promise<void> => {
+export const getToken = async (userId?: string): Promise<void> => {
   const response = await axios({
     method: "get",
     url: `${BASE_URL}/token/super`,
@@ -12,8 +12,12 @@ export const getToken = async (userId: string | null): Promise<void> => {
       id: userId,
     }
   });
-  sessionStorage.setItem("token", response.data.accessToken);
-  sessionStorage.setItem("refreshToken", response.data.refreshToken);
+
+  if (userId) {
+    sessionStorage.setItem("userId", userId);
+    sessionStorage.setItem("token", response.data.accessToken);
+    sessionStorage.setItem("refreshToken", response.data.refreshToken);
+  };
 };
 
 //== 로그아웃 ==//

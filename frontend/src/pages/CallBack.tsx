@@ -10,12 +10,9 @@ const CallBack = () => {
   //== 토큰 정보 ==//
   useQuery(
     ['getToken', userId],
-    () => getToken(userId),
+    () => getToken(userId ?? undefined),
     {
-      enabled: !!userId,
-      onSuccess: () => {
-        navigate('/');
-      },
+      enabled: !!userId
     }
   );
 
