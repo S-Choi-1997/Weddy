@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,14 +19,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
+    private final BlackTokenService blackTokenService;
 
-    public JWTFilter(JWTUtil jwtUtil, UserRepository userRepository) {
+    public JWTFilter(JWTUtil jwtUtil, UserRepository userRepository, BlackTokenService blackTokenService) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.blackTokenService = blackTokenService;
     }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -57,6 +61,11 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
         String token = authorization.substring(7);
+
+        if (blackTokenService.isBlacklisted(token)){
+            log.info("토큰블랙리스트");
+            return;
+        }
 
         //토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
