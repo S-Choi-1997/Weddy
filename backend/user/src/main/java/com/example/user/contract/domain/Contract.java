@@ -2,6 +2,9 @@ package com.example.user.contract.domain;
 
 import com.example.user.contract.dto.response.ContractResponseDto;
 import com.example.user.contract.constant.ContractStatus;
+import com.example.user.contract.global.util.exception.ContractNotFoundException;
+import com.example.user.contract.global.util.exception.PaymentNotValidateException;
+import com.example.user.contract.global.util.response.ErrorCode;
 import com.example.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -65,6 +68,14 @@ public class Contract {
                         .userId(contract.getUser().getId())
                         .userName(contract.getUser().getName())
                         .build();
+    }
+
+
+    public void validation(Long totalMount){
+        if(this.totalMount != totalMount){
+            throw new PaymentNotValidateException(ErrorCode.PAYMENT_NOT_VALIDATE);
+        }
+
     }
 
 
