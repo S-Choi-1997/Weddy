@@ -12,7 +12,10 @@ export const myContract = async (): Promise<ContractData[]> => {
     url: BASE_URL,
     headers: {
       Authorization: `Bearer ${token}`
-    }
+    },
+    // headers: {
+    //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    // }
   });
   return response.data.data;
 };
@@ -25,6 +28,9 @@ export const contractInfo = async (contractId?: string): Promise<ContractData> =
     headers: {
       Authorization: `Bearer ${token}`
     }
+    // headers: {
+    //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    // }
   });
   return response.data.data;
 };
@@ -37,6 +43,9 @@ export const signature = async (signature: string): Promise<void> => {
     headers: {
       Authorization: `Bearer ${token}`
     },
+    // headers: {
+    //   Authorization: `Bearer ${sessionStorage.getItem("token")}`
+    // },
     data: signature
   });
   console.log(response.data);
