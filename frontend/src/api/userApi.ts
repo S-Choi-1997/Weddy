@@ -13,6 +13,7 @@ export const getToken = async (userId: string | null): Promise<void> => {
     }
   });
   sessionStorage.setItem("token", response.data.accessToken);
+  sessionStorage.setItem("refreshToken", response.data.refreshToken);
 };
 
 //== 로그아웃 ==//
