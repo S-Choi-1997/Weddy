@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
-
-interface dummyProps {
-  product: string;
-  totalMount: number;
-  company: string;
-  type: string;
-}
+import { Product } from '@/api/product.type';
 
 interface CartBoxProps {
   title: string;
   type: string;
-  cartItem: dummyProps[];
-  onAmountChange: (type: string, amount: number) => void;
+  cartItem: Product[];
+  onAmountChange: (type: string, selectedProduct: Product | null) => void;
 }
 
 const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
@@ -23,8 +17,8 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
   };
 
   useEffect(() => {
-    const selectedAmount = selectedIndex !== null ? cartItem[selectedIndex].totalMount : 0;
-    onAmountChange(type, selectedAmount);
+    const selectedProduct = selectedIndex !== null ? cartItem[selectedIndex] : null;
+    onAmountChange(type, selectedProduct);
   }, [selectedIndex, cartItem, type, onAmountChange]);
 
   return (
@@ -41,12 +35,12 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
               onCheckedChange={() => handleCheckboxChange(index)}
             />
             <div className="flex flex-col ml-3">
-              <span className="font-bold">{item.product}</span>
-              <span className="text-sm text-gray-600">{item.company}</span>
+              <span className="font-bold">{item.name}</span>
+              <span className="text-sm text-gray-600">{item.vendorName}</span>
             </div>
           </div>
           <div>
-            {item.totalMount.toLocaleString()}원
+            {item.price.toLocaleString()}원
           </div>
           <div>
             <button className="text-sm">삭제</button>
