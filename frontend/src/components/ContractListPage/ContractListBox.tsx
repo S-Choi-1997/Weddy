@@ -1,5 +1,5 @@
 import { ContractData } from "@/api/contract.type";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
@@ -10,17 +10,6 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
-  const navigate = useNavigate();
-
-  const toDetail = () => {
-    navigate("/board/detail");
-  };
-
-  // const category = {
-  //   STUDIO: "studio",
-  //   DRESS: "dress",
-  //   MAKEUP: "makeup"
-  // }[type];
 
   return (
     <>
@@ -28,16 +17,17 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
         <ProgressBar status={contractInfo.status} />
 
         <div className="flex justify-between mt-10">
-          <div className="flex items-center" onClick={toDetail}>
-            <h1 className="font-bold mr-4">{type}</h1>
-            <GotoIcon />
-          </div>
-
+        <Link to={`/board/detail/${contractInfo.product.product_id}`}>
+            <div className="flex items-center">
+              <h1 className="font-bold mr-4">{type}</h1>
+              <GotoIcon />
+            </div>
+          </Link>
           {contractInfo.status === "CONTRACT_PENDING" && (
             <TodoButton title="계약 대기중" colorId={2} />
           )}
           {contractInfo.status === "SIGN_PENDING" && (
-             <Link to='/contract'>
+             <Link to={`/contract/${contractInfo.type}/${contractInfo.id}`}>
                <TodoButton title="서명 하기" colorId={1} />
              </Link>
           )}
