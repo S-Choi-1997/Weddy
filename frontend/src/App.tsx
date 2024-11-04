@@ -18,6 +18,9 @@ import Review from "./pages/ReviewPage";
 import Schedule from './pages/SchedulePage';
 import Sketch from './pages/SketchPage';
 import Prompt from './pages/PromptPage';
+import NFTLoading from "./pages/NFTLoadingPage";
+import RecommendLoading from "./pages/RecommendLoadingPage";
+import UserInfo from "./pages/UserInfoPage";
 
 function AppContent() {
   const location = useLocation();
@@ -26,12 +29,13 @@ function AppContent() {
 
   return (
     <>
-      {currentPath !== "login" && <Navbar />}
+      {(currentPath !== "login") && (currentPath !== "userinfo") && <Navbar />}
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/review/:productId" element={<Review />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/board" element={<Board />} />
         <Route path="/board/detail/:productId" element={<BoardDetail />} />
         <Route path="/prompt" element={<Prompt />} />
@@ -43,8 +47,10 @@ function AppContent() {
         <Route path="/contract/list" element={<ContractList />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/callback" element={<CallBack />} />
+        <Route path="/nft/loading" element={<NFTLoading />} />
+        <Route path="/recommend/loading" element={<RecommendLoading />} />
       </Routes>
-      {(currentPath !== "login") && (currentDetail !== "detail") && <Footer />}
+      {(currentPath !== "login") && (currentPath !== "userinfo") && (currentDetail !== "detail")  && <Footer />}
     </>
   );
 }

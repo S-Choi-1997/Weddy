@@ -58,7 +58,6 @@ const Footer = () => {
         <Link to='/mypage'>
           <MyIcon w={25} h={25} />
         </Link>
-
       )}
 
     </footer>
