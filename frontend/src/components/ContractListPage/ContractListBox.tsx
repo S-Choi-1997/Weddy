@@ -3,13 +3,17 @@ import { Link } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
+import { requestPayment } from "@/api/paymentApi";
 
 interface ContractListBoxProps {
   type: string;
   contractInfo: ContractData;
 }
-
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
+
+  const handlePayment = () => {
+    requestPayment(contractInfo);
+  };
 
   return (
     <>
@@ -32,7 +36,9 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
              </Link>
           )}
           {contractInfo.status === "PAYMENT_PENDING" && (
-            <TodoButton title="결제 하기" colorId={1} />
+            <div onClick={handlePayment}>
+              <TodoButton title="결제 하기" colorId={1} />
+            </div>
           )}
           {contractInfo.status === "PAYMENT_COMPLETED" && (
             <Link to='/review'>
