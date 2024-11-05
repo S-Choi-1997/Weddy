@@ -7,20 +7,19 @@ const token = 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwidXNlck5hbWUiOiJb6rSR7KO8XzHrsJhf
 
 //== 계약 요청 ==//
 export const requestContract = async (contract: SentContractType[]): Promise<void> => {
-  console.log(contract);
-  const response = await axios({
+  await axios({
     method: 'post',
     url: `${BASE_URL}/5`,
     headers: {
       Authorization: `Bearer ${token}`
     },
     // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
+    // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
     // headers: {
     //   Authorization: sessionStorage.getItem("token")
     // }
     data: contract
   });
-  console.log(response.data);
 };
 
 //== 계약 리스트 ==//
@@ -55,15 +54,14 @@ export const contractInfo = async (contractId?: string): Promise<ContractData> =
 
 //== 계약서 상태 변경 ==//
 export const changeStatus = async (contractId?: string): Promise<void> => {
-   const response = await axios({
+  await axios({
     method: 'patch',
     url: `${BASE_URL}/${contractId}`,
     headers: {
       Authorization: `Bearer ${token}`
     }
     // headers: {
-    //   Authorization: sesssionstorage.getItem("token")
+    //   Authorization: sessionStorage.getItem("token")
     // }
-   });
-   console.log(response.data);
+  });
 };

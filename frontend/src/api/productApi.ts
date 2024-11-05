@@ -12,7 +12,6 @@ export const allProducts = async (): Promise<Product[]> => {
       Authorization: `Bearer `
     }
   });
-  console.log(response.data.data);
   return response.data.data;
 };
 
