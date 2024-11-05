@@ -45,4 +45,6 @@ public class CustomOAuth2User implements OAuth2User {
     public String getCode(){
         return userDTO.getCoupleCode();
     }
+
+    public String getPicture(){return userDTO.getPicture();}
 }

@@ -29,7 +29,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("OAuth2User가 null입니다. 사용자 정보 로딩 실패");
         }
 
-        System.out.println(oAuth2User);
+        System.out.println(oAuth2User.toString()+"\n"+"\n");
         System.out.println("Client Registration: " + userRequest.getClientRegistration());
         System.out.println("Access Token: " + userRequest.getAccessToken().getTokenValue());
 
@@ -52,6 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setSocialId(socialId);
             userEntity.setName(oAuth2Response.getName());
             userEntity.setEmail(oAuth2Response.getEmail());
+            userEntity.setPicture(oAuth2Response.getPicture());
             userEntity.setCoupleCode(randomCode);
 
             userRepository.save(userEntity);
@@ -60,6 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setSocialId(socialId);
             userDTO.setName(oAuth2Response.getName());
             userDTO.setCoupleCode(randomCode);
+            userDTO.setPicture(oAuth2Response.getPicture());
 
             return new CustomOAuth2User(userDTO);
         } else {
@@ -73,6 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setId(existData.getId());
             userDTO.setSocialId(existData.getSocialId());
             userDTO.setName(oAuth2Response.getName());
+            userDTO.setPicture(oAuth2Response.getPicture());
 
             return new CustomOAuth2User(userDTO);
         }

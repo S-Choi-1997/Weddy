@@ -32,7 +32,27 @@ public class UserService {
         return userResponseDTO;
     }
 
-    public void patchUser(UserEntity userEntity){
+//    public void patchUser(UserEntity userEntity){
+//        userRepository.save(userEntity);
+//    }
+
+    public void updateUserInfo(Long id, String phone, String name, String address) {
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        userEntity.setPhone(phone);
+        userEntity.setName(name);
+        userEntity.setAddress(address);
         userRepository.save(userEntity);
+
+    }
+
+    public UserDTO connectCoupleCode(String coupleCode,Long id){
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        assert userEntity != null;
+        userEntity.setCoupleCode(coupleCode);
+        userRepository.save(userEntity);
+        return UserDTO.builder()
+                .name(userEntity.getName())
+                .picture(userEntity.getPicture())
+                .build();
     }
 }
