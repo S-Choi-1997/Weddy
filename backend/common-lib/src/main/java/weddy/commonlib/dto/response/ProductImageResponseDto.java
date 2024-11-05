@@ -1,7 +1,13 @@
 package weddy.commonlib.dto.response;
 
-import lombok.Builder;
+import lombok.*;
 
 @Builder
-public record ProductImageResponseDto(String imageUrl) {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class ProductImageResponseDto {
+    private String imageUrl;
+
 }
