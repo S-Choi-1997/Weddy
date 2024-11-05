@@ -1,12 +1,15 @@
 package com.example.user.service;
 
+import com.example.user.common.service.GCSImageService;
 import com.example.user.dto.APIResponse;
 import com.example.user.dto.UserDTO;
 import com.example.user.dto.response.UserResponseDTO;
 import com.example.user.entity.UserEntity;
 import com.example.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -14,8 +17,10 @@ import java.util.Map;
 public class UserService {
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository){
+    private final GCSImageService gcsImageService;
+    public UserService(UserRepository userRepository, GCSImageService gcsImageService){
         this.userRepository = userRepository;
+        this.gcsImageService = gcsImageService;
     }
 
     public APIResponse<UserEntity> userInfo(Long userId){
@@ -64,8 +69,14 @@ public class UserService {
             userEntity.setEmail(info.get("email").toString());
         }
 
-        if (info.get("picture") != null && !info.get("picture").toString().trim().isEmpty()) {
-            userEntity.setPicture(info.get("picture").toString());
+        if (info.get("picture") != null && info.get("picture") instanceof MultipartFile) {
+            MultipartFile pictureFile = (MultipartFile) info.get("picture");
+            try {
+                String pictureUrl = gcsImageService.uploadImage(pictureFile); // GCS에 업로드하고 URL 반환
+                userEntity.setPicture(pictureUrl); // URL을 picture 필드에 저장
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload picture", e);
+            }
         }
 
         if (info.get("Date") != null && !info.get("Date").toString().trim().isEmpty()) {
