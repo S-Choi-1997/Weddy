@@ -57,4 +57,5 @@ const BoardDetail = () => {
     </div>
   );
 };
+
 export default BoardDetail;
