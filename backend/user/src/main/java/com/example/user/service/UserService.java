@@ -7,6 +7,9 @@ import com.example.user.entity.UserEntity;
 import com.example.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -36,14 +39,42 @@ public class UserService {
 //        userRepository.save(userEntity);
 //    }
 
-    public void updateUserInfo(Long id, String phone, String name, String address) {
-        UserEntity userEntity = userRepository.findById(id).orElse(null);
-        userEntity.setPhone(phone);
-        userEntity.setName(name);
-        userEntity.setAddress(address);
-        userRepository.save(userEntity);
 
+
+    public void updateUserInfo(Long id, Map<String, Object> info) {
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+
+        if (userEntity == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        if (info.get("phone") != null && !info.get("phone").toString().trim().isEmpty()) {
+            userEntity.setPhone(info.get("phone").toString());
+        }
+
+        if (info.get("name") != null && !info.get("name").toString().trim().isEmpty()) {
+            userEntity.setName(info.get("name").toString());
+        }
+
+        if (info.get("address") != null && !info.get("address").toString().trim().isEmpty()) {
+            userEntity.setAddress(info.get("address").toString());
+        }
+
+        if (info.get("email") != null && !info.get("email").toString().trim().isEmpty()) {
+            userEntity.setEmail(info.get("email").toString());
+        }
+
+        if (info.get("picture") != null && !info.get("picture").toString().trim().isEmpty()) {
+            userEntity.setPicture(info.get("picture").toString());
+        }
+
+        if (info.get("Date") != null && !info.get("Date").toString().trim().isEmpty()) {
+            userEntity.setDate(LocalDate.parse(info.get("Date").toString()));
+        }
+
+        userRepository.save(userEntity);
     }
+
 
     public UserDTO connectCoupleCode(String coupleCode,Long id){
         UserEntity userEntity = userRepository.findById(id).orElse(null);
