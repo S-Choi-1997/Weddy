@@ -11,7 +11,6 @@ interface ContractListBoxProps {
   contractInfo: ContractData;
 }
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
-  
   const handleChangeStatus = async () => {
     await changeStatus(contractInfo.id);
     window.location.reload();
@@ -27,7 +26,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
         <ProgressBar status={contractInfo.status} />
 
         <div className="flex justify-between mt-10">
-        <Link to={`/board/detail/${contractInfo.product.productId}`}>
+          <Link to={`/board/detail/${contractInfo.product.productId}`}>
             <div className="flex items-center">
               <h1 className="font-bold mr-4">{type}</h1>
               <GotoIcon />
@@ -35,13 +34,15 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
           </Link>
           {contractInfo.status === "CONTRACT_PENDING" && (
             <div onClick={handleChangeStatus}>
-              <TodoButton title="계약 대기중" colorId={2} cursor='default' />
+              <TodoButton title="계약 대기중" colorId={2} cursor="default" />
             </div>
           )}
           {contractInfo.status === "SIGN_PENDING" && (
-             <Link to={`/contract/${contractInfo.product.type}/${contractInfo.id}`}>
-               <TodoButton title="서명 하기" colorId={1} />
-             </Link>
+            <Link
+              to={`/contract/${contractInfo.product.type}/${contractInfo.id}`}
+            >
+              <TodoButton title="서명 하기" colorId={1} />
+            </Link>
           )}
           {contractInfo.status === "PAYMENT_PENDING" && (
             <div onClick={handlePayment}>
