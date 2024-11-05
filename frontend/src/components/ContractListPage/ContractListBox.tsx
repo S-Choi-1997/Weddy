@@ -11,9 +11,10 @@ interface ContractListBoxProps {
   contractInfo: ContractData;
 }
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
-
-  const handleChangeStatus = () => {
-    changeStatus(contractInfo.id);
+  
+  const handleChangeStatus = async () => {
+    await changeStatus(contractInfo.id);
+    window.location.reload();
   };
 
   const handlePayment = () => {
@@ -34,7 +35,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
           </Link>
           {contractInfo.status === "CONTRACT_PENDING" && (
             <div onClick={handleChangeStatus}>
-              <TodoButton title="계약 대기중" colorId={2} />
+              <TodoButton title="계약 대기중" colorId={2} cursor='default' />
             </div>
           )}
           {contractInfo.status === "SIGN_PENDING" && (
@@ -48,7 +49,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
             </div>
           )}
           {contractInfo.status === "PAYMENT_COMPLETED" && (
-            <Link to='/review'>
+            <Link to={`/review/${contractInfo.product.productId}`}>
               <TodoButton title="리뷰 쓰기" colorId={1} />
             </Link>
           )}

@@ -57,7 +57,7 @@ export const contractInfo = async (contractId?: string): Promise<ContractData> =
 export const changeStatus = async (contractId?: string): Promise<void> => {
    const response = await axios({
     method: 'patch',
-    url: `${BASE_URL}/5`,
+    url: `${BASE_URL}/${contractId}`,
     headers: {
       Authorization: `Bearer ${token}`
     }

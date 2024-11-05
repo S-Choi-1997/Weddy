@@ -1,15 +1,11 @@
 import { ContractProduct } from "@/api/contract.type";
 import { requestContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
-// import { getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
 import { useState } from 'react';
-// import { useQuery } from "react-query";
 
 const CartPage = () => {
-  // const [ cartList, setCartList ] = useQuery('getCartItems', getCartItems);
-
   const dummyData: Product[] = [
     {
       id: "1",
@@ -68,13 +64,17 @@ const CartPage = () => {
     },
   ];
 
-  const [ selectedList, setSelectedList ] = useState<Product[]>([]);
-  const [ selectedAmounts, setSelectedAmounts ] = useState<{ [key: string]: number }>({
+  const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
+    studio: null,
+    dress: null,
+    makeup: null,
+  });
+  const [selectedAmounts, setSelectedAmounts] = useState<{ [key: string]: number }>({
     studio: 0,
     dress: 0,
     makeup: 0,
   });
-  
+
   const totalAmount = Object.values(selectedAmounts).reduce((acc, amount) => acc + amount, 0);
 
   const handleAmountChange = (type: string, selectedCartItem: Product | null) => {
@@ -82,68 +82,50 @@ const CartPage = () => {
       ...prev,
       [type]: selectedCartItem ? parseInt(selectedCartItem.price) : 0,
     }));
-  
-    setSelectedList((prev) => {
-      if (!selectedCartItem) return prev;
-  
-      const exists = prev.some((item) => item.id === selectedCartItem.id);
-      if (exists) {
-        return prev;
-      }
 
-      return [...prev, selectedCartItem];
-    });
+    setSelectedList((prev) => ({
+      ...prev,
+      [type]: selectedCartItem,
+    }));
   };
 
-  //== 계약서 정보 생성 후 API 호출 ==//
   const handleCreateContract = async () => {
-    const contracts = selectedList.map((item: Product) => {
-      const date = new Date().toISOString().slice(0, 10);
+    const contractItems = Object.values(selectedList).filter(
+      (item): item is Product => item !== null
+    );
 
+    const contracts = contractItems.map((item) => {
+      const date = new Date().toISOString().slice(0, 10);
+  
       const contractProduct: ContractProduct = {
         productId: item.id,
         productName: item.name,
         productContent: item.content,
-        type: item.type
+        type: item.type,
       };
-
+  
       return {
         userId: "5",
         totalMount: item.price,
         companyName: item.vendorName,
         startDate: date,
         endDate: date,
-        product: contractProduct
+        product: contractProduct,
       };
     });
-
+  
     await requestContract(contracts);
   };
 
-  const studio = dummyData.filter((item: Product) => item.type === 'STUDIO');
-  const dress = dummyData.filter((item: Product) => item.type === 'DRESS');
-  const makeup = dummyData.filter((item: Product) => item.type === 'MAKEUP');
+  const studio = dummyData.filter((item) => item.type === "STUDIO");
+  const dress = dummyData.filter((item) => item.type === "DRESS");
+  const makeup = dummyData.filter((item) => item.type === "MAKEUP");
 
   return (
-    <div className='mt-10'>
-      <CartBox
-        title="STUDIO"
-        type="studio"
-        cartItem={studio}
-        onAmountChange={handleAmountChange}
-      />
-      <CartBox
-        title="DRESS"
-        type="dress"
-        cartItem={dress}
-        onAmountChange={handleAmountChange}
-      />
-      <CartBox
-        title="MAKEUP"
-        type="makeup"
-        cartItem={makeup}
-        onAmountChange={handleAmountChange}
-      />
+    <div className="mt-10">
+      <CartBox title="STUDIO" type="studio" cartItem={studio} onAmountChange={handleAmountChange} />
+      <CartBox title="DRESS" type="dress" cartItem={dress} onAmountChange={handleAmountChange} />
+      <CartBox title="MAKEUP" type="makeup" cartItem={makeup} onAmountChange={handleAmountChange} />
       <div className="flex justify-between mt-10 mx-10">
         <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
         <div onClick={handleCreateContract}>

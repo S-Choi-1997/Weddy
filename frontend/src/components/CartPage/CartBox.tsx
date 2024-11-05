@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from '@/api/product.type';
 
@@ -13,20 +13,17 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleCheckboxChange = (index: number) => {
-    setSelectedIndex(selectedIndex === index ? null : index);
+    const newIndex = selectedIndex === index ? null : index;
+    setSelectedIndex(newIndex);
+    onAmountChange(type, newIndex !== null ? cartItem[newIndex] : null);
   };
-
-  useEffect(() => {
-    const selectedProduct = selectedIndex !== null ? cartItem[selectedIndex] : null;
-    onAmountChange(type, selectedProduct);
-  }, [selectedIndex, cartItem, type, onAmountChange]);
 
   return (
     <div className="m-5">
       <h2 className="font-bold text-lg mb-3">{title}</h2>
       {cartItem.map((item, index) => (
         <div
-          key={index}
+          key={item.id}
           className="mx-1 my-5 bg-white h-[70px] w-auto rounded-lg px-5 py-3 flex justify-between"
         >
           <div className="flex items-center">
