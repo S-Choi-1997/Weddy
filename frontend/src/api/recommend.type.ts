@@ -5,4 +5,3 @@ export interface recommendData {
   price: string;
   address: string;
 }
-

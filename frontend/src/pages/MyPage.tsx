@@ -152,4 +152,5 @@ const Mypage = () => {
     </div>
   )
 }
+
 export default Mypage;

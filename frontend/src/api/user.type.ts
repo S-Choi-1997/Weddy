@@ -5,4 +5,4 @@ export interface userInformation {
   address: string;
   coupleCode?: string;
   dateofWedding: string;
-};
+}

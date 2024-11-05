@@ -13,4 +13,4 @@ export const connectCoupleCode = async (code: string): Promise<void> => {
     data: code
   });
   console.log(response.data);
-}
+};
