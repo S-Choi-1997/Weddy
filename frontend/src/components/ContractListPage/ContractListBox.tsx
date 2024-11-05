@@ -4,12 +4,17 @@ import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
 import { requestPayment } from "@/api/paymentApi";
+import { changeStatus } from "@/api/contractApi";
 
 interface ContractListBoxProps {
   type: string;
   contractInfo: ContractData;
 }
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
+
+  const handleChangeStatus = () => {
+    changeStatus(contractInfo.id);
+  };
 
   const handlePayment = () => {
     requestPayment(contractInfo);
@@ -28,7 +33,9 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
             </div>
           </Link>
           {contractInfo.status === "CONTRACT_PENDING" && (
-            <TodoButton title="계약 대기중" colorId={2} />
+            <div onClick={handleChangeStatus}>
+              <TodoButton title="계약 대기중" colorId={2} />
+            </div>
           )}
           {contractInfo.status === "SIGN_PENDING" && (
              <Link to={`/contract/${contractInfo.product.type}/${contractInfo.id}`}>

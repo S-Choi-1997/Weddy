@@ -15,7 +15,7 @@ export interface ContractProduct {
   }
   
   export interface ContractData {
-    id: number;
+    id: string;
     product: ContractProduct;
     customer?: string;
     content: string;
