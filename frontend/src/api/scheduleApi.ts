@@ -3,22 +3,18 @@ import { GetSchedule, Schedule } from "./schedule.type";
 
 const BASE_URL = "http://localhost:8080/api/schedules";
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcklkIjoxLCJjb2RlIjoidXNlcjEiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.LItYgsUBpk903SstXRFKs08_mKnd7vr7hZm-TEaRYZQ';
-
 //== 일정 등록 ==//
 export const schedule = async (scheduleData?: Schedule): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: "post",
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: sessionStorage.getItem("token"),
     },
-    // headers: {
-    //   Authorization: sessionStorage.getItem("token"),
-    // },
     data: scheduleData
   });
-  console.log(response.data);
+
+  alert("일정이 등록되었습니다.");
 };
 
 //== 일정 조회 ==//
@@ -27,11 +23,8 @@ export const getSchedule = async (selectedDate: string): Promise<GetSchedule[]> 
     method: "get",
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: sessionStorage.getItem("token"),
     },
-    // headers: {
-    //   Authorization: sessionstorage.getItem("token"),
-    // },
     params: {
       date: selectedDate
     }

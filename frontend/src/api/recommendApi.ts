@@ -8,7 +8,7 @@ export const aiRecommend = async (data: string): Promise<Product[]> => {
     method: 'get',
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     },
     data: {
       message: data
