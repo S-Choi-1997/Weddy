@@ -45,9 +45,14 @@ public class UserService {
 
     }
 
-    public void patchCoupleCode(String coupleCode,Long id){
+    public UserDTO connectCoupleCode(String coupleCode,Long id){
         UserEntity userEntity = userRepository.findById(id).orElse(null);
+        assert userEntity != null;
         userEntity.setCoupleCode(coupleCode);
         userRepository.save(userEntity);
+        return UserDTO.builder()
+                .name(userEntity.getName())
+                .picture(userEntity.getPicture())
+                .build();
     }
 }
