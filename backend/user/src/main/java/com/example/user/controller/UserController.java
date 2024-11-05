@@ -84,13 +84,9 @@ public class UserController {
     }
 
     @PatchMapping
-    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user, @RequestBody Map<String, String> updates) {
-        String phone = updates.get("phone");
-        String name = updates.get("name");
-        String address = updates.get("address");
-
+    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user, @RequestBody Map<String, Object> updates) {
         try {
-            userService.updateUserInfo(user.getId(), phone, name, address);
+            userService.updateUserInfo(user.getId(), updates);
             return APIResponse.builder()
                     .status(200)
                     .message("회원 정보 수정 완료")
