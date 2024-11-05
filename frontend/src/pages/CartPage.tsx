@@ -1,4 +1,5 @@
-import { createContract } from "@/api/contractApi";
+import { ContractProduct } from "@/api/contract.type";
+import { requestContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
 // import { getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
@@ -95,10 +96,28 @@ const CartPage = () => {
   };
 
   //== 계약서 정보 생성 후 API 호출 ==//
-  const handleCreateContract = () => {
-    selectedList.map((item: Product) => {
-      createContract(item);
-    })
+  const handleCreateContract = async () => {
+    const contracts = selectedList.map((item: Product) => {
+      const date = new Date().toISOString().slice(0, 10);
+
+      const contractProduct: ContractProduct = {
+        productId: item.id,
+        productName: item.name,
+        productContent: item.content,
+        type: item.type
+      };
+
+      return {
+        userId: "5",
+        totalMount: item.price,
+        companyName: item.vendorName,
+        startDate: date,
+        endDate: date,
+        product: contractProduct
+      };
+    });
+
+    await requestContract(contracts);
   };
 
   const studio = dummyData.filter((item: Product) => item.type === 'STUDIO');

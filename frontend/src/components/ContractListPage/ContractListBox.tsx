@@ -21,7 +21,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
         <ProgressBar status={contractInfo.status} />
 
         <div className="flex justify-between mt-10">
-        <Link to={`/board/detail/${contractInfo.product.product_id}`}>
+        <Link to={`/board/detail/${contractInfo.product.productId}`}>
             <div className="flex items-center">
               <h1 className="font-bold mr-4">{type}</h1>
               <GotoIcon />
@@ -31,7 +31,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
             <TodoButton title="계약 대기중" colorId={2} />
           )}
           {contractInfo.status === "SIGN_PENDING" && (
-             <Link to={`/contract/${contractInfo.type}/${contractInfo.id}`}>
+             <Link to={`/contract/${contractInfo.product.type}/${contractInfo.id}`}>
                <TodoButton title="서명 하기" colorId={1} />
              </Link>
           )}
