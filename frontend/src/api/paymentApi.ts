@@ -23,6 +23,7 @@ export const requestPayment = async (
   console.log("PORTONE_STORE_ID:", PORTONE_STORE_ID);
   const { title, totalMount } = contractInfo;
   const paymentId = generatePaymentId();
+  console.log("paymentId  :", paymentId);
   const response = await PortOne.requestPayment({
     storeId: PORTONE_STORE_ID,
     channelKey: PORTONE_CHANNEL_KEY,
@@ -41,7 +42,7 @@ export const requestPayment = async (
   if (response) {
     if (!response.code) {
       // 결제 성공 시 서버로 정보 전송
-      await sendPaymentSuccessToServer(contractInfo);
+      await sendPaymentSuccessToServer(contractInfo, paymentId);
     } else {
       alert(`결제 실패: ${response.message}`);
     }
@@ -50,7 +51,8 @@ export const requestPayment = async (
 
 // 결제 성공 시 서버로 전송하는 함수
 const sendPaymentSuccessToServer = async (
-  contractInfo: ContractData
+  contractInfo: ContractData,
+  paymentId: string
 ): Promise<void> => {
   try {
     const response = await axios.post(
@@ -65,6 +67,7 @@ const sendPaymentSuccessToServer = async (
         userId: contractInfo.customer,
         code: contractInfo.code,
         totalMount: contractInfo.totalMount,
+        payment: paymentId,
       },
       {
         headers: {
