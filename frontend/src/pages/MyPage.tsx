@@ -55,7 +55,7 @@ const Mypage = () => {
   const updateUserInfo = (key: keyof userInformation, value: string) => {
     setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
-
+  
   //== 커플 코드 조회 ==//
   const { data: myCode } = useQuery('getCoupleCode', getCoupleCode);
 
@@ -63,11 +63,12 @@ const Mypage = () => {
   // const handleConnect = async (code: string) => {
   //   await connectCoupleCode(code);
   // };
+
   const today = new Date();
   const targetDate = new Date('2024-11-19');
 
-  const differenceInTime = targetDate.getTime() - today.getTime(); // 밀리초 단위 차이
-  const dDay = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환 후 올림
+  const differenceInTime = targetDate.getTime() - today.getTime();
+  const dDay = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
 
   return (
     <div className="m-5 bg-white h-[700px] rounded-xl p-5">
@@ -119,25 +120,25 @@ const Mypage = () => {
         <div className="flex flex-col">
           <input
             defaultValue={userInfo.name}
-            className="my-2 p-2 w-[180px] border border-gray-400 rounded-lg h-[30px]"
+            className="my-2 p-2 w-[190px] border border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('name', e.target.value)}
           />
           <input
             defaultValue={userInfo.phone}
-            className="my-2 p-2 w-[180px] border border-gray-400 rounded-lg h-[30px]"
+            className="my-2 p-2 w-[190px] border border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('phone', e.target.value)}
           />
           <input
             defaultValue={userInfo.email}
-            className="my-2 border p-2 w-[180px] border-gray-400 rounded-lg h-[30px]"
+            className="my-2 border p-2 w-[190px] border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('email', e.target.value)}
           />
           <input
             defaultValue={userInfo.address}
-            className="my-2 border p-2 w-[180px] border-gray-400 rounded-lg h-[30px]"
+            className="my-2 border p-2 w-[190px] border-gray-400 rounded-lg h-[30px]"
             type="text"
             onChange={(e) => updateUserInfo('address', e.target.value)}
           />
