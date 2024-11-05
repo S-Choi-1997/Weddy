@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { changeStatus, contractInfo } from "../api/contractApi";
 import TodoButton from "../common/TodoButton";
 import { makeImage } from "../hooks/makeImage";
@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 
 const Contract = () => {
   const { category, contractId } = useParams();
+  const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
   const date = new Date();
@@ -32,15 +33,16 @@ const Contract = () => {
   const handleSignature = async () => {
     const contractImage = await makeImage(pageRef);
 
-    const [hash] = await Promise.all([
-      uploadToPinata(contractImage, category)
-    ]);
+    await makeSignature();
+
+    const hash = await uploadToPinata(contractImage, category);
 
     await Promise.all([
-      makeSignature(),
       mintNFT(hash),
       changeStatus(contractId)
     ]);
+
+    navigate("/contract");
   };
 
   const type = {
@@ -63,7 +65,7 @@ const Contract = () => {
           <br />
           <div className="flex font-bold">
             <div>상품명 :</div>
-            <div className="ml-2">{contract?.title}</div>
+            <div className="ml-2">{contract?.product.productName}</div>
           </div>
           <div className="flex font-bold">
             <div>예식 :</div>
