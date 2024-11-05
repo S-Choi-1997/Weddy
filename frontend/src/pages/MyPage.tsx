@@ -1,4 +1,3 @@
-import { getCoupleCode } from "@/api/coupleApi";
 import { userInformation } from "@/api/user.type";
 import { editInfomation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
@@ -55,9 +54,6 @@ const Mypage = () => {
   const updateUserInfo = (key: keyof userInformation, value: string) => {
     setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
-  
-  //== 커플 코드 조회 ==//
-  const { data: myCode } = useQuery('getCoupleCode', getCoupleCode);
 
   // //== 커플 코드 연결 ==//
   // const handleConnect = async (code: string) => {
@@ -102,7 +98,7 @@ const Mypage = () => {
               </div>
             ) : (
               <>
-                <span className="font-bold text-lg mb-2">{myCode}</span>
+                <span className="font-bold text-lg mb-2">{userData?.coupleCode}</span>
                 <span className="text-sm text-gray-500">상대방과 커플코드를 공유하세요!</span>
               </>
             )}

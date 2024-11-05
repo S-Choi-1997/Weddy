@@ -3,5 +3,6 @@ export interface userInformation {
   phone: string;
   email: string;
   address: string;
+  coupleCode?: string;
   dateofWedding: string;
 };
