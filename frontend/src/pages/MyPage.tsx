@@ -5,7 +5,11 @@ import RingIcon from "@/icons/RingIcon";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '@/store/token';
+
 const Mypage = () => {
+  const token = useRecoilValue(tokenState);
   const [isConneted,] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,6 +73,7 @@ const Mypage = () => {
   return (
     <div className="m-5 bg-white h-[700px] rounded-xl p-5">
       <h1 className="text-center mt-5">마이페이지</h1>
+      <div>{token}</div>
       <div className="flex justify-between">
         <div className="flex flex-col items-center">
           <div className="bg-main1 flex flex-col p-5 h-[200px] w-[300px] mx-3 mt-10 rounded-xl">
