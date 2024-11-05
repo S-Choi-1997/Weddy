@@ -2,6 +2,7 @@ package ssafy.cachescheduler.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class CacheScheduler {
     private final ProductMapper productMapper;
     private final ReviewMapper reviewMapper;
 
+    @Async("taskExecutor")
     @Scheduled(cron = "0 0 0/1 * * *")
     public void productCachingScheduler() {
         log.info("productCachingScheduler 실행");
@@ -27,7 +29,7 @@ public class CacheScheduler {
         log.info("productCachingScheduler 종료");
     }
 
-
+    @Async("taskExecutor")
     @Scheduled(cron = "0 0 0/1 * * *")
     public void productReviewCachingScheduler() {
         log.info("productReviewCachingScheduler 실행");
