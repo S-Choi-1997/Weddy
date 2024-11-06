@@ -9,7 +9,7 @@ export const allProducts = async (): Promise<Product[]> => {
     method: 'get',
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   return response.data.data;
@@ -21,7 +21,7 @@ export const getRankedProducts = async (): Promise<Product[]> => {
     method: 'get',
     url: `${BASE_URL}/ranking`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   return response.data.data;
@@ -33,7 +33,7 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
     method: 'get',
     url: `${BASE_URL}/${productId}`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   return response.data.data;
@@ -45,7 +45,7 @@ export const addProductToCart = async (productId?: string): Promise<void> => {
     method: 'post',
     url: `${BASE_URL}/${productId}/cart`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   console.log(response.data);
@@ -57,7 +57,7 @@ export const deleteFromCart = async (): Promise<void> => {
     method: 'delete',
     url: `${BASE_URL}/`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   console.log(response.data);
@@ -69,7 +69,7 @@ export const getCartItems = async (): Promise<Product[]> => {
     method: 'get',
     url: `${BASE_URL}/my`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   console.log(response.data);
@@ -82,7 +82,7 @@ export const getReviewList = async (productId?: string): Promise<ReviewData[]> =
     method: 'get',
     url: `${BASE_URL}/${productId}/review`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     }
   });
   return response.data.data;
@@ -94,7 +94,7 @@ export const submitReview = async (reviewData: ReviewData, productId?: string): 
     method: 'post',
     url: `${BASE_URL}/${productId}/review`,
     headers: {
-      Authorization: `Bearer `
+      Authorization: sessionStorage.getItem('token')
     },
     data: reviewData
   });
