@@ -28,6 +28,7 @@ import { tokenState } from './store/token';
 import { MessagePayload } from 'firebase/messaging';
 import { useEffect } from 'react';
 import { onMessageListener, requestForToken, requestNotificationPermission } from './firebase.ts';
+import Test from "./pages/test.tsx";
 
 function AppContent() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function AppContent() {
         <Route path="/callback" element={<CallBack />} />
         <Route path="/nft/loading" element={<NFTLoading />} />
         <Route path="/recommend/loading" element={<RecommendLoading />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
       {(currentPath !== "login") && (currentPath !== "userinfo") && (currentDetail !== "detail") && <Footer />}
     </>
