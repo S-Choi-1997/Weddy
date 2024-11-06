@@ -72,6 +72,17 @@ const PlannerList = () => {
       vendorId: "vendor5",
       images: [{imageUrl: "/dummy/test1.jpg"}],
     },
+    {
+      id: "6",
+      type: "MAKEUP",
+      name: "프리미엄 메이크업",
+      price: "200000",
+      address: "서울 강동구",
+      content: "전문 아티스트의 프리미엄 메이크업 서비스입니다.",
+      vendorName: "Beauty House",
+      vendorId: "vendor6",
+      images: [{imageUrl: "/dummy/test1.jpg"}],
+    },
   ];
 
   useEffect(() => {
@@ -115,7 +126,6 @@ const PlannerList = () => {
         ))}
       </div>
       <div onClick={addToCart} className="flex justify-end mr-10 mb-20">
-        {/* 상품담기 api 연결하고 planner로 navigate */}
         <TodoButton title="상품 담기" />
       </div>
     </RadioGroup>

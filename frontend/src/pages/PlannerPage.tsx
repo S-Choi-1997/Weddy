@@ -66,12 +66,6 @@ const Planner = () => {
             추천 상품
           </span>
         </div>
-        {/* {cartList.map((item: Product) => (
-          <PlannerBox
-            key={item.id}
-            item={item}
-          />
-        ))} */}
 
         <PlannerBox category="STUDIO" item={studio} />
         <PlannerBox category="DRESS" item={dress} />

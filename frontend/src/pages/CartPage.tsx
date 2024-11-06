@@ -1,5 +1,5 @@
+import { createContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
-// import { addProductToCart } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
 // import { recommendState } from "@/store/recommendState";
@@ -15,7 +15,7 @@ const CartPage = () => {
   const [dressList, setDressList] = useState<Product[]>([]);
   const [makeupList, setMakeupList] = useState<Product[]>([]);
 
-  const dummyData: Product[] = [
+  const recommendList: Product[] = [
     {
       id: "1",
       type: "DRESS",
@@ -94,30 +94,16 @@ const CartPage = () => {
     setSelectedList((prev) => ({ ...prev, [type]: selectedCartItem }));
   };
 
-  // const handleCreateContract = async () => {
-  //   const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
-  //   const contracts = await createContract(contractItems);
-  //   await requestContract(contracts);
-  // };
-
-  const addToCart = async () => {
-    const products = Object.values(selectedList).filter((product): product is Product => product !== null);
-  
-    if (products.length === 0) {
-      alert("상품을 선택해주세요.");
-    } else {
-      for (const product of products) {
-        console.log(product);
-        // await addProductToCart(product.id);
-      }
-      navigate("/planner");
-    }
+  const handleCreateContract = async () => {
+    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+    await createContract(contractItems);
+    navigate("/contract/list");
   };
   
   useEffect(() => {
-    setStudioList(dummyData.filter((product: Product) => product.type === "STUDIO"));
-    setDressList(dummyData.filter((product: Product) => product.type === "DRESS"));
-    setMakeupList(dummyData.filter((product: Product) => product.type === "MAKEUP"));
+    setStudioList(recommendList.filter((product: Product) => product.type === "STUDIO"));
+    setDressList(recommendList.filter((product: Product) => product.type === "DRESS"));
+    setMakeupList(recommendList.filter((product: Product) => product.type === "MAKEUP"));
   }, []);
 
   return (
@@ -136,7 +122,7 @@ const CartPage = () => {
         <CartBox title="MAKEUP" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange} />
         <div className="flex justify-between mt-10 mx-10">
           <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
-          <div onClick={addToCart}>
+          <div onClick={handleCreateContract}>
             <TodoButton title="계약 요청" />
           </div>
         </div>
