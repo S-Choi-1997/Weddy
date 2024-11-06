@@ -12,18 +12,18 @@ const firebaseConfig = {
   measurementId: "G-SYX7QVXCHF"
 };
 
+// Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+const messaging = getMessaging(app);  // messaging 초기화
 
 // 알림 권한 요청 함수
 export const requestNotificationPermission = async (): Promise<void> => {
   const permission = await Notification.requestPermission();
-  console.log("Permission result:", permission); // 권한 요청 결과 확인
+  // console.log("Permission result:", permission); // 권한 요청 결과 확인
 
   if (permission === 'granted') {
-    console.log("Notification permission granted.");
-    // 권한이 허용되었을 때만 토큰 요청
-    await requestForToken();
+    // console.log("Notification permission granted.");
+    await requestForToken(); // 권한이 허용되었을 때만 토큰 요청
   } else {
     console.warn("Notification permission denied.");
   }
@@ -32,9 +32,10 @@ export const requestNotificationPermission = async (): Promise<void> => {
 // FCM 토큰 요청 함수
 export const requestForToken = async (): Promise<string | null> => {
   try {
-    const currentToken = await getToken(messaging, { vapidKey: "BKojx5BxhDa3CC6MjLs1my1GxPfrOetsQqzdbNbUR4pQdrpVj2_NHOYNZJ7_psyILjQUgHICcNDCtu6z0yej3-s" });
-    console.log("Current token:", currentToken); // 토큰이 제대로 생성되는지 확인
-    // alert("Current token: " + currentToken);
+    const currentToken = await getToken(messaging, {
+      vapidKey: "BKojx5BxhDa3CC6MjLs1my1GxPfrOetsQqzdbNbUR4pQdrpVj2_NHOYNZJ7_psyILjQUgHICcNDCtu6z0yej3-s"
+    });
+    // console.log("Current token:", currentToken); // 토큰이 제대로 생성되는지 확인
 
     if (currentToken) {
       return currentToken; // 토큰 반환
@@ -48,9 +49,9 @@ export const requestForToken = async (): Promise<string | null> => {
   }
 };
 
-// 메시지 수신 리스너
-export const onMessageListener = () => {
-  return new Promise<MessagePayload>((resolve) => {
+// 포그라운드 메시지 수신 리스너
+export const onMessageListener = (): Promise<MessagePayload> => {
+  return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
       console.log("Message received in foreground:", payload); // 로그 출력
       resolve(payload);
@@ -58,5 +59,5 @@ export const onMessageListener = () => {
   });
 };
 
-
-
+// messaging 객체 export
+export { messaging };

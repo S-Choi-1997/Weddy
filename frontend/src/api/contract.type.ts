@@ -17,9 +17,13 @@ export interface SentContractType {
 export interface ContractData {
   id: string;
   product: ContractProduct;
-  customer?: string;
+  userId?: string;
   content: string;
-  status: "CONTRACT_PENDING" | "SIGN_PENDING" | "PAYMENT_PENDING" | "PAYMENT_COMPLETED";
+  status:
+    | "CONTRACT_PENDING"
+    | "SIGN_PENDING"
+    | "PAYMENT_PENDING"
+    | "PAYMENT_COMPLETED";
   totalMount: string;
   companyName: string;
   startDate: Date;
