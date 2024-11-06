@@ -35,5 +35,5 @@ public class ContractInfoRequestDto{
     private LocalDate startDate;
     private LocalDate endDate;
     private Product product;
-
+    private String paymentId;
 }
