@@ -23,7 +23,7 @@ const Prompt = () => {
     console.log(inputValue);
     // const recommendList = await aiRecommend(inputValue);
     // setRecommendList(recommendList);
-    navigate("/cart");
+    navigate("/planner");
   };
 
   useEffect(() => {

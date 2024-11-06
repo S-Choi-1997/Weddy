@@ -1,55 +1,39 @@
-import { useState } from 'react';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Product } from '@/api/product.type';
-import { Link } from 'react-router-dom';
+import { Product } from "@/api/product.type";
+import { AccordionDetails } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Checkbox } from "../ui/checkbox";
 
 interface CartBoxProps {
-  title: string;
-  type: string;
-  cartItem: Product[];
-  onAmountChange: (type: string, selectedProduct: Product | null) => void;
+  item: Product;
+  isSelected: boolean;
+  onProductSelect: (product: Product | null) => void;
+  onRemove: (id: string) => void;
 }
 
-const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const handleCheckboxChange = (index: number) => {
-    const isSelected = selectedIndex === index;
-    setSelectedIndex(isSelected ? null : index);
-    
-    const selectedItem = isSelected ? null : cartItem[index];
-    onAmountChange(type, selectedItem);
+const CartBox = ({ item, isSelected, onProductSelect, onRemove }: CartBoxProps) => {
+  const handleCheckboxChange = () => {
+    onProductSelect(isSelected ? null : item);
   };
-  
+
   return (
-    <div className="m-5">
-      <h2 className="font-bold text-lg mb-3">{title}</h2>
-      {cartItem.map((item, index) => (
-        <div
-          key={item.id}
-          className="mx-1 my-5 bg-white h-[70px] w-auto rounded-lg px-5 py-3 flex justify-between"
+    <AccordionDetails sx={{ border: "none" }}>
+      <div className="flex items-center space-x-4">
+        <Checkbox checked={isSelected} onCheckedChange={handleCheckboxChange} />
+        <Link
+          to={`/board/detail/${item.id}`}
+          className="flex flex-1 justify-between items-center space-x-4"
         >
-          <div className="flex items-center">
-            <Checkbox
-              checked={selectedIndex === index}
-              onCheckedChange={() => handleCheckboxChange(index)}
-            />
-            <Link to={`/board/detail/${item.id}`}>
-              <div className="flex flex-col ml-3">
-                <span className="font-bold">{item.name}</span>
-                <span className="text-sm text-gray-600">{item.vendorName}</span>
-              </div>
-            </Link>
+          <div className="flex flex-col space-y-1">
+            <span className="font-bold text-lg text-main2">{item.vendorName}</span>
+            <span>{item.name}</span>
+            <span className="font-bold">{Number(item.price).toLocaleString()}원</span>
           </div>
-          <div>
-            {Number(item.price).toLocaleString()}원
-          </div>
-          {/* <div>
-            <button className="text-sm">삭제</button>
-          </div> */}
-        </div>
-      ))}
-    </div>
+        </Link>
+        <button className="ml-auto mr-3 rounded-full w-[35px] h-[35px] bg-gray-100" onClick={() => onRemove(item.id)}>
+          삭제
+        </button>
+      </div>
+    </AccordionDetails>
   );
 };
 

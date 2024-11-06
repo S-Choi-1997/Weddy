@@ -4,9 +4,9 @@ import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PlannerBox from "./PlannerBox";
+import CartBox from "./CartBox";
 
-interface PlannerListBoxProps {
+interface CartListBoxProps {
   category: string;
   productList: Product[];
   selectedList: { [type: string]: Product | null };
@@ -14,7 +14,7 @@ interface PlannerListBoxProps {
   onRemove: (category: string, id: string) => void;
 }
 
-const PlannerListBox = ({ category, productList, selectedList, onProductChange, onRemove }: PlannerListBoxProps) => {
+const CartListBox = ({ category, productList, selectedList, onProductChange, onRemove }: CartListBoxProps) => {
   const navigate = useNavigate();
   const goRecommend = () => {
     navigate(`/planner/list/${category}`);
@@ -80,7 +80,7 @@ const PlannerListBox = ({ category, productList, selectedList, onProductChange, 
       {isChecked ? (
         productList.map((item: Product, index) => (
           <div key={index}>
-            <PlannerBox
+            <CartBox
               item={item}
               isSelected={selectedList[category]?.id === item.id}
               onProductSelect={handleProductSelect}
@@ -99,4 +99,4 @@ const PlannerListBox = ({ category, productList, selectedList, onProductChange, 
   );
 };
 
-export default PlannerListBox;
+export default CartListBox;
