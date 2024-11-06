@@ -1,27 +1,21 @@
 import { createContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
-import { deleteFromCart } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
-import PlannerListBox from "@/components/PlannerPage/PlannerListBox";
+import CartBox from "@/components/PlannerPage/PlannerBox";
+// import { recommendState } from "@/store/recommendState";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import { useRecoilValue } from "recoil";
 
-const Planner = () => {
+const PlannerPage = () => {
   const navigate = useNavigate();
+  // const recommendList = useRecoilValue(recommendState);
 
   const [studioList, setStudioList] = useState<Product[]>([]);
   const [dressList, setDressList] = useState<Product[]>([]);
   const [makeupList, setMakeupList] = useState<Product[]>([]);
 
-  const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
-    STUDIO: null,
-    DRESS: null,
-    MAKEUP: null,
-  });
-
-  // const { data: cartList } = useQuery("getCartItems", getCartItems);
-
-  const cartList: Product[] = [
+  const recommendList: Product[] = [
     {
       id: "1",
       type: "DRESS",
@@ -79,97 +73,97 @@ const Planner = () => {
     },
   ];
 
-  useEffect(() => {
-    setStudioList(cartList.filter((item: Product) => item.type === "STUDIO"));
-    setDressList(cartList.filter((item: Product) => item.type === "DRESS"));
-    setMakeupList(cartList.filter((item: Product) => item.type === "MAKEUP"));
-  }, []);
+  const [selectedList, setSelectedList] = useState<{
+    [type: string]: Product | null;
+  }>({
+    studio: null,
+    dress: null,
+    makeup: null,
+  });
 
-  //== 총 가격 계산 ==//
-  const totalAmount = Object.values(selectedList).reduce((acc, item) => acc + (Number(item?.price) || 0), 0).toLocaleString();
+  const [selectedAmounts, setSelectedAmounts] = useState<{
+    [key: string]: number;
+  }>({
+    studio: 0,
+    dress: 0,
+    makeup: 0,
+  });
 
-  //== 선택한 상품 변경 ==//
-  const handleProductChange = (category: string, product: Product | null) => {
-    setSelectedList((prev) => ({
-      ...prev,
-      [category]: product,
-    }));
+  const totalAmount = Object.values(selectedAmounts).reduce(
+    (acc, amount) => acc + amount,
+    0
+  );
+
+  const handleAmountChange = (
+    type: string,
+    selectedCartItem: Product | null
+  ) => {
+    const amount = selectedCartItem ? parseInt(selectedCartItem.price) : 0;
+
+    setSelectedAmounts((prev) => ({ ...prev, [type]: amount }));
+    setSelectedList((prev) => ({ ...prev, [type]: selectedCartItem }));
   };
 
-  //== 계약서 요청 ==//
   const handleCreateContract = async () => {
-    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+    const contractItems = Object.values(selectedList).filter(
+      Boolean
+    ) as Product[];
     await createContract(contractItems);
     navigate("/contract/list");
   };
 
-  const deleteCartItem = async(category: string, id: string) => {
-    if (category === 'STUDIO') {
-      setStudioList(studioList.filter((item) => item.id !== id));
-    } else if (category === 'DRESS') {
-      setDressList(dressList.filter((item) => item.id !== id));
-    } else if (category === 'MAKEUP') {
-      setMakeupList(makeupList.filter((item) => item.id !== id));
-    }
-
-    await deleteFromCart(id);
-  };
+  useEffect(() => {
+    setStudioList(
+      recommendList.filter((product: Product) => product.type === "STUDIO")
+    );
+    setDressList(
+      recommendList.filter((product: Product) => product.type === "DRESS")
+    );
+    setMakeupList(
+      recommendList.filter((product: Product) => product.type === "MAKEUP")
+    );
+  }, []);
 
   return (
-    <div className="flex flex-col relative">
+    <>
       <div className="m-5 flex flex-col items-center">
-
-        <PlannerListBox
-          category="STUDIO"
-          productList={studioList}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
-        <PlannerListBox
-          category="DRESS"
-          productList={dressList}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
-        <PlannerListBox
-          category="MAKEUP"
-          productList={makeupList}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
-      </div>
-      
-      <div className="flex justify-end mr-10 mt-14">
-        <div className="flex flex-col mr-3">
-        {Object.entries(selectedList).map(([category, item]) =>
-          item?.name ? (
-            <span key={category} className="my-1">
-              {item.name}
-            </span>
-          ) : null
-        )}
-          <span className="font-bold mt-2">총 가격: </span>
-        </div>
-        <div className="flex flex-col text-end">
-        {Object.entries(selectedList).map(([category, item]) =>
-          item?.price ? (
-            <span key={category} className="my-1">
-              {Number(item.price).toLocaleString()}원
-            </span>
-          ) : null
-        )}
-          <span className="font-bold mt-2">{totalAmount.toLocaleString()}원</span>
+        <div className="flex items-center mt-5">
+          <span className="text-m">
+            <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
+            추천 상품
+          </span>
         </div>
       </div>
-      
-      <div className="flex justify-end mr-10 mt-5 mb-24" onClick={handleCreateContract}>
-        <TodoButton title="계약 요청" />
+      <div className="mt-10">
+        <CartBox
+          title="STUDIO"
+          type="studio"
+          cartItem={studioList}
+          onAmountChange={handleAmountChange}
+        />
+        <CartBox
+          title="DRESS"
+          type="dress"
+          cartItem={dressList}
+          onAmountChange={handleAmountChange}
+        />
+        <CartBox
+          title="MAKEUP"
+          type="makeup"
+          cartItem={makeupList}
+          onAmountChange={handleAmountChange}
+        />
+        <div className="flex justify-between mt-10 mx-10">
+          <span className="text-lg font-bold">
+            총 합계: {totalAmount.toLocaleString()}원
+          </span>
+          <div onClick={handleCreateContract}>
+            <TodoButton title="계약 요청" />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Planner;
+export default PlannerPage;
