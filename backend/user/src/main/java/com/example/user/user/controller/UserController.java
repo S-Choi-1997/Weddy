@@ -1,6 +1,6 @@
 package com.example.user.user.controller;
 
-import com.example.user.common.dto.APIResponse;
+import com.example.user.common.dto.ApiResponse;
 import com.example.user.common.dto.UserDTO;
 import com.example.user.user.dto.response.UserResponseDTO;
 import com.example.user.user.entity.UserEntity;
@@ -8,6 +8,8 @@ import com.example.user.security.jwt.BlackTokenService;
 import com.example.user.user.repository.UserRepository;
 import com.example.user.security.service.TokenService;
 import com.example.user.user.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,120 +33,66 @@ public class UserController {
     }
 
     @GetMapping
-    public APIResponse getUsers(@AuthenticationPrincipal UserEntity user) {
-        APIResponse response = userService.userInfo(user.getId());
-        return response;
+    public ResponseEntity<ApiResponse<UserResponseDTO>> getUsers(@AuthenticationPrincipal UserEntity user) {
+        UserResponseDTO userResponseDTO = userService.userInfo(user.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(userResponseDTO,"유저 정보 호출 성공"));
     }
 
     @GetMapping("/couple-code")
-    public APIResponse getCoupleCode(@AuthenticationPrincipal UserEntity user) {
+    public ResponseEntity<ApiResponse<UserResponseDTO>> getCoupleCode(@AuthenticationPrincipal UserEntity user) {
         UserResponseDTO userResponseDTO = userService.coupleCode(user.getCoupleCode());
-        APIResponse apiResponse = APIResponse.builder()
-                .status(200)
-                .data(userResponseDTO)
-                .build();
-        return  apiResponse;
+        return  ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(userResponseDTO,"커플 코드 조회 성공"));
     }
 
-//    @PatchMapping
-//    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user) {
-//        APIResponse apiResponse;
-//        try {
-//            userService.patchUser(user);
-//            apiResponse = APIResponse.builder()
-//                    .status(200)
-//                    .message("회원 정보 수정 완료")
-//                    .build();
-//        }
-//        catch (Exception e) {
-//            apiResponse = APIResponse.builder()
-//                    .status(500)
-//                    .message("회원 정보 수정 에러")
-//                    .build();
-//        }
-//        return  apiResponse;
-//    }
-
     @PostMapping("/logout")
-    public APIResponse logoutUser (@AuthenticationPrincipal UserEntity user,@RequestHeader("Authorization") String authorizationHeader) {
-        APIResponse apiResponse;
+    public ResponseEntity<ApiResponse<Void>> logoutUser (@AuthenticationPrincipal UserEntity user,@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7) : authorizationHeader;
-        try {
-            blackTokenService.addToBlacklist(token,user.getId());
-            apiResponse = APIResponse.builder()
-                    .status(200)
-                    .message("로그아웃 완료")
-                    .build();
-        }
-        catch (Exception e) {
-            apiResponse = APIResponse.builder()
-                    .status(500)
-                    .message("로그아웃 에러")
-                    .build();
-        }
-        return apiResponse;
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success("로그아웃 성공"));
     }
 
     @PatchMapping
-    public APIResponse updateUser(@AuthenticationPrincipal UserEntity user,
-                                  @RequestParam(required = false) String phone,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String address,
-                                  @RequestParam(required = false) String email,
-                                  @RequestParam(required = false) String date,
-                                  @RequestParam(required = false) MultipartFile picture) {
-        try {
-            Map<String, Object> updates = new HashMap<>();
-            if (phone != null) updates.put("phone", phone);
-            if (name != null) updates.put("name", name);
-            if (address != null) updates.put("address", address);
-            if (email != null) updates.put("email", email);
-            if (date != null) updates.put("Date", date);
-            if (picture != null) updates.put("picture", picture);
+    public ResponseEntity<ApiResponse<Void>> updateUser(
+            @AuthenticationPrincipal UserEntity user,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) MultipartFile picture) {
 
-            userService.updateUserInfo(user.getId(), updates);
-            return APIResponse.builder()
-                    .status(200)
-                    .message("회원 정보 수정 완료")
-                    .build();
-        } catch (Exception e) {
-            return APIResponse.builder()
-                    .status(500)
-                    .message("회원 정보 수정 에러")
-                    .build();
-        }
+        Map<String, Object> updates = new HashMap<>();
+        if (phone != null) updates.put("phone", phone);
+        if (name != null) updates.put("name", name);
+        if (address != null) updates.put("address", address);
+        if (email != null) updates.put("email", email);
+        if (date != null) updates.put("date", date);
+        if (picture != null) updates.put("picture", picture);
+
+        userService.updateUserInfo(user.getId(), updates);
+
+        // 성공 응답
+        return ResponseEntity.ok(ApiResponse.success("회원 정보 수정 완료"));
     }
+
 
     @PatchMapping("/couple-connect")
-    public APIResponse connectCouple(@AuthenticationPrincipal UserEntity user, @RequestBody Map<String, String> codeRequest) {
+    public ResponseEntity<ApiResponse<UserResponseDTO>> connectCouple(@AuthenticationPrincipal UserEntity user, @RequestBody Map<String, String> codeRequest) {
         String code = codeRequest.get("code");
-        UserDTO userDTO;
-        try {
-            userDTO = userService.connectCoupleCode(code,user.getId());
-            return APIResponse.builder()
-                    .status(200)
-                    .message("커플코드 수정 완료")
-                    .data(userDTO)
-                    .build();
-        } catch (Exception e) {
-            return APIResponse.builder()
-                    .status(500)
-                    .message("커플코드 수정 에러")
-                    .build();
-        }
+        UserResponseDTO userResponseDTO = userService.connectCoupleCode(code,user.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(userResponseDTO,"커플코드 연결 성공"));
     }
 
-    @GetMapping("/test")
-    public APIResponse test(@AuthenticationPrincipal UserEntity user) {
-        try {
-            return APIResponse.builder()
-                    .data(user)
-                    .build();
-        }catch (Exception e){
-            return APIResponse.builder()
-                    .status(500)
-                    .message("에러")
-                    .build();
-        }
-    }
+//    @GetMapping("/test")
+//    public APIResponse test(@AuthenticationPrincipal UserEntity user) {
+//        try {
+//            return APIResponse.builder()
+//                    .data(user)
+//                    .build();
+//        }catch (Exception e){
+//            return APIResponse.builder()
+//                    .status(500)
+//                    .message("에러")
+//                    .build();
+//        }
+//    }
 }
