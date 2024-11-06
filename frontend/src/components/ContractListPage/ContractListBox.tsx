@@ -10,7 +10,9 @@ interface ContractListBoxProps {
   type: string;
   contractInfo: ContractData;
 }
+
 const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
+  console.log("계약서 정보 ", contractInfo);
   const handleChangeStatus = async () => {
     await changeStatus(contractInfo.id);
     window.location.reload();
