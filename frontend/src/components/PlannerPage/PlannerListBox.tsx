@@ -4,25 +4,30 @@ import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PlannerListBox from "./PlannerBox";
+import PlannerBox from "./PlannerBox";
 
-interface PlannerBoxProps {
+interface PlannerListBoxProps {
   category: string;
   productList: Product[];
+  selectedList: { [type: string]: Product | null };
+  onProductChange: (category: string, product: Product | null) => void;
 }
 
-const PlannerBox = (({ category, productList }: PlannerBoxProps) => {
-
-  const navigate = useNavigate()
+const PlannerListBox = ({ category, productList, selectedList, onProductChange }: PlannerListBoxProps) => {
+  const navigate = useNavigate();
   const goRecommend = () => {
     navigate(`/planner/list/${category}`);
-  }
+  };
 
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     setIsChecked(!!productList.length);
   }, [productList]);
+
+  const handleProductSelect = (product: Product | null) => {
+    onProductChange(category, product);
+  };
 
   return (
     <Accordion
@@ -34,7 +39,8 @@ const PlannerBox = (({ category, productList }: PlannerBoxProps) => {
         "&:before": {
           display: "none",
         },
-      }}>
+      }}
+    >
       <AccordionSummary
         aria-controls="panel1-content"
         id="panel1-header"
@@ -58,27 +64,28 @@ const PlannerBox = (({ category, productList }: PlannerBoxProps) => {
             <h1 className="font-bold mx-4">{category}</h1>
           </div>
 
-          {isChecked == true ?(
+          {isChecked ? (
             <div className="flex items-center">
-            <DropdownIcon />
+              <DropdownIcon />
             </div>
-          ):
-          (
+          ) : (
             <div onClick={goRecommend} className="flex items-center">
               <p className="mr-1">상품 보러가기</p>
               <GotoIcon />
             </div>
           )}
         </div>
-
       </AccordionSummary>
       {isChecked ? (
-        productList.map((item: Product) => (
-          <div key={item.id}>
-            <PlannerListBox item={item}/>
+        productList.map((item: Product, index) => (
+          <div key={index}>
+            <PlannerBox
+              item={item}
+              isSelected={selectedList[category]?.id === item.id}
+              onProductSelect={handleProductSelect}
+            />
           </div>
         ))
-        
       ) : (
         <AccordionDetails sx={{ border: "none" }}>
           <div className="flex justify-center items-center">
@@ -86,9 +93,8 @@ const PlannerBox = (({ category, productList }: PlannerBoxProps) => {
           </div>
         </AccordionDetails>
       )}
-      
     </Accordion>
   );
-});
+};
 
-export default PlannerBox;
+export default PlannerListBox;

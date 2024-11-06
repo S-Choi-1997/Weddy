@@ -1,14 +1,17 @@
 import { Product } from "@/api/product.type";
-// import { getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
-import PlannerBox from "@/components/PlannerPage/PlannerListBox";
+import PlannerListBox from "@/components/PlannerPage/PlannerListBox";
 import { useEffect, useState } from "react";
-// import { useQuery } from "react-query";
 
 const Planner = () => {
-  const [ studioList, setStudioList ] = useState<Product[]>([]);
-  const [ dressList, setDressList ] = useState<Product[]>([]);
-  const [ makeupList, setMakeupList] = useState<Product[]>([]);
+  const [studioList, setStudioList] = useState<Product[]>([]);
+  const [dressList, setDressList] = useState<Product[]>([]);
+  const [makeupList, setMakeupList] = useState<Product[]>([]);
+  const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
+    STUDIO: null,
+    DRESS: null,
+    MAKEUP: null,
+  });
 
   // const { data: cartList } = useQuery("getCartItems", getCartItems);
 
@@ -78,10 +81,16 @@ const Planner = () => {
 
   const totalPrice = cartList.reduce((acc, item) => acc + Number(item.price), 0);
 
+  const handleProductChange = (category: string, product: Product | null) => {
+    setSelectedList((prev) => ({
+      ...prev,
+      [category]: product,
+    }));
+  };
+
   return (
     <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
-        {/* <h1 className="my-3 text-main2">WEDDY 플래너</h1> */}
         <div className="flex items-center mt-5">
           <span className="text-sm">
             <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
@@ -89,11 +98,26 @@ const Planner = () => {
           </span>
         </div>
 
-        <PlannerBox category="STUDIO" productList={studioList} />
-        <PlannerBox category="DRESS" productList={dressList} />
-        <PlannerBox category="MAKEUP" productList={makeupList} />
-
+        <PlannerListBox
+          category="STUDIO"
+          productList={studioList}
+          selectedList={selectedList}
+          onProductChange={handleProductChange}
+        />
+        <PlannerListBox
+          category="DRESS"
+          productList={dressList}
+          selectedList={selectedList}
+          onProductChange={handleProductChange}
+        />
+        <PlannerListBox
+          category="MAKEUP"
+          productList={makeupList}
+          selectedList={selectedList}
+          onProductChange={handleProductChange}
+        />
       </div>
+      
       <div className="flex justify-end mr-10 mt-14">
         <div className="flex flex-col mr-3">
           {cartList.map((item: Product) => (
@@ -112,6 +136,7 @@ const Planner = () => {
           <span className="font-bold">{totalPrice.toLocaleString()}원</span>
         </div>
       </div>
+      
       <div className="flex justify-end mr-10 mt-5 mb-24">
         <TodoButton title="계약 요청" />
       </div>
