@@ -1,11 +1,18 @@
-import { ContractProduct } from "@/api/contract.type";
-import { requestContract } from "@/api/contractApi";
+import { createContract, requestContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
-import { useState } from 'react';
+// import { recommendState } from "@/store/recommendState";
+import { useEffect, useState } from 'react';
+// import { useRecoilValue } from "recoil";
 
 const CartPage = () => {
+  // const recommendList = useRecoilValue(recommendState);
+
+  const [studioList, setStudioList] = useState<Product[]>([]);
+  const [dressList, setDressList] = useState<Product[]>([]);
+  const [makeupList, setMakeupList] = useState<Product[]>([]);
+
   const dummyData: Product[] = [
     {
       id: "1",
@@ -79,54 +86,29 @@ const CartPage = () => {
   const totalAmount = Object.values(selectedAmounts).reduce((acc, amount) => acc + amount, 0);
 
   const handleAmountChange = (type: string, selectedCartItem: Product | null) => {
-    setSelectedAmounts((prev) => ({
-      ...prev,
-      [type]: selectedCartItem ? parseInt(selectedCartItem.price) : 0,
-    }));
-
-    setSelectedList((prev) => ({
-      ...prev,
-      [type]: selectedCartItem,
-    }));
+    const amount = selectedCartItem ? parseInt(selectedCartItem.price) : 0;
+  
+    setSelectedAmounts((prev) => ({ ...prev, [type]: amount }));
+    setSelectedList((prev) => ({ ...prev, [type]: selectedCartItem }));
   };
 
   const handleCreateContract = async () => {
-    const contractItems = Object.values(selectedList).filter(
-      (item): item is Product => item !== null
-    );
-
-    const contracts = contractItems.map((item) => {
-      const date = new Date().toISOString().slice(0, 10);
-  
-      const contractProduct: ContractProduct = {
-        productId: item.id,
-        productName: item.name,
-        productContent: item.content,
-        type: item.type,
-      };
-
-      return {
-        userId: sessionStorage.getItem("userId") as string,
-        totalMount: item.price,
-        companyName: item.vendorName,
-        startDate: date,
-        endDate: date,
-        product: contractProduct,
-      };
-    });
-    
+    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+    const contracts = await createContract(contractItems);
     await requestContract(contracts);
   };
-
-  const studio = dummyData.filter((item) => item.type === "STUDIO");
-  const dress = dummyData.filter((item) => item.type === "DRESS");
-  const makeup = dummyData.filter((item) => item.type === "MAKEUP");
+  
+  useEffect(() => {
+    setStudioList(dummyData.filter((product: Product) => product.type === "STUDIO"));
+    setDressList(dummyData.filter((product: Product) => product.type === "DRESS"));
+    setMakeupList(dummyData.filter((product: Product) => product.type === "MAKEUP"));
+  }, []);
 
   return (
     <div className="mt-10">
-      <CartBox title="STUDIO" type="studio" cartItem={studio} onAmountChange={handleAmountChange} />
-      <CartBox title="DRESS" type="dress" cartItem={dress} onAmountChange={handleAmountChange} />
-      <CartBox title="MAKEUP" type="makeup" cartItem={makeup} onAmountChange={handleAmountChange} />
+      <CartBox title="STUDIO" type="studio" cartItem={studioList} onAmountChange={handleAmountChange} />
+      <CartBox title="DRESS" type="dress" cartItem={dressList} onAmountChange={handleAmountChange} />
+      <CartBox title="MAKEUP" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange} />
       <div className="flex justify-between mt-10 mx-10">
         <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
         <div onClick={handleCreateContract}>
