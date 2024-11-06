@@ -1,3 +1,4 @@
+// import { connectCoupleCode } from "@/api/coupleApi";
 import { userInformation } from "@/api/user.type";
 import { editInfomation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
@@ -10,7 +11,8 @@ import { useRecoilValue } from 'recoil';
 
 const Mypage = () => {
   const token = useRecoilValue(firebaseTokenState);
-  const [isConneted,] = useState<boolean>(true);
+  const [ isConneted, ] = useState<boolean>(false);
+  const [ code, setCode ] = useState<string>("");
   const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -59,10 +61,11 @@ const Mypage = () => {
     setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
 
-  // //== 커플 코드 연결 ==//
-  // const handleConnect = async (code: string) => {
-  //   await connectCoupleCode(code);
-  // };
+  //== 커플 코드 연결 ==//
+  const handleConnect = async () => {
+    console.log(code);
+    // await connectCoupleCode(code);
+  };
 
   const today = new Date();
   const targetDate = new Date('2024-11-19');
@@ -104,6 +107,8 @@ const Mypage = () => {
               <>
                 <span className="font-bold text-lg mb-2">{userData?.coupleCode}</span>
                 <span className="text-sm text-gray-500">상대방과 커플코드를 공유하세요!</span>
+                <input type="text" className="my-2 p-2 w-[250px] border border-gray-400 rounded-lg h-[30px]" onChange={(e) => setCode(e.target.value)}/>
+                <button onClick={handleConnect}>연결</button>
               </>
             )}
           </div>
@@ -147,7 +152,6 @@ const Mypage = () => {
       <div className="flex justify-end mt-10 mb-10 mr-3" onClick={handleUpdate}>
         <TodoButton title="수정하기" colorId={1} />
       </div>
-
     </div>
   )
 }
