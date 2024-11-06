@@ -13,7 +13,6 @@ import java.util.UUID;
 @Component
 public class GCSImageService {
 
-    @Autowired
     Storage storage;
 
     @Value("${spring.cloud.gcp.storage.bucket}") // application.yml에 써둔 bucket 이름
