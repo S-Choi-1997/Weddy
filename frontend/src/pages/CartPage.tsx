@@ -11,7 +11,7 @@ const CartPage = () => {
       id: "1",
       type: "DRESS",
       name: "웨딩 드레스 대여",
-      price: "150000",
+      price: "1500000",
       address: "서울 강남구",
       content: "고급스러운 웨딩 드레스 대여 서비스입니다.",
       vendorName: "Elegant Bridal",
@@ -22,7 +22,7 @@ const CartPage = () => {
       id: "2",
       type: "STUDIO",
       name: "웨딩 촬영 패키지",
-      price: "30000",
+      price: "3000000",
       address: "서울 마포구",
       content: "웨딩 사진 촬영 패키지로 특별한 순간을 담아드립니다.",
       vendorName: "Studio Bliss",
@@ -69,6 +69,7 @@ const CartPage = () => {
     dress: null,
     makeup: null,
   });
+
   const [selectedAmounts, setSelectedAmounts] = useState<{ [key: string]: number }>({
     studio: 0,
     dress: 0,
@@ -103,9 +104,9 @@ const CartPage = () => {
         productContent: item.content,
         type: item.type,
       };
-  
+
       return {
-        userId: "5",
+        userId: sessionStorage.getItem("userId") as string,
         totalMount: item.price,
         companyName: item.vendorName,
         startDate: date,
@@ -113,7 +114,7 @@ const CartPage = () => {
         product: contractProduct,
       };
     });
-  
+    
     await requestContract(contracts);
   };
 
