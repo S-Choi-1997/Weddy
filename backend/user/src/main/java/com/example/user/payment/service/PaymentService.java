@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -46,6 +43,8 @@ public class PaymentService {
      * @param contractInfoRequestDto
      */
     public void paymentSuccess(ContractInfoRequestDto contractInfoRequestDto) {
+
+        log.info("결제성공" + contractInfoRequestDto.toString());
         contractService.changeContractStatus(contractInfoRequestDto.getId());
         occurPaymentEvent(contractInfoRequestDto);
 
@@ -57,11 +56,12 @@ public class PaymentService {
         // 결제 취소 로직
 
         RestTemplate restTemplate = new RestTemplate();
-
         String url =  "https://api.portone.io/payments/"+paymentId+"/cancel";
         HttpHeaders headers  = new HttpHeaders();
-        headers.add("Authorization", API_SECRET_KEY);
-        HttpEntity<String > entity = new HttpEntity<>(headers);
+        headers.add("Authorization","PortOne "+API_SECRET_KEY);
+        headers.setContentType(MediaType.APPLICATION_JSON);  // Content-Type 추가
+        String requestBody = "{\"reason\":\""  + reason +"\"}";
+        HttpEntity<String > entity = new HttpEntity<>(requestBody,headers);
 
         ResponseEntity<String> response  =  restTemplate.exchange(
                 url,
