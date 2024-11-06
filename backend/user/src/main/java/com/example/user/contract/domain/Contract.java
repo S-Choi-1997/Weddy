@@ -71,11 +71,12 @@ public class Contract {
     }
 
 
-    public void validation(Long totalMount){
+    public boolean validation(Long totalMount){
         if(this.totalMount != totalMount){
-            throw new PaymentNotValidateException(ErrorCode.PAYMENT_NOT_VALIDATE);
+            return false;
         }
 
+        return true;
     }
 
 
