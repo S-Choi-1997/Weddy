@@ -11,9 +11,10 @@ interface PlannerListBoxProps {
   productList: Product[];
   selectedList: { [type: string]: Product | null };
   onProductChange: (category: string, product: Product | null) => void;
+  onRemove: (category: string, id: string) => void;
 }
 
-const PlannerListBox = ({ category, productList, selectedList, onProductChange }: PlannerListBoxProps) => {
+const PlannerListBox = ({ category, productList, selectedList, onProductChange, onRemove }: PlannerListBoxProps) => {
   const navigate = useNavigate();
   const goRecommend = () => {
     navigate(`/planner/list/${category}`);
@@ -83,6 +84,7 @@ const PlannerListBox = ({ category, productList, selectedList, onProductChange }
               item={item}
               isSelected={selectedList[category]?.id === item.id}
               onProductSelect={handleProductSelect}
+              onRemove={() => onRemove(category, item.id)}
             />
           </div>
         ))

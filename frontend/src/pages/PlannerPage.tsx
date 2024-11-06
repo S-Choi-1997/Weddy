@@ -1,12 +1,18 @@
+import { createContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
+import { deleteFromCart } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import PlannerListBox from "@/components/PlannerPage/PlannerListBox";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Planner = () => {
+  const navigate = useNavigate();
+
   const [studioList, setStudioList] = useState<Product[]>([]);
   const [dressList, setDressList] = useState<Product[]>([]);
   const [makeupList, setMakeupList] = useState<Product[]>([]);
+
   const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
     STUDIO: null,
     DRESS: null,
@@ -79,8 +85,10 @@ const Planner = () => {
     setMakeupList(cartList.filter((item: Product) => item.type === "MAKEUP"));
   }, []);
 
+  //== 총 가격 계산 ==//
   const totalAmount = Object.values(selectedList).reduce((acc, item) => acc + (Number(item?.price) || 0), 0).toLocaleString();
 
+  //== 선택한 상품 변경 ==//
   const handleProductChange = (category: string, product: Product | null) => {
     setSelectedList((prev) => ({
       ...prev,
@@ -88,33 +96,49 @@ const Planner = () => {
     }));
   };
 
+  //== 계약서 요청 ==//
+  const handleCreateContract = async () => {
+    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+    await createContract(contractItems);
+    navigate("/contract/list");
+  };
+
+  const deleteCartItem = async(category: string, id: string) => {
+    if (category === 'STUDIO') {
+      setStudioList(studioList.filter((item) => item.id !== id));
+    } else if (category === 'DRESS') {
+      setDressList(dressList.filter((item) => item.id !== id));
+    } else if (category === 'MAKEUP') {
+      setMakeupList(makeupList.filter((item) => item.id !== id));
+    }
+
+    await deleteFromCart(id);
+  };
+
   return (
     <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
-        {/* <div className="flex items-center mt-5">
-          <span className="text-sm">
-            <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
-            추천 상품
-          </span>
-        </div> */}
 
         <PlannerListBox
           category="STUDIO"
           productList={studioList}
           selectedList={selectedList}
           onProductChange={handleProductChange}
+          onRemove={deleteCartItem}
         />
         <PlannerListBox
           category="DRESS"
           productList={dressList}
           selectedList={selectedList}
           onProductChange={handleProductChange}
+          onRemove={deleteCartItem}
         />
         <PlannerListBox
           category="MAKEUP"
           productList={makeupList}
           selectedList={selectedList}
           onProductChange={handleProductChange}
+          onRemove={deleteCartItem}
         />
       </div>
       
@@ -141,7 +165,7 @@ const Planner = () => {
         </div>
       </div>
       
-      <div className="flex justify-end mr-10 mt-5 mb-24">
+      <div className="flex justify-end mr-10 mt-5 mb-24" onClick={handleCreateContract}>
         <TodoButton title="계약 요청" />
       </div>
     </div>

@@ -33,19 +33,20 @@ export const createContract = async (contractItems: Product[]): Promise<void> =>
 
 //== 계약 요청 ==//
 export const requestContract = async (contractList: SentContractType[]): Promise<void> => {
-  await axios({
-    method: 'post',
-    url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
-    // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
-    // headers: {
-    //   Authorization: sessionStorage.getItem("token")
-    // }
-    data: contractList
-  });
+  console.log(contractList);
+  // await axios({
+  //   method: 'post',
+  //   url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
+  //   headers: {
+  //     Authorization: `Bearer ${token}`
+  //   },
+  //   // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
+  //   // url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
+  //   // headers: {
+  //   //   Authorization: sessionStorage.getItem("token")
+  //   // }
+  //   data: contractList
+  // });
 };
 
 //== 계약 리스트 ==//
