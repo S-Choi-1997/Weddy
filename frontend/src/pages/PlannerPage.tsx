@@ -79,7 +79,7 @@ const Planner = () => {
     setMakeupList(cartList.filter((item: Product) => item.type === "MAKEUP"));
   }, []);
 
-  const totalPrice = cartList.reduce((acc, item) => acc + Number(item.price), 0);
+  const totalAmount = Object.values(selectedList).reduce((acc, item) => acc + (Number(item?.price) || 0), 0).toLocaleString();
 
   const handleProductChange = (category: string, product: Product | null) => {
     setSelectedList((prev) => ({
@@ -91,12 +91,12 @@ const Planner = () => {
   return (
     <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
-        <div className="flex items-center mt-5">
+        {/* <div className="flex items-center mt-5">
           <span className="text-sm">
             <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
             추천 상품
           </span>
-        </div>
+        </div> */}
 
         <PlannerListBox
           category="STUDIO"
@@ -120,20 +120,24 @@ const Planner = () => {
       
       <div className="flex justify-end mr-10 mt-14">
         <div className="flex flex-col mr-3">
-          {cartList.map((item: Product) => (
-            <span key={item.id} className="my-1">
-              {item.vendorName ? item.vendorName : "상품 없음"}
+        {Object.entries(selectedList).map(([category, item]) =>
+          item?.name ? (
+            <span key={category} className="my-1">
+              {item.name}
             </span>
-          ))}
+          ) : null
+        )}
           <span className="font-bold mt-2">총 가격: </span>
         </div>
         <div className="flex flex-col text-end">
-          {cartList.map((item: Product) => (
-            <span key={item.id} className="my-1">
+        {Object.entries(selectedList).map(([category, item]) =>
+          item?.price ? (
+            <span key={category} className="my-1">
               {Number(item.price).toLocaleString()}원
             </span>
-          ))}
-          <span className="font-bold">{totalPrice.toLocaleString()}원</span>
+          ) : null
+        )}
+          <span className="font-bold mt-2">{totalAmount.toLocaleString()}원</span>
         </div>
       </div>
       
