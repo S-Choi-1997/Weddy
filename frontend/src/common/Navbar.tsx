@@ -11,7 +11,6 @@ const Navbar = () => {
     navigate(-1);
   };
 
-
   return (
     <nav>
       {location !== "" && (
@@ -68,7 +67,7 @@ const Navbar = () => {
       )}
 
       {location != "contract" && (
-        <Link className="cartIcon" to='/cart'>
+        <Link className="cartIcon" to='/planner'>
           <CartIcon />
         </Link>
       )}

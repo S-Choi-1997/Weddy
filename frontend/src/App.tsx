@@ -56,6 +56,7 @@ function AppContent() {
         <Route path="/callback" element={<CallBack />} />
         <Route path="/nft/loading" element={<NFTLoading />} />
         <Route path="/recommend/loading" element={<RecommendLoading />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
       {(currentPath !== "login") && (currentPath !== "userinfo") && (currentDetail !== "detail") && <Footer />}
     </>

@@ -1,17 +1,26 @@
-import { ContractProduct } from "@/api/contract.type";
-import { requestContract } from "@/api/contractApi";
+import { createContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
-import { useState } from 'react';
+// import { recommendState } from "@/store/recommendState";
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+// import { useRecoilValue } from "recoil";
 
 const CartPage = () => {
-  const dummyData: Product[] = [
+  const navigate = useNavigate();
+  // const recommendList = useRecoilValue(recommendState);
+
+  const [studioList, setStudioList] = useState<Product[]>([]);
+  const [dressList, setDressList] = useState<Product[]>([]);
+  const [makeupList, setMakeupList] = useState<Product[]>([]);
+
+  const recommendList: Product[] = [
     {
       id: "1",
       type: "DRESS",
       name: "웨딩 드레스 대여",
-      price: "150000",
+      price: "1500000",
       address: "서울 강남구",
       content: "고급스러운 웨딩 드레스 대여 서비스입니다.",
       vendorName: "Elegant Bridal",
@@ -22,7 +31,7 @@ const CartPage = () => {
       id: "2",
       type: "STUDIO",
       name: "웨딩 촬영 패키지",
-      price: "30000",
+      price: "3000000",
       address: "서울 마포구",
       content: "웨딩 사진 촬영 패키지로 특별한 순간을 담아드립니다.",
       vendorName: "Studio Bliss",
@@ -69,6 +78,7 @@ const CartPage = () => {
     dress: null,
     makeup: null,
   });
+
   const [selectedAmounts, setSelectedAmounts] = useState<{ [key: string]: number }>({
     studio: 0,
     dress: 0,
@@ -78,61 +88,46 @@ const CartPage = () => {
   const totalAmount = Object.values(selectedAmounts).reduce((acc, amount) => acc + amount, 0);
 
   const handleAmountChange = (type: string, selectedCartItem: Product | null) => {
-    setSelectedAmounts((prev) => ({
-      ...prev,
-      [type]: selectedCartItem ? parseInt(selectedCartItem.price) : 0,
-    }));
-
-    setSelectedList((prev) => ({
-      ...prev,
-      [type]: selectedCartItem,
-    }));
+    const amount = selectedCartItem ? parseInt(selectedCartItem.price) : 0;
+  
+    setSelectedAmounts((prev) => ({ ...prev, [type]: amount }));
+    setSelectedList((prev) => ({ ...prev, [type]: selectedCartItem }));
   };
 
   const handleCreateContract = async () => {
-    const contractItems = Object.values(selectedList).filter(
-      (item): item is Product => item !== null
-    );
-
-    const contracts = contractItems.map((item) => {
-      const date = new Date().toISOString().slice(0, 10);
-  
-      const contractProduct: ContractProduct = {
-        productId: item.id,
-        productName: item.name,
-        productContent: item.content,
-        type: item.type,
-      };
-  
-      return {
-        userId: "5",
-        totalMount: item.price,
-        companyName: item.vendorName,
-        startDate: date,
-        endDate: date,
-        product: contractProduct,
-      };
-    });
-  
-    await requestContract(contracts);
+    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+    await createContract(contractItems);
+    navigate("/contract/list");
   };
-
-  const studio = dummyData.filter((item) => item.type === "STUDIO");
-  const dress = dummyData.filter((item) => item.type === "DRESS");
-  const makeup = dummyData.filter((item) => item.type === "MAKEUP");
+  
+  useEffect(() => {
+    setStudioList(recommendList.filter((product: Product) => product.type === "STUDIO"));
+    setDressList(recommendList.filter((product: Product) => product.type === "DRESS"));
+    setMakeupList(recommendList.filter((product: Product) => product.type === "MAKEUP"));
+  }, []);
 
   return (
-    <div className="mt-10">
-      <CartBox title="STUDIO" type="studio" cartItem={studio} onAmountChange={handleAmountChange} />
-      <CartBox title="DRESS" type="dress" cartItem={dress} onAmountChange={handleAmountChange} />
-      <CartBox title="MAKEUP" type="makeup" cartItem={makeup} onAmountChange={handleAmountChange} />
-      <div className="flex justify-between mt-10 mx-10">
-        <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
-        <div onClick={handleCreateContract}>
-          <TodoButton title="계약 요청" />
+    <>
+      <div className="m-5 flex flex-col items-center">
+        <div className="flex items-center mt-5">
+          <span className="text-m">
+            <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
+            추천 상품
+          </span>
         </div>
       </div>
-    </div>
+      <div className="mt-10">
+        <CartBox title="STUDIO" type="studio" cartItem={studioList} onAmountChange={handleAmountChange} />
+        <CartBox title="DRESS" type="dress" cartItem={dressList} onAmountChange={handleAmountChange} />
+        <CartBox title="MAKEUP" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange} />
+        <div className="flex justify-between mt-10 mx-10">
+          <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
+          <div onClick={handleCreateContract}>
+            <TodoButton title="계약 요청" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
