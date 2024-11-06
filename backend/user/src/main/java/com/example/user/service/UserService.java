@@ -40,12 +40,6 @@ public class UserService {
         return userResponseDTO;
     }
 
-//    public void patchUser(UserEntity userEntity){
-//        userRepository.save(userEntity);
-//    }
-
-
-
     public void updateUserInfo(Long id, Map<String, Object> info) {
         UserEntity userEntity = userRepository.findById(id).orElse(null);
 
