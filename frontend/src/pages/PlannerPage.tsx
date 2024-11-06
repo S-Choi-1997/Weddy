@@ -1,69 +1,60 @@
+import { Product } from "@/api/product.type";
+// import { getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import PlannerBox from "@/components/PlannerPage/PlannerBox";
-// import { recommendState } from "@/store/recommendState";
-// import { useRecoilValue } from "recoil";
-// import { useEffect, useState } from "react";
-// import { Product } from "@/api/product.type";
+import { useEffect, useState } from "react";
+// import { useQuery } from "react-query";
 
 const Planner = () => {
-  // const recommendList = useRecoilValue(recommendState);
-  // const [studioList, setStudioList] = useState<Product[]>([]);
-  // const [dressList, setDressList] = useState<Product[]>([]);
-  // const [makeupList, setMakeupList] = useState<Product[]>([]);
+  const [ studio, setStudio ] = useState<Product | undefined>();
+  const [ dress, setDress ] = useState<Product | undefined>();
+  const [ makeup, setMakeup] = useState<Product | undefined>();
 
-  // useEffect(() => {
-  //   if (recommendList) {
-  //     const { studios, dresses, makeups } = recommendList.reduce(
-  //       (acc, product) => {
-  //         switch (product.type) {
-  //           case "STUDIO":
-  //             acc.studios.push(product);
-  //             break;
-  //           case "DRESS":
-  //             acc.dresses.push(product);
-  //             break;
-  //           case "MAKEUP":
-  //             acc.makeups.push(product);
-  //             break;
-  //           default:
-  //             break;
-  //         }
-  //         return acc;
-  //       },
-  //       { studios: [], dresses: [], makeups: [] }
-  //     );
+  // const { data: cartList } = useQuery("getCartItems", getCartItems);
 
-  //     setStudioList(studios);
-  //     setDressList(dresses);
-  //     setMakeupList(makeups);
-  //   }
-  // }, [recommendList]);
-
-  const dummyList = [
+  const cartList: Product[] = [
     {
-      category: "스튜디오",
-      company: "포에버마인스튜디오",
-      price: "10000000",
-      content: "앨범1권(20P) + 기본 액자 1개",
+      id: "1",
+      type: "DRESS",
+      name: "웨딩 드레스 대여",
+      price: "1500000",
+      address: "서울 강남구",
+      content: "고급스러운 웨딩 드레스 대여 서비스입니다.",
+      vendorName: "Elegant Bridal",
+      vendorId: "vendor1",
+      images: [],
     },
     {
-      category: "드레스",
-      company: "루이즈 블랑",
-      price: "37000000",
-      content: "[촬영+본식] 드레스4벌",
+      id: "2",
+      type: "STUDIO",
+      name: "웨딩 촬영 패키지",
+      price: "3000000",
+      address: "서울 마포구",
+      content: "웨딩 사진 촬영 패키지로 특별한 순간을 담아드립니다.",
+      vendorName: "Studio Bliss",
+      vendorId: "vendor2",
+      images: [],
     },
-    {
-      category: "메이크업",
-      company: "",
-      price: "0",
-      content: "",
-    },
+    // {
+    //   id: "3",
+    //   type: "MAKEUP",
+    //   name: "본식 메이크업",
+    //   price: "100000",
+    //   address: "서울 종로구",
+    //   content: "본식 메이크업 서비스로 최고의 하루를 준비하세요.",
+    //   vendorName: "Wedding Palace",
+    //   vendorId: "vendor3",
+    //   images: [],
+    // }
   ];
 
-  const totalPrice = dummyList.reduce(
-    (acc, dummy) => acc + Number(dummy.price),
-    0
-  );
+  useEffect(() => {
+    setStudio(cartList.find((item: Product) => item.type === "STUDIO"));
+    setDress(cartList.find((item: Product) => item.type === "DRESS"));
+    setMakeup(cartList.find((item: Product) => item.type === "MAKEUP"));
+  }, []);
+
+  const totalPrice = cartList.reduce((acc, item) => acc + Number(item.price), 0);
 
   return (
     <div className="flex flex-col relative">
@@ -75,41 +66,31 @@ const Planner = () => {
             추천 상품
           </span>
         </div>
-        {dummyList.map((dummy, index) => (
+        {/* {cartList.map((item: Product) => (
           <PlannerBox
-            key={index}
-            title={dummy.category}
-            company={dummy.company}
-            price={dummy.price}
-            content={dummy.content}
+            key={item.id}
+            item={item}
           />
-        ))}
-
-        {/* {studioList.map((product: Product) => (
-          <PlannerBox key={product.id} title="스튜디오" company={product.vendorName} price={product.price} content={product.content} />
-        ))}
-
-        {dressList.map((product: Product) => (
-          <PlannerBox key={product.id} title="드레스" company={product.vendorName} price={product.price} content={product.content} />
-        ))}
-
-        {makeupList.map((product: Product) => (
-          <PlannerBox key={product.id} title="메이크업" company={product.vendorName} price={product.price} content={product.content} />
         ))} */}
+
+        <PlannerBox category="STUDIO" item={studio} />
+        <PlannerBox category="DRESS" item={dress} />
+        <PlannerBox category="MAKEUP" item={makeup} />
+
       </div>
       <div className="flex justify-end mr-10 mt-14">
         <div className="flex flex-col mr-3">
-          {dummyList.map((dummy, index) => (
-            <span key={index} className="my-1">
-              {dummy.company ? dummy.company : "상품 없음"}
+          {cartList.map((item: Product) => (
+            <span key={item.id} className="my-1">
+              {item.vendorName ? item.vendorName : "상품 없음"}
             </span>
           ))}
           <span className="font-bold mt-2">총 가격: </span>
         </div>
         <div className="flex flex-col text-end">
-          {dummyList.map((dummy, index) => (
-            <span key={index} className="my-1">
-              {dummy.price.toLocaleString()}원
+          {cartList.map((item: Product) => (
+            <span key={item.id} className="my-1">
+              {Number(item.price).toLocaleString()}원
             </span>
           ))}
           <span className="font-bold">{totalPrice.toLocaleString()}원</span>

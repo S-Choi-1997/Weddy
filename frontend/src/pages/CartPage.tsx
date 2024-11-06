@@ -1,12 +1,14 @@
-import { createContract, requestContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
+// import { addProductToCart } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartBox from "@/components/CartPage/CartBox";
 // import { recommendState } from "@/store/recommendState";
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   // const recommendList = useRecoilValue(recommendState);
 
   const [studioList, setStudioList] = useState<Product[]>([]);
@@ -92,10 +94,24 @@ const CartPage = () => {
     setSelectedList((prev) => ({ ...prev, [type]: selectedCartItem }));
   };
 
-  const handleCreateContract = async () => {
-    const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
-    const contracts = await createContract(contractItems);
-    await requestContract(contracts);
+  // const handleCreateContract = async () => {
+  //   const contractItems = Object.values(selectedList).filter(Boolean) as Product[];
+  //   const contracts = await createContract(contractItems);
+  //   await requestContract(contracts);
+  // };
+
+  const addToCart = async () => {
+    const products = Object.values(selectedList).filter((product): product is Product => product !== null);
+  
+    if (products.length === 0) {
+      alert("상품을 선택해주세요.");
+    } else {
+      for (const product of products) {
+        console.log(product);
+        // await addProductToCart(product.id);
+      }
+      navigate("/planner");
+    }
   };
   
   useEffect(() => {
@@ -105,17 +121,27 @@ const CartPage = () => {
   }, []);
 
   return (
-    <div className="mt-10">
-      <CartBox title="STUDIO" type="studio" cartItem={studioList} onAmountChange={handleAmountChange} />
-      <CartBox title="DRESS" type="dress" cartItem={dressList} onAmountChange={handleAmountChange} />
-      <CartBox title="MAKEUP" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange} />
-      <div className="flex justify-between mt-10 mx-10">
-        <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
-        <div onClick={handleCreateContract}>
-          <TodoButton title="계약 요청" />
+    <>
+      <div className="m-5 flex flex-col items-center">
+        <div className="flex items-center mt-5">
+          <span className="text-m">
+            <span className="text-main2 font-bold">WEDDY 플래너&nbsp;</span>
+            추천 상품
+          </span>
         </div>
       </div>
-    </div>
+      <div className="mt-10">
+        <CartBox title="STUDIO" type="studio" cartItem={studioList} onAmountChange={handleAmountChange} />
+        <CartBox title="DRESS" type="dress" cartItem={dressList} onAmountChange={handleAmountChange} />
+        <CartBox title="MAKEUP" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange} />
+        <div className="flex justify-between mt-10 mx-10">
+          <span className="text-lg font-bold">총 합계: {totalAmount.toLocaleString()}원</span>
+          <div onClick={addToCart}>
+            <TodoButton title="계약 요청" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

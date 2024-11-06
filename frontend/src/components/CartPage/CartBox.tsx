@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from '@/api/product.type';
+import { Link } from 'react-router-dom';
 
 interface CartBoxProps {
   title: string;
@@ -13,11 +14,13 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleCheckboxChange = (index: number) => {
-    const newIndex = selectedIndex === index ? null : index;
-    setSelectedIndex(newIndex);
-    onAmountChange(type, newIndex !== null ? cartItem[newIndex] : null);
+    const isSelected = selectedIndex === index;
+    setSelectedIndex(isSelected ? null : index);
+    
+    const selectedItem = isSelected ? null : cartItem[index];
+    onAmountChange(type, selectedItem);
   };
-
+  
   return (
     <div className="m-5">
       <h2 className="font-bold text-lg mb-3">{title}</h2>
@@ -31,17 +34,19 @@ const CartBox = ({ title, type, cartItem, onAmountChange }: CartBoxProps) => {
               checked={selectedIndex === index}
               onCheckedChange={() => handleCheckboxChange(index)}
             />
-            <div className="flex flex-col ml-3">
-              <span className="font-bold">{item.name}</span>
-              <span className="text-sm text-gray-600">{item.vendorName}</span>
-            </div>
+            <Link to={`/board/detail/${item.id}`}>
+              <div className="flex flex-col ml-3">
+                <span className="font-bold">{item.name}</span>
+                <span className="text-sm text-gray-600">{item.vendorName}</span>
+              </div>
+            </Link>
           </div>
           <div>
             {Number(item.price).toLocaleString()}원
           </div>
-          <div>
+          {/* <div>
             <button className="text-sm">삭제</button>
-          </div>
+          </div> */}
         </div>
       ))}
     </div>

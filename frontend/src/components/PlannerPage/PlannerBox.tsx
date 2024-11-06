@@ -1,34 +1,33 @@
+import { Product } from "@/api/product.type";
+import { deleteFromCart } from "@/api/productApi";
 import DropdownIcon from "@/icons/DropdownIcon";
 import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface PlannerBoxProps {
-  title: string;
-  company: string;
-  price: string;
-  content: string;
+  category: string;
+  item?: Product;
 }
 
-const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
-  const category = {
-    스튜디오: 'STUDIO',
-    드레스: 'DRESS',
-    메이크업: 'MAKEUP',
-  } [title];
+const PlannerBox = (({ category, item }: PlannerBoxProps) => {
 
   const navigate = useNavigate()
   const goRecommend = () => {
-    navigate(`/planner/list/${category}`)
+    navigate(`/planner/list/${category}`);
   }
 
   const [isChecked, setIsChecked] = useState(false);
 
-  // company가 있는 경우 체크 상태를 true로 설정
   useEffect(() => {
-    setIsChecked(!!company); // company가 존재하면 true
-  }, [company]);
+    setIsChecked(!!item?.vendorName);
+  }, [item?.vendorName]);
+
+  const deleteCartItem = async () => {
+    await deleteFromCart(item?.id);
+    navigate(0);
+  }
 
   return (
     <Accordion
@@ -61,7 +60,7 @@ const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
                 <span className="font-bold text-xs">WEDDY</span>
               </div>
             </button>
-            <h1 className="font-bold mx-4">{title}</h1>
+            <h1 className="font-bold mx-4">{category}</h1>
           </div>
 
           {isChecked == true ?(
@@ -81,18 +80,20 @@ const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
       {isChecked ? (
         <AccordionDetails sx={{ border: "none" }}>
           <div className="flex justify-between items-center">
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-main2">
-                {company}
-              </span>
-              <span>
-                {content}
-              </span>
-              <span className="font-bold">
-                {price.toLocaleString()}원
-              </span>
-            </div>
-            <button className="mr-3 rounded-full w-[35px] h-[35px] bg-gray-100">삭제</button>
+            <Link to={`/board/detail/${item?.id}`}>
+              <div className="flex flex-col">
+                <span className="font-bold text-lg text-main2">
+                  {item?.vendorName}
+                </span>
+                <span>
+                  {item?.name}
+                </span>
+                <span className="font-bold">
+                  {Number(item?.price).toLocaleString()}원
+                </span>
+              </div>
+            </Link>
+            <button className="mr-3 rounded-full w-[35px] h-[35px] bg-gray-100" onClick={deleteCartItem}>삭제</button>
           </div>
         </AccordionDetails>
       ) : (
@@ -106,7 +107,5 @@ const PlannerBox = (({ title, company, price, content }: PlannerBoxProps) => {
     </Accordion>
   );
 });
-
-
 
 export default PlannerBox;

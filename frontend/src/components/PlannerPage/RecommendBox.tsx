@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 interface RecommendBoxProps {
   src: string;
   name: string;
-  price: number;
+  price: string;
   isSelected: boolean;
   onSelect: () => void;
 }
@@ -23,7 +23,7 @@ const RecommendBox = ({ src, name, price, isSelected, onSelect }: RecommendBoxPr
         <Link to='/board/detail'>
           <div className="flex flex-col text-end">
             <span className="text-gray-500 mt-2">{name}</span>
-            <span>{price.toLocaleString()}원</span>
+            <span>{Number(price).toLocaleString()}원</span>
           </div>
         </Link>
       </div>
