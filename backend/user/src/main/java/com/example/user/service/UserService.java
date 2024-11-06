@@ -74,7 +74,7 @@ public class UserService {
             try {
                 String pictureUrl = gcsImageService.uploadImage(pictureFile); // GCS에 업로드하고 URL 반환
                 userEntity.setPicture(pictureUrl); // URL을 picture 필드에 저장
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to upload picture", e);
             }
         }
