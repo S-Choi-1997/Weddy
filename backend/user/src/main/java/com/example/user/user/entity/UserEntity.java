@@ -38,4 +38,6 @@ public class UserEntity {
     private String picture;
 
     private LocalDate date;
+
+    private Long otherId;
 }
