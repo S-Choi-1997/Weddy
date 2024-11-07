@@ -17,18 +17,18 @@ const BoardDetail = () => {
     () => detailProduct(productId),
     { enabled: !!productId }
   );
-
-  //== 장바구니 담기 ==//
-  const addToCart = async () => {
-    await addProductToCart(productId);
-  };
-
+  
   //== 리뷰 리스트 ==//
   const { data: reviewList } = useQuery(
     ["getReviewList", productId],
     () => getReviewList(productId),
     { enabled: !!productId }
   );
+
+  //== 장바구니 담기 ==//
+  const addToCart = async () => {
+    await addProductToCart(productId);
+  };
 
   return (
     <div>
