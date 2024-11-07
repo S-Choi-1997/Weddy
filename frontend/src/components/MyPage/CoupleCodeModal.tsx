@@ -2,6 +2,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+// import { connectCoupleCode } from "@/api/coupleApi";
+
 
 const style = {
   position: 'absolute',
@@ -38,7 +40,6 @@ export default function BasicModal() {
     <>
       <div onClick={handleOpen}>
         <button className='bg-main2 w-[130px] h-[30px] flex items-center justify-center rounded-xl p-1'>상대 코드 입력</button>
-        {/* <TodoButton title="상대 코드 입력" colorId={2} /> */}
       </div>
       <Modal
         open={open}
@@ -50,11 +51,9 @@ export default function BasicModal() {
           <Typography id="modal-modal-title">
             상대방의 커플 코드를 입력해주세요.
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <div className='flex flex-col'>
+          <Typography id="modal-modal-description"   sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}>
               <input type="text" className="my-2 p-2 w-[250px] h-[40px] border border-gray-400 rounded-lg" onChange={(e) => setCode(e.target.value)} />
               <button className='bg-main2 rounded-lg h-[30px] my-2' onClick={handleConnect}>연결</button>
-            </div>
           </Typography>
         </Box>
       </Modal>

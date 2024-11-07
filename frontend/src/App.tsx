@@ -27,6 +27,7 @@ import { firebaseTokenState } from './store/firebaseToken.ts';
 
 import { useEffect } from 'react';
 import { requestForToken, requestNotificationPermission } from './firebase.ts';
+import { saveFcmToken } from "./api/userApi.ts";
 
 function AppContent() {
   const location = useLocation();
@@ -64,6 +65,7 @@ function AppContent() {
 function App() {
   const queryClient = new QueryClient();
   const setToken = useSetRecoilState(firebaseTokenState);
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
@@ -76,9 +78,6 @@ function App() {
         if (!isRegistered) {
           // 서비스 워커가 등록되지 않았을 경우에만 등록
           navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then((registration) => {
-              console.log('Service Worker registered with scope:', registration.scope);
-            })
             .catch((err) => {
               console.error('Service Worker registration failed:', err);
             });
@@ -96,8 +95,15 @@ function App() {
 
       const token = await requestForToken();
       if (token) {
-        console.log("Token received:", token);
         setToken(token);
+        
+        if (userId !== null) {
+          saveFcmToken(token, userId);
+        } else {
+          console.warn("User ID is null, skipping saveFcmToken");
+        }
+        
+        
       } else {
         console.warn("No token received");
       }
