@@ -28,7 +28,7 @@ const CallBack = () => {
   });
 
   useEffect(() => {
-    if (userInfo?.dateofWedding) {
+    if (userInfo?.date) {
       navigate('/');
     } else {
       navigate('/userInfo');
