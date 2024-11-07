@@ -67,46 +67,37 @@ public class UserService {
     }
 
     public void updateUserInfo(Long id, Map<String, Object> info) {
-        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        UserEntity existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         log.info("Received update info: {}", info);
 
-        if (userEntity == null) {
-            throw new RuntimeException("User not found");
-        }
+        // 기존 엔티티의 필드를 복사하고 필요 시 새로운 값을 설정
+        UserEntity.UserEntityBuilder builder = existingUser.toBuilder();
 
-        if (info.get("phone") != null && !info.get("phone").toString().trim().isEmpty()) {
-            userEntity.setPhone(info.get("phone").toString());
-        }
-
-        if (info.get("name") != null && !info.get("name").toString().trim().isEmpty()) {
-            userEntity.setName(info.get("name").toString());
-        }
-
-        if (info.get("address") != null && !info.get("address").toString().trim().isEmpty()) {
-            userEntity.setAddress(info.get("address").toString());
-        }
-
-        if (info.get("email") != null && !info.get("email").toString().trim().isEmpty()) {
-            userEntity.setEmail(info.get("email").toString());
-        }
+        // null이 아닌 값만 업데이트
+        builder.phone(info.get("phone") != null ? info.get("phone").toString() : existingUser.getPhone());
+        builder.name(info.get("name") != null ? info.get("name").toString() : existingUser.getName());
+        builder.address(info.get("address") != null ? info.get("address").toString() : existingUser.getAddress());
+        builder.email(info.get("email") != null ? info.get("email").toString() : existingUser.getEmail());
 
         if (info.get("picture") != null && info.get("picture") instanceof MultipartFile) {
             MultipartFile pictureFile = (MultipartFile) info.get("picture");
             try {
-                String pictureUrl = gcsImageService.uploadImage(pictureFile); // GCS에 업로드하고 URL 반환
-                userEntity.setPicture(pictureUrl); // URL을 picture 필드에 저장
+                String pictureUrl = gcsImageService.uploadImage(pictureFile);
+                builder.picture(pictureUrl);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to upload picture", e);
             }
+        } else {
+            builder.picture(existingUser.getPicture());
         }
 
-        if (info.get("date") != null && !info.get("date").toString().trim().isEmpty()) {
-            log.info(info.get("date").toString());
-            userEntity.setDate(LocalDate.parse(info.get("date").toString()));
-        }
+        builder.date(info.get("date") != null ? LocalDate.parse(info.get("date").toString()) : existingUser.getDate());
 
-        userRepository.save(userEntity);
+        // 새 엔티티를 저장하여 기존 필드는 유지하고 필요한 필드만 업데이트
+        UserEntity updatedUser = builder.build();
+        userRepository.save(updatedUser);
     }
+
 
 
     public UserResponseDTO connectCoupleCode(String coupleCode, Long id) {
@@ -118,10 +109,13 @@ public class UserService {
         }
 
         // coupleCode 업데이트 및 저장
-        userEntity.setCoupleCode(coupleCode);
-        userEntity.setOtherId(otheruserEntity.getId());
+        userEntity = UserEntity.builder()
+                .coupleCode(coupleCode)
+                .otherId(otheruserEntity.getId())
+                .build();
         userRepository.save(userEntity);
-        otheruserEntity.setOtherId(userEntity.getId());
+        otheruserEntity = UserEntity.builder()
+                .otherId(userEntity.getId()).build();
         userRepository.save(otheruserEntity);
 
 
