@@ -1,10 +1,10 @@
-import { ReviewData } from "@/api/product.type";
-import { detailProduct, submitReview } from "@/api/productApi";
+import { Product, ReviewData } from "@/api/product.type";
+import { submitReview } from "@/api/productApi";
 import Separate from "@/common/Separate";
 import TodoButton from "@/common/TodoButton";
 import RatingBox from "@/components/ReviewPage/RatingBox";
 import { useState } from "react";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Review = () => {
@@ -19,13 +19,23 @@ const Review = () => {
   });
 
   //== 상품 정보 ==//
-  const { data: product } = useQuery(
-    ['detailProduct', productId],
-    () => detailProduct(productId),
-    {enabled: !!productId}
-  );
+  // const { data: productData } = useQuery(
+  //   ['detailProduct', productId],
+  //   () => detailProduct(productId),
+  //   {enabled: !!productId}
+  // );
 
-  const price = product?.price.toLocaleString();
+  const productData: Product = {
+    id: "1",
+      type: "DRESS",
+      name: "웨딩 드레스 대여",
+      price: "1500000",
+      address: "서울 강남구",
+      content: "고급스러운 웨딩 드레스 대여 서비스입니다.",
+      vendorName: "Elegant Bridal",
+      vendorId: "vendor1",
+      images: [],
+  }
 
   //== 상태 업데이트 ==//
   const updateReviewData = (key: keyof ReviewData, value: any) => {
@@ -41,10 +51,10 @@ const Review = () => {
   return (
     <div className="mb-24">
       <div className="bg-white flex flex-col h-[200px] justify-center m-5 rounded-2xl p-10">
-        <span>{product?.vendorName}</span>
+        <span>{productData?.vendorName}</span>
         <Separate />
-        <span>{product?.name}</span>
-        <span>{price} 원</span>
+        <span>{productData?.name}</span>
+        <span>{Number(productData?.price).toLocaleString()} 원</span>
       </div>
       <div className="bg-white h-[120px] rounded-2xl p-5 m-5 flex flex-col items-center mb-3">
         <h1 className="mb-1">상품은 만족하셨나요?</h1>
@@ -70,4 +80,4 @@ const Review = () => {
   )
 }
 
-export default Review;
+export default Review; 

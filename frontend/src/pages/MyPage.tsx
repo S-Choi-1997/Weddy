@@ -1,6 +1,6 @@
 // import { connectCoupleCode } from "@/api/coupleApi";
 import { userInformation } from "@/api/user.type";
-import { editInfomation, getUserInfo } from "@/api/userApi";
+import { editInformation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
 import RingIcon from "@/icons/RingIcon";
 // import { firebaseTokenState } from "@/store/firebaseToken";
@@ -9,13 +9,35 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 const Mypage = () => {
-
   // const token = useRecoilValue(firebaseTokenState);
-  const [isConneted,] = useState<boolean>(false);
-  const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
-  function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+  const [ isConneted, setIsconnected ] = useState<boolean>(true);
+  const [ imageSrc, setImageSrc ] = useState<string>("/icons/profile.png");
+  const [ imageData, setImageData ] = useState<File | undefined>();
+  const [ userInfo, setUserInfo ] = useState<userInformation>({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    coupleCode: '',
+    date: '',
+  });
+
+  // const [ coupleInfo, setCoupleInfo ] = useState<userInformation>({
+  //   name: '',
+  //   phone: '',
+  //   email: '',
+  //   address: '',
+  //   coupleCode: '',
+  //   date: '',
+  // });
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
+    if (files && files.length > 0) {
+      setImageData(files[0]);
+    }
+    
     if (files === null || files.length === 0) {
       return;
     }
@@ -24,7 +46,7 @@ const Mypage = () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      setImageSrc(e.target?.result as string)
+      setImageSrc(e.target?.result as string);
     }
     reader.readAsDataURL(file);
   }
@@ -32,28 +54,31 @@ const Mypage = () => {
   useEffect(() => {
   }, [imageSrc])
 
-  const [userInfo, setUserInfo] = useState<userInformation>({
-    name: '',
-    phone: '',
-    email: '',
-    address: '',
-    date: '',
-    picture: '',
-  });
-
   //== 회원 정보 ==//
-  const { data: userData, isSuccess } = useQuery('getUserInfo', getUserInfo);
+  const { data: userData, isSuccess, isLoading } = useQuery('getUserInfo', getUserInfo);
 
   //== userdata 업데이트 후 userInfo 업데이트 ==//
   useEffect(() => {
     if (isSuccess && userData) {
-      setUserInfo(userData);
+      //== 커플 연결 여부 확인 ==//
+      // if (userData.length === 1) {
+      //   setIsconnected(false);
+      // } else if (userData.length === 2) {
+      //   setIsconnected(true);
+      //   setCoupleInfo(userData[1]);
+      // }
+
+      //== 유저 정보 업데이트 ==//
+      setUserInfo(userData[0]);
+      
     }
   }, [isSuccess, userData]);
 
   //== 회원 정보 수정 ==//
   const handleUpdate = async () => {
-    await editInfomation(userInfo);
+    if (imageData) {
+      await editInformation(userInfo);
+    }
   };
 
   //== 상태 업데이트 ==//
@@ -61,13 +86,14 @@ const Mypage = () => {
     setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
 
- 
-
   const today = new Date();
-  const targetDate = new Date('2024-11-19');
-
-  const differenceInTime = targetDate.getTime() - today.getTime();
+  const differenceInTime = new Date(userInfo.date).getTime() - today.getTime();
   const dDay = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+  if (isLoading){
+    return <div>로딩중...</div>
+  }
+  
   return (
     <div className="m-5 bg-white h-[700px] rounded-xl p-5">
       <h1 className="text-center mt-5">마이페이지</h1>
@@ -75,7 +101,7 @@ const Mypage = () => {
       <div className="flex justify-between">
         <div className="bg-main1 flex flex-col items-center p-5 h-[200px] w-[300px] mx-3 mt-10 rounded-xl">
           <span className="font-bold text-3xl text-main2">D-{dDay}</span>
-          <span className="text-gray-400 text-sm">2024.11.19</span>
+          <span className="text-gray-400 text-sm">{userInfo.date}</span>
 
           {isConneted ? (
             <div className="flex items-center justify-center">
@@ -93,21 +119,23 @@ const Mypage = () => {
                 </div>
               </div>
               <RingIcon />
-              <img
-                className="bg-main1 rounded-full h-[70px] w-[70px] "
-                src="/icons/profile.png"
-                alt="profile image"
-              />
+                <div>
+                  <img
+                    className="bg-main1 rounded-full h-[70px] w-[70px] mt-5"
+                    src={"/icons/profile.png"}
+                    alt="profile image"
+                  />
+                  <div className="text-xs text-center mt-1">
+                  {/* <span>{coupleInfo.name}</span> */}
+                </div>
+              </div>
             </div>
           ) : (
             <>
-              <span className="font-bold text-lg mb-2">{userData?.coupleCode}</span>
               <span className="text-sm text-gray-500">상대방과 커플코드를 공유하세요!</span>
-              <span className="my-3 font-bold">abcdefg12345678</span>
+              <span className="my-3 font-bold">{userInfo.coupleCode}</span>
               <CoupleCodeModal />
-
             </>
-
           )}
         </div>
       </div>
