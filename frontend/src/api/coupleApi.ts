@@ -10,7 +10,9 @@ export const connectCoupleCode = async (code: string): Promise<void> => {
     headers: {
       Authorization: sessionStorage.getItem("token")
     },
-    data: code
+    data: {
+      "code": code
+    }
   });
   console.log(response.data);
 };
