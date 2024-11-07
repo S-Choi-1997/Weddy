@@ -38,7 +38,8 @@ const Mypage = () => {
     phone: '',
     email: '',
     address: '',
-    dateofWedding: '',
+    date: '',
+    picture: ''
   });
 
   //== 회원 정보 ==//
