@@ -40,6 +40,7 @@ export const getUserInfo = async (): Promise<userInformation> => {
       Authorization: sessionStorage.getItem("token")
     },
   });
+  console.log(response.data.data);
   return response.data.data;
 };
 
