@@ -38,4 +38,10 @@ public class UserEntity {
     private String picture;
 
     private LocalDate date;
+
+    private String fcmToken;
+
+    private void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }
