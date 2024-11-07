@@ -1,5 +1,5 @@
 import { userInformation } from "@/api/user.type";
-import { editInfomation, getUserInfo } from "@/api/userApi";
+import { editInformation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
 import DatePick from "@/components/SchedulePage/DatePick";
 import { useEffect, useState } from "react";
@@ -9,8 +9,13 @@ import { useNavigate } from "react-router-dom";
 const UserInfo = () => {
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
+  const [ imageData, setImageData ] = useState<File>();
+
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
+    if (files && files.length > 0) {
+      setImageData(files[0]);
+    }
 
     if (files === null || files.length === 0) {
       return;
@@ -27,7 +32,7 @@ const UserInfo = () => {
 
    //== 회원 정보 수정 ==//
    const handleUpdate = async () => {
-    await editInfomation(userInfo);
+    editInformation(userInfo);
     navigate('/');
   };
 
@@ -40,24 +45,27 @@ const UserInfo = () => {
     email: '',
     address: '',
     date: '',
-    picture: ''
+    coupleCode: ''
   });
 
   //== 회원 정보 ==//
-  const { data: userData, isSuccess } = useQuery('getUserInfo', getUserInfo);
+  const { data: userData, isSuccess, isLoading } = useQuery('getUserInfo', getUserInfo);
 
   //== 상태 업데이트 ==//
   const updateUserInfo = (key: keyof userInformation, value: string) => {
     setUserInfo((prev) => { return { ...prev, [key]: value } });
   };
 
-
   //== userdata 업데이트 후 userInfo 업데이트 ==//
   useEffect(() => {
     if (isSuccess && userData) {
-      setUserInfo(userData);
+      setUserInfo(userData[0]);
     }
   }, [isSuccess, userData]);
+
+  if (isLoading) {
+    return <div>로딩중...</div>
+  }
 
   return (
     <div className="flex flex-col items-center mt-16">
@@ -125,7 +133,6 @@ const UserInfo = () => {
         <div className="flex justify-end mt-10 mr-3" onClick={handleUpdate}>
           <TodoButton title="저장" colorId={2} />
         </div>
-        
       </div>
     </div>
   )
