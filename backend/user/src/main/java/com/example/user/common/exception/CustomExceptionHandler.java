@@ -19,6 +19,13 @@ import java.util.Objects;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
+    @ExceptionHandler(UserTokenNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> userTokenNotFoundException(UserTokenNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity.status(errorCode.getStatus())
+                .body(ApiResponse.error(errorCode));
+    }
+
 
     @ExceptionHandler(PaymentNotValidateException.class)
     public ResponseEntity<ApiResponse<String>> paymentNotValidateException(PaymentNotValidateException e) {
