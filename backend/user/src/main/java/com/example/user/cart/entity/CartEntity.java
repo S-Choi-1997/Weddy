@@ -13,4 +13,5 @@ public class CartEntity {
 
     private Long productId;
 
+    private Long userId;
 }
