@@ -1,9 +1,7 @@
 package com.example.user.user.service;
 
-import com.example.user.common.dto.ApiResponse;
 import com.example.user.common.dto.ErrorCode;
 import com.example.user.common.exception.UserNotFoundException;
-import com.example.user.common.dto.ErrorCode;
 import com.example.user.common.exception.UserTokenNotFoundException;
 import com.example.user.common.service.GCSImageService;
 import com.example.user.user.dto.response.UserCoupleTokenDto;
@@ -12,12 +10,11 @@ import com.example.user.user.entity.UserEntity;
 import com.example.user.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -139,13 +136,57 @@ public class UserService {
                 .build();
     }
 
-    public UserCoupleTokenDto getFcmToken(String coupleCode, Long myUserId) {
+    /**
+     *  토큰 가져오기
+     * @ 작성자   : 이병수
+     * @ 작성일   : 2024-11-07
+     * @ 설명     : 커플 코드를 통해서 커플들의 fcm 토큰을 가져오기
 
+     * @param coupleCode
+     * @param myUserId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public UserCoupleTokenDto getFcmToken(String coupleCode, Long myUserId) {
+        List<UserEntity> userEntity = getUserEntities(coupleCode);
+        return getUserCoupleTokenDto(myUserId, userEntity);
+
+    }
+
+    /**
+     * fcm 토큰 저장
+     * @ 작성자   : 이병수
+     * @ 작성일   : 2024-11-07
+     * @ 설명     : fcm 토큰 저장
+
+     * @param userId
+     * @param fcmToken
+     */
+    @Transactional
+    public void setFcmToken(Long userId, String fcmToken) {
+        UserEntity userEntity = getUserEntity(userId);
+        userEntity.updateFcmToken(fcmToken);
+    }
+
+
+
+    private UserEntity getUserEntity(Long userId) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        if (userEntity == null) {
+            throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
+        return userEntity;
+    }
+
+    private List<UserEntity> getUserEntities(String coupleCode) {
         List<UserEntity> userEntity = userRepository.findByCoupleCode(coupleCode);
         if (userEntity == null) {
              throw new UserTokenNotFoundException(ErrorCode.USER_TOKEN_NOT_FOUND);
         }
+        return userEntity;
+    }
 
+    private static UserCoupleTokenDto getUserCoupleTokenDto(Long myUserId, List<UserEntity> userEntity) {
         String myToken = null;
         String coupleToken =null ;
 
@@ -153,7 +194,7 @@ public class UserService {
             if(user.getId().equals(myUserId)){
                 myToken = user.getFcmToken();
             }else{
-                coupleToken= user.getFcmToken();
+                coupleToken = user.getFcmToken();
             }
         }
 
@@ -161,7 +202,5 @@ public class UserService {
                 .myFcmToken(myToken)
                 .coupleFcmToken(coupleToken)
                 .build();
-
-
     }
 }

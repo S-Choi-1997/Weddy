@@ -43,7 +43,7 @@ public class UserEntity {
 
     private String fcmToken;
 
-    private void updateFcmToken(String fcmToken) {
+    public void updateFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
 }
