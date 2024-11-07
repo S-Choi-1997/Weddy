@@ -32,7 +32,7 @@ export const logout = () => {
 };
 
 //== 회원 정보 ==//
-export const getUserInfo = async (): Promise<userInformation> => {
+export const getUserInfo = async (): Promise<userInformation[]> => {
   const response = await axios({
     method: "get",
     url: BASE_URL,
@@ -44,9 +44,25 @@ export const getUserInfo = async (): Promise<userInformation> => {
   return response.data.data;
 };
 
+//== 회원 프로필 수정 ==//
+export const editProfile = async (file: FormData): Promise<void> => {
+  console.log(file);
+  const response = await axios({
+    method: "patch",
+    url: BASE_URL,
+    headers: {
+      Authorization: sessionStorage.getItem("token"),
+    },
+    data: {
+      picture: file
+    }
+    });
+    console.log(response);
+  };
+
 //== 회원 정보 수정 ==//
-export const editInfomation = async ( userInfo?: userInformation ): Promise<void> => {
-  await axios({
+export const editInformation = async ( userInfo?: userInformation ): Promise<void> => {
+  const response = await axios({
     method: "patch",
     url: BASE_URL,
     headers: {
@@ -54,4 +70,5 @@ export const editInfomation = async ( userInfo?: userInformation ): Promise<void
     },
     data: userInfo
   });
+  console.log(response);
 };
