@@ -34,7 +34,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
         UserEntity otherUserEntity = null;
         if(user.getOtherId() != null){
-            otherUserEntity = userRepository.findByOtherId(user.getOtherId())
+            otherUserEntity = userRepository.findById(user.getOtherId())
                     .orElse(null); // otherUserEntity는 없을 수 있으므로 예외를 발생시키지 않고 null을 허용
         }
 
