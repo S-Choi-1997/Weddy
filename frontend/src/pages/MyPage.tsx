@@ -1,4 +1,3 @@
-// import { connectCoupleCode } from "@/api/coupleApi";
 import { userInformation } from "@/api/user.type";
 import { editInformation, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";

@@ -13,6 +13,7 @@ const Main = () => {
     '/main/main4.png',
   ];
 
+
   //== 베스트 ==//
   const { data: getRankedProductList } = useQuery('getRankedProducts', getRankedProducts);
 
