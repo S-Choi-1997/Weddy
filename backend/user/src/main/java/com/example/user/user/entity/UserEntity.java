@@ -39,6 +39,8 @@ public class UserEntity {
 
     private LocalDate date;
 
+    private Long otherId;
+
     private String fcmToken;
 
     private void updateFcmToken(String fcmToken) {
