@@ -17,11 +17,12 @@ import java.util.concurrent.CompletableFuture;
 public class ScheduleEventProducer {
     @Value("${producers.topic1.name}")
     private String TOPIC;
-    private final KafkaTemplate<String, EventResult>  KafkaTemplate;
+
+    private final KafkaTemplate<String, EventResult> kafkaTemplate;
 
     public void sendScheduleResultEvent(EventResult eventResult){
         log.info("EventResult : "+eventResult.toString());
-        CompletableFuture<SendResult<String, EventResult>> send = KafkaTemplate.send(TOPIC, eventResult);
+        CompletableFuture<SendResult<String, EventResult>> send = kafkaTemplate.send(TOPIC, eventResult);
         send.whenComplete((sendResult,ex)->{
             if(ex!=null){
                 log.info("결제 이벤트 전달 실패."+ ex.getMessage());
