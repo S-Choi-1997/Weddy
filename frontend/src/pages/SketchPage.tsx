@@ -7,29 +7,28 @@ import * as THREE from 'three';
 function WeddingDress() {
   const { scene } = useGLTF('../assets/dress_merge.glb');
 
-  // Leva UI 컨트롤 정의
-  const {
-    metalness, roughness, emissiveIntensity,
-    sleeveLength, dressLength, dressWidth, neckHeight, neckWidth,
-    showArms, showSkirt, showLaceShirt, showTop, showSkirt2,
-    showDress3, showTop3, showShoulder2
-  } = useControls({
+  // 상의에 대한 Leva 컨트롤 정의
+  const upperControls = useControls('상의', {
     metalness: { value: 0.05, min: 0, max: 1, step: 0.01, label: '메탈니스' },
     roughness: { value: 0.3, min: 0, max: 1, step: 0.01, label: '거칠기' },
     emissiveIntensity: { value: 0.4, min: 0, max: 2, step: 0.1, label: '밝기' },
     sleeveLength: { value: 1, min: 0.5, max: 1.5, step: 0.01, label: '소매 길이' },
-    dressLength: { value: 0.5, min: 0.5, max: 1, step: 0.01, label: '드레스 넓이' },
-    dressWidth: { value: 1, min: 0.5, max: 2, step: 0.01, label: '드레스 폭' },
     neckHeight: { value: 1, min: 0.8, max: 3, step: 0.01, label: '목 높이' },
     neckWidth: { value: 1, min: 0.8, max: 1.5, step: 0.01, label: '목 넓이' },
     showArms: { value: false, label: 'Arms Visible' },
-    showSkirt: { value: false, label: 'Skirt Visible' },
     showLaceShirt: { value: false, label: 'Lace Shirt Visible' },
     showTop: { value: false, label: 'Top Visible' },
+    showShoulder2: { value: false, label: 'Shoulder2 Visible' }
+  });
+
+  // 하의에 대한 Leva 컨트롤 정의
+  const lowerControls = useControls('하의', {
+    dressLength: { value: 0.5, min: 0.5, max: 1, step: 0.01, label: '드레스 넓이' },
+    dressWidth: { value: 1, min: 0.5, max: 2, step: 0.01, label: '드레스 폭' },
+    showSkirt: { value: false, label: 'Skirt Visible' },
     showSkirt2: { value: false, label: 'Skirt2 Visible' },
     showDress3: { value: false, label: 'Dress3 Visible' },
-    showTop3: { value: false, label: 'Top3 Visible' },
-    showShoulder2: { value: false, label: 'Shoulder2 Visible' }
+    showTop3: { value: false, label: 'Top3 Visible' }
   });
 
   useEffect(() => {
@@ -37,55 +36,43 @@ function WeddingDress() {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         if (mesh.material) {
-          (mesh.material as THREE.MeshStandardMaterial).metalness = metalness;
-          (mesh.material as THREE.MeshStandardMaterial).roughness = roughness;
-          (mesh.material as THREE.MeshStandardMaterial).emissive = new THREE.Color(0x888888);
-          (mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = emissiveIntensity;
-          (mesh.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
+          const material = mesh.material as THREE.MeshStandardMaterial;
+          material.metalness = upperControls.metalness;
+          material.roughness = upperControls.roughness;
+          material.emissive = new THREE.Color(0x888888);
+          material.emissiveIntensity = upperControls.emissiveIntensity;
+          material.side = THREE.DoubleSide;
         }
 
-        switch (mesh.name) {
-          case 'left_arm':
-          case 'right_arm':
-            mesh.visible = showArms;
-            mesh.scale.x = sleeveLength;
-            break;
-          case 'skirt':
-            mesh.visible = showSkirt;
-            mesh.scale.z = dressWidth;
-            mesh.scale.x = dressLength;
-            break;
-          case 'skirt2':
-            mesh.visible = showSkirt2;
-            mesh.scale.z = dressWidth;
-            mesh.scale.x = dressLength;
-            break;
-          case 'lace_shirt':
-            mesh.visible = showLaceShirt;
-            mesh.scale.y = neckHeight;
-            mesh.scale.z = neckWidth;
-            break;
-          case 'top2':
-            mesh.visible = showTop;
-            break;
-          case 'dress_3':
-            mesh.visible = showDress3;
-            break;
-          case 'top_3':
-            mesh.visible = showTop3;
-            break;
-          case 'shorder_2':
-            mesh.visible = showShoulder2;
-            break;
+        // 상의 속성 조정
+        if (['left_arm', 'right_arm'].includes(mesh.name)) {
+          mesh.visible = upperControls.showArms;
+          mesh.scale.x = upperControls.sleeveLength;
         }
+        if (mesh.name === 'lace_shirt') {
+          mesh.visible = upperControls.showLaceShirt;
+          mesh.scale.y = upperControls.neckHeight;
+          mesh.scale.z = upperControls.neckWidth;
+        }
+        if (mesh.name === 'top2') mesh.visible = upperControls.showTop;
+        if (mesh.name === 'shorder_2') mesh.visible = upperControls.showShoulder2;
+
+        // 하의 속성 조정
+        if (mesh.name === 'skirt') {
+          mesh.visible = lowerControls.showSkirt;
+          mesh.scale.z = lowerControls.dressWidth;
+          mesh.scale.x = lowerControls.dressLength;
+        }
+        if (mesh.name === 'skirt2') {
+          mesh.visible = lowerControls.showSkirt2;
+          mesh.scale.z = lowerControls.dressWidth;
+          mesh.scale.x = lowerControls.dressLength;
+        }
+        if (mesh.name === 'dress_3') mesh.visible = lowerControls.showDress3;
+        if (mesh.name === 'top_3') mesh.visible = lowerControls.showTop3;
       }
     });
-  }, [
-    scene, metalness, roughness, emissiveIntensity,
-    sleeveLength, dressLength, dressWidth, neckHeight, neckWidth,
-    showArms, showSkirt, showLaceShirt, showTop, showSkirt2,
-    showDress3, showTop3, showShoulder2
-  ]);
+  }, [scene, upperControls, lowerControls]);
 
   return <primitive object={scene} />;
 }
@@ -126,7 +113,9 @@ const Sketch: React.FC = () => {
         <CameraSettings />
         <OrbitControls target={[0, 1, 0]} enablePan={false} />
       </Canvas>
-      <Leva collapsed={false} />
+
+      <Leva collapsed={true} oneLineLabels={true} />
+      
     </div>
   );
 };
