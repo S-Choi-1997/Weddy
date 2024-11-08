@@ -15,13 +15,21 @@ public class CartServiceImpl implements CartService {
         this.cartRepository = cartRepository;
     }
 
-    public CartResponseDto addCart(Long productId, UserEntity userEntity){
+    public void addCart(Long productId, UserEntity userEntity){
         CartEntity cartEntity = CartEntity.builder()
                 .productId(productId)
                 .userId(userEntity.getId())
                 .build();
 
         cartRepository.save(cartEntity);
-        return new CartResponseDto(cartEntity);
+    }
+
+    public void removeCart(Long productId, UserEntity userEntity){
+        CartEntity cartEntity = cartRepository.findById(productId).orElse(null);
+        cartRepository.delete(cartEntity);
+    }
+
+    public CartResponseDto getCart(UserEntity userEntity){
+        return null;
     }
 }
