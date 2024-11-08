@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-// import { connectCoupleCode } from "@/api/coupleApi";
+import { connectCoupleCode } from "@/api/coupleApi";
 
 
 const style = {
@@ -32,7 +32,7 @@ export default function BasicModal() {
   //== 커플 코드 연결 ==//
   const handleConnect = async () => {
     console.log(code);
-    // await connectCoupleCode(code);
+    await connectCoupleCode(code);
     setOpen(false);
   };
 
