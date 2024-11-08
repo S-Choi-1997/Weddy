@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/firebase": "^3.2.3"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}
