@@ -30,22 +30,28 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
     startDate: null,
     endDate: null,
     content: '',
-    contractType: '',
+    type: '',
   });
+
+  function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
 
   const updateScheduleInfo = (key: keyof Schedule, value: any) => {
     setScheduleInfo((prev) => {
       const formattedValue =
         (key === "startDate" || key === "endDate") && value instanceof Date
-          ? value.toISOString().slice(0, 19)
+          ? formatDate(value)
           : value;
-
+  
       return { ...prev, [key]: formattedValue };
     });
   };
-
-
-
+  
   const updateSchedule = async () => {
     await schedule(scheduleInfo);
     onClose();
@@ -77,7 +83,7 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
             />
           </FlexCenterWrapper>
           <FlexCenterWrapper>
-            <CategoryButton changeCategory={(category) => updateScheduleInfo("contractType", category)} />
+            <CategoryButton changeCategory={(category) => updateScheduleInfo("type", category)} />
           </FlexCenterWrapper>
         </AlertDialogHeader>
         <AlertDialogFooter>
