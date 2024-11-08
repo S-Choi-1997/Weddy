@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { connectCoupleCode } from "@/api/coupleApi";
 
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -28,10 +27,8 @@ export default function BasicModal() {
 
   const [code, setCode] = React.useState<string>("");
 
-
   //== 커플 코드 연결 ==//
   const handleConnect = async () => {
-    console.log(code);
     await connectCoupleCode(code);
     setOpen(false);
   };
