@@ -48,13 +48,13 @@ public class PaymentService {
      */
     public void paymentSuccess(ContractInfoRequestDto contractInfoRequestDto) {
 
-        boolean isValidatedPayment = validatePayment(contractInfoRequestDto);
-        if(!isValidatedPayment) {
-            //결제 취소 로직 작성
-            String reason = " 결제 인증 실패";
-            paymentCancel(contractInfoRequestDto.getPaymentId(), reason);
-            return ;
-        }
+//        boolean isValidatedPayment = validatePayment(contractInfoRequestDto);
+//        if(!isValidatedPayment) {
+//            //결제 취소 로직 작성
+//            String reason = " 결제 인증 실패";
+//            paymentCancel(contractInfoRequestDto.getPaymentId(), reason);
+//            return ;
+//        }
 
         log.info("결제성공" + contractInfoRequestDto.toString());
         contractService.changeContractStatus(contractInfoRequestDto.getId());
