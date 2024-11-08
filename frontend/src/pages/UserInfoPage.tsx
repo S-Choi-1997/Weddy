@@ -1,5 +1,5 @@
 import { userInformation } from "@/api/user.type";
-import { editInformation, getUserInfo } from "@/api/userApi";
+import { editInformation, editProfile, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
 import DatePick from "@/components/SchedulePage/DatePick";
 import { useEffect, useState } from "react";
@@ -8,13 +8,15 @@ import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   const navigate = useNavigate();
+  const formdata = new FormData();
   const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
-  const [ imageData, setImageData ] = useState<File>();
 
-  function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+
     if (files && files.length > 0) {
-      setImageData(files[0]);
+      formdata.append('picture', files[0]);
+      await editProfile(formdata);
     }
 
     if (files === null || files.length === 0) {
@@ -98,9 +100,18 @@ const UserInfo = () => {
           </div>
           <div className="flex flex-col mt-10">
             <DatePick
-              type="start"
-              title="예식 예정일"
-              changeDate={(newDate) => updateUserInfo('date', newDate.toISOString().slice(0, 10))}
+                type="start"
+                title="예식 예정일"
+                changeDate={(newDate) => 
+                    updateUserInfo(
+                        'date', 
+                        newDate.toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        }).replace(/\./g, '').replace(/\s/g, '-') // "yyyy-mm-dd" 형식으로 변환
+                    )
+                }
             />
             <input
               defaultValue={userInfo.name}
