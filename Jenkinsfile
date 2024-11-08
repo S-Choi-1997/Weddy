@@ -94,22 +94,22 @@ pipeline {
                             dirPath = 'frontend'
                         } else if (service == 'cacheScheduler') {
                             imageName = CACHE_SCHEDULER_IMAGE
-                            dirPath = 'cacheScheduler'
+                            dirPath = 'backend/cacheScheduler'
                         } else if (service == 'common-lib') {
                             imageName = COMMON_LIB_IMAGE
-                            dirPath = 'common-lib'
+                            dirPath = 'backend/common-lib'
                         } else if (service == 'gateway') {
                             imageName = GATEWAY_IMAGE
-                            dirPath = 'gateway'
+                            dirPath = 'backend/gateway'
                         } else if (service == 'product') {
                             imageName = PRODUCT_IMAGE
-                            dirPath = 'product'
+                            dirPath = 'backend/product'
                         } else if (service == 'schedule') {
                             imageName = SCHEDULE_IMAGE
-                            dirPath = 'schedule'
+                            dirPath = 'backend/schedule'
                         } else if (service == 'user') {
                             imageName = USER_IMAGE
-                            dirPath = 'user'
+                            dirPath = 'backend/user'
                         }
 
                         // Docker 이미지 빌드
