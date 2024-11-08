@@ -131,7 +131,7 @@ pipeline {
         stage('Update GitOps Repo') {
             steps {
                 script {
-                    sshagent ([GITOPS_CREDENTIALS]) {
+                    sshagent (credentials: [GITOPS_CREDENTIALS]) {
                         dir('gitops') {
                             // GitOps 저장소 클론
                             sh 'git clone -b main git@github.com:zion0425/weddy_gitops.git .'
