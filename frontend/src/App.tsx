@@ -21,10 +21,8 @@ import Review from "./pages/ReviewPage";
 import Schedule from './pages/SchedulePage';
 import Sketch from './pages/SketchPage';
 import UserInfo from "./pages/UserInfoPage";
-
 import { useSetRecoilState } from 'recoil';
 import { firebaseTokenState } from './store/firebaseToken.ts';
-
 import { useEffect } from 'react';
 import { saveFcmToken } from "./api/userApi.ts";
 import { requestForToken, requestNotificationPermission } from './firebase.ts';
@@ -72,54 +70,51 @@ function App() {
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        // 기존 등록된 서비스 워커가 있는지 확인
+    const registerServiceWorker = async () => {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
         const isRegistered = registrations.some((registration) =>
           registration.active && registration.scope === '/firebase-messaging-sw.js'
         );
 
         if (!isRegistered) {
-          // 서비스 워커가 등록되지 않았을 경우에만 등록
-          navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .catch((err) => {
-              console.error('Service Worker registration failed:', err);
-            });
+          try {
+            await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            console.log('Service Worker registered successfully');
+          } catch (err) {
+            console.error('Service Worker registration failed:', err);
+          }
         } else {
           console.log('Service Worker already registered');
         }
-      });
-    }
+      }
+    };
+
+    registerServiceWorker();
   }, []);
 
   useEffect(() => {
-    // userId가 존재할 때만 실행
-    if (userId !== null) {
-      // 푸시 알림 요청 및 토큰 처리
-      const requestPermissionsAndToken = async () => {
-        await requestNotificationPermission();
-  
-        const token = await requestForToken();
-        if (token) {
-          setToken(token);
-          saveFcmToken(token, userId);
-        } else {
-          console.warn("No token received");
+    const requestPermissionsAndToken = async () => {
+      if (userId) {
+        try {
+          await requestNotificationPermission();
+          const token = await requestForToken();
+          if (token) {
+            setToken(token);
+            saveFcmToken(token, userId);
+          } else {
+            console.warn("No token received");
+          }
+        } catch (error) {
+          console.error("Error requesting permissions or token:", error);
         }
-      };
-  
-      requestPermissionsAndToken();
-    } else {
-      console.warn("User ID is null, skipping requestPermissionsAndToken");
-    }
-  
-    // 기존 코드에서 삭제된 포그라운드 메시지 수신 리스너 부분
-    // onMessage(messaging, (payload) => {
-    //   console.log("Message received in foreground:", payload);
-    // });
-  
+      } else {
+        console.warn("User ID is null, skipping requestPermissionsAndToken");
+      }
+    };
+
+    requestPermissionsAndToken();
   }, [setToken, userId]);
-  
 
   return (
     <div className='container'>
