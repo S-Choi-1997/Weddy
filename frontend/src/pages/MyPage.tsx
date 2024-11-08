@@ -121,10 +121,6 @@ const Mypage = () => {
                   alt="profile image"
                 />
                 <div className="text-xs text-center mt-1">
-                  {/* <label htmlFor="profile-image">
-                    <span>이미지 변경</span>
-                    <input accept="image/*" onChange={handleFileUpload} className="hidden" id="profile-image" type="file" />
-                  </label> */}
                   <span>{userInfo.name}</span>
                 </div>
               </div>
