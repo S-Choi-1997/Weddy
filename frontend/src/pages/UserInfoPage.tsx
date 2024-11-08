@@ -125,25 +125,25 @@ const UserInfo = () => {
             />
             <input
               defaultValue={userInfo.name}
-              className="my-2 p-2 w-[180px] border border-gray-400 rounded-lg h-[30px]"
+              className="my-2 p-2 w-[190px] border border-gray-400 rounded-lg h-[30px]"
               type="text"
               onChange={(e) => updateUserInfo('name', e.target.value)}
             />
             <input
               defaultValue={userInfo.phone}
-              className="my-2 p-2 w-[180px] border border-gray-400 rounded-lg h-[30px]"
+              className="my-2 p-2 w-[190px] border border-gray-400 rounded-lg h-[30px]"
               type="text"
               onChange={(e) => updateUserInfo('phone', e.target.value)}
             />
             <input
               defaultValue={userInfo.email}
-              className="my-2 border p-2 w-[180px] border-gray-400 rounded-lg h-[30px]"
+              className="my-2 border p-2 w-[190px] border-gray-400 rounded-lg h-[30px]"
               type="text"
               onChange={(e) => updateUserInfo('email', e.target.value)}
             />
             <input
               defaultValue={userInfo.address}
-              className="my-2 border p-2 w-[180px] border-gray-400 rounded-lg h-[30px]"
+              className="my-2 border p-2 w-[190px] border-gray-400 rounded-lg h-[30px]"
               type="text"
               onChange={(e) => updateUserInfo('address', e.target.value)}
             />
