@@ -15,4 +15,11 @@ public class CartEntity {
     private Long productId;
 
     private Long userId;
+
+    @Builder
+    public CartEntity(Long id, Long productId, Long userId) {
+        this.id = id;
+        this.productId = productId;
+        this.userId = userId;
+    }
 }

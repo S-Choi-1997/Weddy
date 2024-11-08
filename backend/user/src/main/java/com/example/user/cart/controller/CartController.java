@@ -23,8 +23,10 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<CartResponseDto>> addCart(@RequestBody Long id, @AuthenticationPrincipal UserEntity user){
-        CartResponseDto cartResponseDTO = cartService.addCart(id,user);
+    public ResponseEntity<ApiResponse<CartResponseDto>> addCart(@RequestBody Long productId, @AuthenticationPrincipal UserEntity user){
+        CartResponseDto cartResponseDTO = cartService.addCart(productId,user);
         return null;
     }
+
+
 }
