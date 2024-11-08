@@ -59,15 +59,14 @@ export const editProfile = async (file: FormData): Promise<void> => {
 
 //== 회원 정보 수정 ==//
 export const editInformation = async ( userInfo?: userInformation ): Promise<void> => {
-  console.log(userInfo);
-  // await axios({
-  //   method: "patch",
-  //   url: BASE_URL,
-  //   headers: {
-  //     Authorization: sessionStorage.getItem("token"),
-  //   },
-  //   data: userInfo
-  // });
+  await axios({
+    method: "patch",
+    url: BASE_URL,
+    headers: {
+      Authorization: sessionStorage.getItem("token"),
+    },
+    data: userInfo
+  });
 };
 
 //fcm 토큰 저장
