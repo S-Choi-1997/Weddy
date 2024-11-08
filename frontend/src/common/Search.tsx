@@ -1,4 +1,4 @@
-import SearchIcon from "@/icons/SearchIcon";
+import SearchIcon from "@/icons/searchIcon";
 import { useState } from "react";
 
 interface SearchProp {
