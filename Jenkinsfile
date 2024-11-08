@@ -39,6 +39,15 @@ pipeline {
                 }
             }
         }
+        stage('Setup SSH') {
+            steps {
+                script {
+                    // GitHub의 호스트 키를 known_hosts에 추가
+                    sh 'mkdir -p ~/.ssh'
+                    sh 'ssh-keyscan github.com >> ~/.ssh/known_hosts'
+                }
+            }
+        }
 
         stage('Checkout') {
             steps {
