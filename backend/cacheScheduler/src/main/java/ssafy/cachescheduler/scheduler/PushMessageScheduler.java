@@ -15,6 +15,8 @@ import ssafy.cachescheduler.mapper.ReviewMapper;
 import ssafy.cachescheduler.util.RedisUtil;
 import weddy.commonlib.constant.KeyType;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Component
 @EnableAsync
@@ -72,9 +74,19 @@ public class PushMessageScheduler {
             backoff = @Backoff(delay = 2000)  // 2초 지연 후 재시도
     )
     @Async("taskExecutor")
-    @Scheduled(cron = "${cron.expression}")
+    @Scheduled(cron = "${cron.expression.push}")
     public void sendPushMessage() {
 
+        // 현재 로컬 날짜 얻어봐
+        LocalDate localDate = LocalDate.now();
+        String key = "schedule:"+localDate;
+
+
+
+
+        redisTemplate.opsForHash().entries("product:1").forEach((k,v) -> {
+            log.info("key : {}, value : {}",k,v);
+        });
     }
 
 
