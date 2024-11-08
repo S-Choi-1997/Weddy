@@ -7,7 +7,7 @@ const ContractList = () => {
   const { data: contractList } = useQuery("myContract", myContract);
   
   return (
-    <div className="my-12 mx-5">
+    <div className="mt-12 mb-32 mx-5">
       {contractList?.map((contract: ContractData) => (
         <ContractListBox key={contract.id} type={contract.product.type} contractInfo={contract} />
       ))}

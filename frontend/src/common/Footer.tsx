@@ -35,10 +35,10 @@ const Footer = () => {
 
       )}
 
-      {location === "sketch" ? (
+      {location === "dress" ? (
         <DressSelectIcon />
       ) : (
-        <Link to='/sketch'>
+        <Link to='/dress'>
           <DressIcon/>
         </Link>
       )}
