@@ -23,7 +23,7 @@ pipeline {
         GITOPS_REPO = 'git@github.com:zion0425/weddy_gitops.git' 
 
         // Credentials
-        GITOPS_CREDENTIALS = credentials('gitops_pk') // Jenkins에 등록된 GitOps 배포 키의 Credential ID
+        GITOPS_CREDENTIALS = 'gitops_pk' // Jenkins에 등록된 GitOps 배포 키의 Credential ID
         GITLAB_CREDENTIALS = 'gitlab' // GitLab 자격 증명 ID
     }
 
@@ -131,7 +131,7 @@ pipeline {
         stage('Update GitOps Repo') {
             steps {
                 script {
-                    sshagent ([GITOPS_CREDENTIALS]) {
+                    sshagent (credentials: [GITOPS_CREDENTIALS]) {
                         dir('gitops') {
                             // GitOps 저장소 클론
                             sh 'git clone -b main git@github.com:zion0425/weddy_gitops.git .'
