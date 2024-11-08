@@ -3,7 +3,7 @@ export interface Schedule {
   startDate: string | null;
   endDate: string | null;
   content: string;
-  productId: string;
+  productId?: string;
 }
 
 export interface GetSchedule {

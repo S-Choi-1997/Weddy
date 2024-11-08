@@ -31,7 +31,6 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
     endDate: null,
     content: '',
     contractType: '',
-    productId: '',
   });
 
   const updateScheduleInfo = (key: keyof Schedule, value: any) => {
