@@ -26,8 +26,10 @@ import { useSetRecoilState } from 'recoil';
 import { firebaseTokenState } from './store/firebaseToken.ts';
 
 import { useEffect } from 'react';
-import { requestForToken, requestNotificationPermission } from './firebase.ts';
 import { saveFcmToken } from "./api/userApi.ts";
+import { requestForToken, requestNotificationPermission } from './firebase.ts';
+import DressSketch from "./pages/DressSketchPage.tsx";
+import DressImg from "./pages/DressImgPage.tsx";
 
 function AppContent() {
   const location = useLocation();
@@ -49,6 +51,8 @@ function AppContent() {
         <Route path="/planner" element={<Planner />} />
         <Route path="/planner/list/:category" element={<PlannerList />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="/dress" element={<DressSketch />} />
+        <Route path="/dress/img" element={<DressImg />} />
         <Route path="/sketch" element={<Sketch />} />
         <Route path="/contract/:category/:contractId" element={<Contract />} />
         <Route path="/contract/list" element={<ContractList />} />
@@ -96,14 +100,14 @@ function App() {
       const token = await requestForToken();
       if (token) {
         setToken(token);
-        
+
         if (userId !== null) {
           saveFcmToken(token, userId);
         } else {
           console.warn("User ID is null, skipping saveFcmToken");
         }
-        
-        
+
+
       } else {
         console.warn("No token received");
       }
