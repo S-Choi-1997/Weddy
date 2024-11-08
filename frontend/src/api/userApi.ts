@@ -40,13 +40,12 @@ export const getUserInfo = async (): Promise<userInformation[]> => {
       Authorization: sessionStorage.getItem("token")
     },
   });
-  console.log(response.data.data);
   return response.data.data;
 };
 
 //== 회원 프로필 수정 ==//
 export const editProfile = async (file: FormData): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: "patch",
     url: `${BASE_URL}/picture`,
     headers: {
@@ -54,7 +53,8 @@ export const editProfile = async (file: FormData): Promise<void> => {
     },
     data: file
     });
-    console.log(response.data);
+
+    alert("프로필 사진이 변경되었습니다.");
   };
 
 //== 회원 정보 수정 ==//
@@ -67,6 +67,7 @@ export const editInformation = async ( userInfo?: userInformation ): Promise<voi
     },
     data: userInfo
   });
+  alert("회원 정보가 수정되었습니다.");
 };
 
 //fcm 토큰 저장

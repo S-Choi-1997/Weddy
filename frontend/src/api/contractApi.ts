@@ -31,7 +31,7 @@ export const createContract = async (contractItems: Product[]): Promise<void> =>
       product: contractProduct,
     };
   });
-
+  
   return requestContract(contracts);
 };
 
