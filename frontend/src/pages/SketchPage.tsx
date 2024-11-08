@@ -1,7 +1,8 @@
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useThree } from '@react-three/fiber';
+import html2canvas from 'html2canvas';
 import { Leva, useControls } from 'leva';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 function WeddingDress() {
@@ -90,33 +91,60 @@ function CameraSettings() {
 }
 
 const Sketch: React.FC = () => {
+  const captureRef = useRef<HTMLDivElement>(null);
+
+  // 캡처 함수 정의
+  const handleCapture = () => {
+    if (captureRef.current) {
+      html2canvas(captureRef.current).then((canvas) => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'wedding_dress_capture.png';
+        link.click();
+      });
+    }
+  };
+
   return (
-    <div
-      style={{
-        width: 414,
-        height: '100vh',
-        backgroundImage: 'url(../assets/wedding-back2.jpeg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <Canvas shadows camera={{ fov: 40, position: [0, 1, 5] }}>
-        <hemisphereLight groundColor={'#eeeeee'} intensity={1.0} />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1.2} />
-        <directionalLight position={[-5, 5, 5]} intensity={0.8} castShadow />
-        <spotLight position={[5, 15, 10]} angle={0.3} penumbra={1} intensity={1.2} castShadow />
+    <>
+      <button
+        className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded px-4 py-2 shadow-lg"
+        style={{ zIndex: 100 }}
+        onClick={handleCapture}
+      >
+        캡처하기
+      </button>
+      <div
+        ref={captureRef} // 캡처할 영역
+        style={{
+          width: 414,
+          height: 800,
+          display: 'flex',
+          position: 'relative',
+          backgroundImage: 'url(../assets/wedding-back2.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <Canvas shadows camera={{ fov: 40, position: [0, 1, 5] }}>
+          <hemisphereLight groundColor={'#eeeeee'} intensity={1.0} />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1.2} />
+          <directionalLight position={[-5, 5, 5]} intensity={0.8} castShadow />
+          <spotLight position={[5, 15, 10]} angle={0.3} penumbra={1} intensity={1.2} castShadow />
 
-        <WeddingDress />
+          <WeddingDress />
 
-        <Environment preset="sunset" />
-        <CameraSettings />
-        <OrbitControls target={[0, 1, 0]} enablePan={false} />
-      </Canvas>
+          <Environment preset="sunset" />
+          <CameraSettings />
+          <OrbitControls target={[0, 1, 0]} enablePan={false} />
+        </Canvas>
 
-      <Leva collapsed={true} oneLineLabels={true} />
-      
-    </div>
+        <Leva collapsed={true} oneLineLabels={true} />
+
+
+      </div>
+    </>
   );
 };
 

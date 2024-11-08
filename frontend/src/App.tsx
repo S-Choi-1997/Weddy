@@ -93,34 +93,33 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // 푸시 알림 요청 및 토큰 처리
-    const requestPermissionsAndToken = async () => {
-      await requestNotificationPermission();
-
-      const token = await requestForToken();
-      if (token) {
-        setToken(token);
-
-        if (userId !== null) {
+    // userId가 존재할 때만 실행
+    if (userId !== null) {
+      // 푸시 알림 요청 및 토큰 처리
+      const requestPermissionsAndToken = async () => {
+        await requestNotificationPermission();
+  
+        const token = await requestForToken();
+        if (token) {
+          setToken(token);
           saveFcmToken(token, userId);
         } else {
-          console.warn("User ID is null, skipping saveFcmToken");
+          console.warn("No token received");
         }
-
-
-      } else {
-        console.warn("No token received");
-      }
-    };
-
-    requestPermissionsAndToken();
-
+      };
+  
+      requestPermissionsAndToken();
+    } else {
+      console.warn("User ID is null, skipping requestPermissionsAndToken");
+    }
+  
     // 기존 코드에서 삭제된 포그라운드 메시지 수신 리스너 부분
     // onMessage(messaging, (payload) => {
     //   console.log("Message received in foreground:", payload);
     // });
-
-  }, [setToken]);
+  
+  }, [setToken, userId]);
+  
 
   return (
     <div className='container'>
