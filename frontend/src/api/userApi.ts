@@ -46,30 +46,28 @@ export const getUserInfo = async (): Promise<userInformation[]> => {
 
 //== 회원 프로필 수정 ==//
 export const editProfile = async (file: FormData): Promise<void> => {
-  console.log(file);
   const response = await axios({
     method: "patch",
-    url: BASE_URL,
+    url: `${BASE_URL}/picture`,
     headers: {
       Authorization: sessionStorage.getItem("token"),
     },
-    data: {
-      picture: file
-    }
+    data: file
     });
-    console.log(response);
+    console.log(response.data);
   };
 
 //== 회원 정보 수정 ==//
 export const editInformation = async ( userInfo?: userInformation ): Promise<void> => {
-  const response = await axios({
-    method: "patch",
-    url: BASE_URL,
-    headers: {
-      Authorization: sessionStorage.getItem("token"),
-    },
-    data: userInfo
-  });
+  console.log(userInfo);
+  // await axios({
+  //   method: "patch",
+  //   url: BASE_URL,
+  //   headers: {
+  //     Authorization: sessionStorage.getItem("token"),
+  //   },
+  //   data: userInfo
+  // });
 };
 
 //fcm 토큰 저장

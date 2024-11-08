@@ -1,5 +1,5 @@
 import { userInformation } from "@/api/user.type";
-import { editInformation, getUserInfo } from "@/api/userApi";
+import { editInformation, editProfile, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
 import RingIcon from "@/icons/RingIcon";
 // import { firebaseTokenState } from "@/store/firebaseToken";
@@ -9,9 +9,8 @@ import { useQuery } from "react-query";
 
 const Mypage = () => {
   // const token = useRecoilValue(firebaseTokenState);
-  const [ isConneted, setIsconnected ] = useState<boolean>(true);
+  const [ isConneted, setIsconnected ] = useState<boolean>(false);
   const [ imageSrc, setImageSrc ] = useState<string>("/icons/profile.png");
-  const [ imageData, setImageData ] = useState<File | undefined>();
   const [ userInfo, setUserInfo ] = useState<userInformation>({
     name: '',
     phone: '',
@@ -21,20 +20,23 @@ const Mypage = () => {
     date: '',
   });
 
-  // const [ coupleInfo, setCoupleInfo ] = useState<userInformation>({
-  //   name: '',
-  //   phone: '',
-  //   email: '',
-  //   address: '',
-  //   coupleCode: '',
-  //   date: '',
-  // });
+  const [ coupleInfo, setCoupleInfo ] = useState<userInformation>({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    coupleCode: '',
+    date: '',
+  });
+
+  const formdata = new FormData();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
-      setImageData(files[0]);
+      formdata.append('picture', files[0]);
+      await editProfile(formdata);
     }
     
     if (files === null || files.length === 0) {
@@ -60,24 +62,26 @@ const Mypage = () => {
   useEffect(() => {
     if (isSuccess && userData) {
       //== 커플 연결 여부 확인 ==//
-      // if (userData.length === 1) {
-      //   setIsconnected(false);
-      // } else if (userData.length === 2) {
-      //   setIsconnected(true);
-      //   setCoupleInfo(userData[1]);
-      // }
+      if (userData.length === 1) {
+        setIsconnected(false);
+      } else if (userData.length === 2) {
+        setIsconnected(true);
+        setCoupleInfo(userData[1]);
+      }
 
       //== 유저 정보 업데이트 ==//
       setUserInfo(userData[0]);
-      
+
+      //== 유저 이미지 업데이트 ==//
+      if (userData[0].picture) {
+        setImageSrc(userData[0].picture);
+      }
     }
   }, [isSuccess, userData]);
 
   //== 회원 정보 수정 ==//
   const handleUpdate = async () => {
-    if (imageData) {
-      await editInformation(userInfo);
-    }
+    await editInformation(userInfo);
   };
 
   //== 상태 업데이트 ==//
@@ -100,7 +104,7 @@ const Mypage = () => {
       <div className="flex justify-between">
         <div className="bg-main1 flex flex-col items-center p-5 h-[200px] w-[300px] mx-3 mt-10 rounded-xl">
           <span className="font-bold text-3xl text-main2">D-{dDay}</span>
-          <span className="text-gray-400 text-sm">{userInfo.date}</span>
+          <span className="text-gray-400 text-sm">2024-11-19</span>
 
           {isConneted ? (
             <div className="flex items-center justify-center">
@@ -125,7 +129,7 @@ const Mypage = () => {
                     alt="profile image"
                   />
                   <div className="text-xs text-center mt-1">
-                  {/* <span>{coupleInfo.name}</span> */}
+                  <span>{coupleInfo.name}</span>
                 </div>
               </div>
             </div>
