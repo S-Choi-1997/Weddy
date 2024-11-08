@@ -50,6 +50,9 @@ const Schedule = () => {
 
             case 'MAKEUP':
               return <ScheduleBox key={schedule.id} type="makeup" title="메이크업" />;
+            
+            case 'WEDDING':
+              return <ScheduleBox key={schedule.id} type="wedding" title="예식일"/>
 
             default:
               return <ScheduleBox key={schedule.id} type="etc" title={schedule.content} />;

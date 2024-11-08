@@ -1,3 +1,5 @@
+import { Schedule } from "@/api/schedule.type";
+import { schedule } from "@/api/scheduleApi";
 import { userInformation } from "@/api/user.type";
 import { editInformation, editProfile, getUserInfo } from "@/api/userApi";
 import TodoButton from "@/common/TodoButton";
@@ -9,8 +11,17 @@ import { useNavigate } from "react-router-dom";
 const UserInfo = () => {
   const navigate = useNavigate();
   const formdata = new FormData();
-  const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png")
+  const [imageSrc, setImageSrc] = useState<string>("/icons/profile.png");
+  const [userInfo, setUserInfo] = useState<userInformation>({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    date: '',
+    coupleCode: ''
+  });
 
+  //== 프로필 이미지 ==//
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
@@ -32,31 +43,40 @@ const UserInfo = () => {
     reader.readAsDataURL(file);
   }
 
+  //== 결혼 예정일 등록 ==//
+  const weddingSchedule: Schedule = {
+    contractType: "WEDDING",
+    startDate: userInfo.date,
+    endDate: userInfo.date,
+    content: "결혼식",
+    productId: "1",
+  }
+
    //== 회원 정보 수정 ==//
    const handleUpdate = async () => {
-    editInformation(userInfo);
+    await editInformation(userInfo);
+    await schedule(weddingSchedule);
     navigate('/');
   };
 
   useEffect(() => {
   }, [imageSrc])
 
-  const [userInfo, setUserInfo] = useState<userInformation>({
-    name: '',
-    phone: '',
-    email: '',
-    address: '',
-    date: '',
-    coupleCode: ''
-  });
-
   //== 회원 정보 ==//
   const { data: userData, isSuccess, isLoading } = useQuery('getUserInfo', getUserInfo);
 
   //== 상태 업데이트 ==//
-  const updateUserInfo = (key: keyof userInformation, value: string) => {
-    setUserInfo((prev) => { return { ...prev, [key]: value } });
-  };
+  const updateUserInfo = (key: keyof userInformation, value: string | Date) => {
+    const formattedValue = key === 'date' && value instanceof Date
+        ? value.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }).replace(/\./g, '').replace(/\s/g, '-')
+        : value;
+
+    setUserInfo((prev) => ({ ...prev, [key]: formattedValue }));
+};
 
   //== userdata 업데이트 후 userInfo 업데이트 ==//
   useEffect(() => {
@@ -102,16 +122,7 @@ const UserInfo = () => {
             <DatePick
                 type="start"
                 title="예식 예정일"
-                changeDate={(newDate) => 
-                    updateUserInfo(
-                        'date', 
-                        newDate.toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit'
-                        }).replace(/\./g, '').replace(/\s/g, '-') // "yyyy-mm-dd" 형식으로 변환
-                    )
-                }
+                changeDate={(newDate) => updateUserInfo('date', newDate)}
             />
             <input
               defaultValue={userInfo.name}
