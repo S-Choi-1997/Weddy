@@ -16,17 +16,9 @@
 <body>
   <div id="root"></div>
 
-  <script type="module">
-    document.addEventListener('DOMContentLoaded', async function() {
-      try {
-        const mainModule = await import('/src/main.tsx');
-        if (typeof mainModule.default === 'function') {
-          mainModule.default();
-        }
-      } catch (error) {
-        console.error("Error loading the main.tsx module:", error);
-      }
-    });
-  </script>
+  <!-- React main entry -->
+  <script type="module" src="/src/main.tsx"></script>
 
 </body>
+
+</html>
