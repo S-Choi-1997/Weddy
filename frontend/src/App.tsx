@@ -1,44 +1,37 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import Footer from './common/Footer';
-import Navbar from './common/Navbar';
-import './index.css';
-import BoardDetail from './pages/BoardDetailPage';
-import Board from './pages/BoardPage';
-import CallBack from './pages/CallBack';
-import Cart from './pages/CartPage';
-import ContractList from './pages/ContractListPage';
-import Contract from './pages/ContractPage';
-import Login from './pages/LoginPage';
-import Main from './pages/MainPage';
-import Mypage from './pages/MyPage';
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import Footer from "./common/Footer";
+import Navbar from "./common/Navbar";
+import "./index.css";
+import BoardDetail from "./pages/BoardDetailPage";
+import Board from "./pages/BoardPage";
+import CallBack from "./pages/CallBack";
+import Cart from "./pages/CartPage";
+import ContractList from "./pages/ContractListPage";
+import Contract from "./pages/ContractPage";
+import Login from "./pages/LoginPage";
+import Main from "./pages/MainPage";
+import Mypage from "./pages/MyPage";
 import NFTLoading from "./pages/NFTLoadingPage";
 import PlannerList from "./pages/PlannerListPage";
-import Planner from './pages/PlannerPage';
-import Prompt from './pages/PromptPage';
+import Planner from "./pages/PlannerPage";
+import Prompt from "./pages/PromptPage";
 import RecommendLoading from "./pages/RecommendLoadingPage";
 import Review from "./pages/ReviewPage";
-import Schedule from './pages/SchedulePage';
-import Sketch from './pages/SketchPage';
+import Schedule from "./pages/SchedulePage";
+import Sketch from "./pages/SketchPage";
 import UserInfo from "./pages/UserInfoPage";
-
-import { useSetRecoilState } from 'recoil';
-import { firebaseTokenState } from './store/firebaseToken.ts';
-
-import { useEffect } from 'react';
-import { saveFcmToken } from "./api/userApi.ts";
-import { requestForToken, requestNotificationPermission } from './firebase.ts';
 import DressSketch from "./pages/DressSketchPage.tsx";
 import DressImg from "./pages/DressImgPage.tsx";
 
 function AppContent() {
   const location = useLocation();
-  const currentPath = location.pathname.split('/')[1];
-  const currentDetail = location.pathname.split('/')[2];
+  const currentPath = location.pathname.split("/")[1];
+  const currentDetail = location.pathname.split("/")[2];
 
   return (
     <>
-      {(currentPath !== "login") && (currentPath !== "userinfo") && <Navbar />}
+      {currentPath !== "login" && currentPath !== "userinfo" && <Navbar />}
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/review/:productId" element={<Review />} />
@@ -61,69 +54,18 @@ function AppContent() {
         <Route path="/nft/loading" element={<NFTLoading />} />
         <Route path="/recommend/loading" element={<RecommendLoading />} />
       </Routes>
-      {(currentPath !== "login") && (currentPath !== "userinfo") && (currentDetail !== "detail") && <Footer />}
+      {currentPath !== "login" &&
+        currentPath !== "userinfo" &&
+        currentDetail !== "detail" && <Footer />}
     </>
   );
 }
 
 function App() {
   const queryClient = new QueryClient();
-  const setToken = useSetRecoilState(firebaseTokenState);
-  const userId = sessionStorage.getItem("userId");
-
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        // 기존 등록된 서비스 워커가 있는지 확인
-        const isRegistered = registrations.some((registration) =>
-          registration.active && registration.scope === '/firebase-messaging-sw.js'
-        );
-
-        if (!isRegistered) {
-          // 서비스 워커가 등록되지 않았을 경우에만 등록
-          navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .catch((err) => {
-              console.error('Service Worker registration failed:', err);
-            });
-        } else {
-          console.log('Service Worker already registered');
-        }
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    // 푸시 알림 요청 및 토큰 처리
-    const requestPermissionsAndToken = async () => {
-      await requestNotificationPermission();
-
-      const token = await requestForToken();
-      if (token) {
-        setToken(token);
-
-        if (userId !== null) {
-          saveFcmToken(token, userId);
-        } else {
-          console.warn("User ID is null, skipping saveFcmToken");
-        }
-
-
-      } else {
-        console.warn("No token received");
-      }
-    };
-
-    requestPermissionsAndToken();
-
-    // 기존 코드에서 삭제된 포그라운드 메시지 수신 리스너 부분
-    // onMessage(messaging, (payload) => {
-    //   console.log("Message received in foreground:", payload);
-    // });
-
-  }, [setToken]);
 
   return (
-    <div className='container'>
+    <div className="container">
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AppContent />
