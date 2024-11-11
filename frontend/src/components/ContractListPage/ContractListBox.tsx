@@ -8,13 +8,17 @@ import { Link } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
+import { NftType } from "@/api/nft.type";
+import { useEffect, useState } from "react";
 
 interface ContractListBoxProps {
   type: string;
+  NftData?: NftType;
   contractInfo?: ContractData;
 }
 
-const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
+const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) => {
+  const [showIcon, setShowIcon] = useState<Boolean>(false);
   const handleChangeStatus = async () => {
     if (contractInfo) {
       await changeStatus(contractInfo.id);
@@ -22,11 +26,24 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
     window.location.reload();
   };
 
-  const handlePayment = () => {
+  const handlePayment = async() => {
     if (contractInfo) {
-      requestPayment(contractInfo);
+      await requestPayment(contractInfo);
+      await changeStatus(contractInfo.id);
     }
   };
+
+  const goNFT = () => {
+    if (NftData) {
+      window.open(NftData?.image);
+    }
+  };
+
+  useEffect(() => {
+    if (NftData){
+      setShowIcon(true);
+    }
+  }, [NftData]);
 
   return (
     <div className="mb-5">
@@ -95,7 +112,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
               )}
               {contractInfo.status === "SIGN_PENDING" && (
                 <Link
-                  to={`/contract/${contractInfo.product.type}/${contractInfo.id}`}
+                  to={`/contract/${contractInfo.product.type.toLowerCase()}/${contractInfo.id}`}
                 >
                   <TodoButton title="서명 하기" colorId={1} />
                 </Link>
@@ -107,9 +124,13 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
               )}
               {contractInfo.status === "PAYMENT_COMPLETED" && (
                 <div className="flex items-center">
-                  <div className="mr-2">
-                    <FileSelectIcon w={20} h={20} />
-                  </div>
+                  {showIcon ? (
+                    <>
+                      <div className="mr-2" onClick={goNFT}>
+                        <FileSelectIcon w={20} h={20} />
+                      </div>
+                    </>
+                  ) : null }
                   <Link to={`/review/${contractInfo.product.productId}`}>
                     <TodoButton title="리뷰 쓰기" colorId={1} />
                   </Link>
