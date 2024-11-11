@@ -33,7 +33,7 @@ const Review = () => {
   //== 리뷰 등록 ==//
   const handleSubmit = async () => {
     await submitReview(reviewData, productId);
-    // navigate('/');
+    navigate('/');
   };
 
   return (
