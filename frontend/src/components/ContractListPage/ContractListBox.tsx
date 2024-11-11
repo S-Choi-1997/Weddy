@@ -33,7 +33,7 @@ const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) 
 
   const goNFT = () => {
     if (NftData) {
-      window.location.href = NftData?.image;
+      window.open(NftData?.image);
     }
   };
 
