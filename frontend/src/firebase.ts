@@ -1,6 +1,11 @@
 // src/firebase.ts
-import { initializeApp } from 'firebase/app';
-import { MessagePayload, getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { initializeApp } from "firebase/app";
+import {
+  MessagePayload,
+  getMessaging,
+  getToken,
+  onMessage,
+} from "firebase/messaging";
 // import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 // Firebase 설정
@@ -11,19 +16,19 @@ const firebaseConfig = {
   storageBucket: "weddy-69a91.firebasestorage.app",
   messagingSenderId: "194642239012",
   appId: "1:194642239012:web:b8db8875468161f4b042b1",
-  measurementId: "G-SYX7QVXCHF"
+  measurementId: "G-SYX7QVXCHF",
 };
 
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);  // messaging 초기화
+const messaging = getMessaging(app); // messaging 초기화
 // const firestore = getFirestore();     // Firestore 초기화
 
 // 알림 권한 요청 함수
 export const requestNotificationPermission = async (): Promise<void> => {
   const permission = await Notification.requestPermission();
 
-  if (permission === 'granted') {
+  if (permission === "granted") {
     await requestForToken(); // 권한이 허용되었을 때만 토큰 요청
   } else {
     console.warn("Notification permission denied.");
@@ -33,27 +38,52 @@ export const requestNotificationPermission = async (): Promise<void> => {
 // FCM 토큰 요청 함수
 export const requestForToken = async (): Promise<string | null> => {
   try {
+    // 특정 경로에 서비스 워커가 등록되었는지 확인
+    const registration = await navigator.serviceWorker.getRegistration(
+      "/firebase-messaging-sw.js"
+    );
+
+    if (!registration) {
+      console.error("Service Worker is not registered");
+      alert("Service Worker 등록 오류");
+      return null;
+    }
+
+    console.log("Service Worker is active and ready");
+
+    // FCM 토큰 발급 시도
     const currentToken = await getToken(messaging, {
-      vapidKey: "BKojx5BxhDa3CC6MjLs1my1GxPfrOetsQqzdbNbUR4pQdrpVj2_NHOYNZJ7_psyILjQUgHICcNDCtu6z0yej3-s"
+      vapidKey:
+        "BKojx5BxhDa3CC6MjLs1my1GxPfrOetsQqzdbNbUR4pQdrpVj2_NHOYNZJ7_psyILjQUgHICcNDCtu6z0yej3-s",
+      serviceWorkerRegistration: registration,
     });
 
     if (currentToken) {
-      return currentToken; // 토큰 반환
+      console.log("FCM 토큰 발급 성공:", currentToken);
+      return currentToken;
     } else {
-      console.log('No registration token available. Request permission to generate one.');
+      console.warn(
+        "No registration token available. Request permission to generate one."
+      );
+      alert("토큰 생성 실패");
       return null;
     }
   } catch (err) {
-    console.error('An error occurred while retrieving token.', err);
+    console.error("토큰 생성 에러:", err);
+    alert("토큰 생성 에러: " + err);
     return null;
   }
 };
 
 // 포그라운드 메시지 수신 리스너
 export const onMessageListener = (): Promise<MessagePayload> => {
+  console.log("Message received in foreground");
   return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
-      console.log("Message received in foreground:", payload); // 로그 출력
+      console.log("Message received in foreground:", payload);
+      if (payload.data) {
+        alert(`Title: ${payload.data.title}\nBody: ${payload.data.body}`);
+      }
       resolve(payload);
     });
   });

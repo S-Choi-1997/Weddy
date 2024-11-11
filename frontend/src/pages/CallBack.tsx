@@ -1,4 +1,4 @@
-import { getToken, getUserInfo, saveFcmToken } from "@/api/userApi";
+import { getToken, getUserInfo } from "@/api/userApi";
 import { requestForToken, requestNotificationPermission } from "@/firebase";
 import { firebaseTokenState } from "@/store/firebaseToken";
 import { useEffect, useState } from "react";
@@ -26,22 +26,25 @@ const CallBack = () => {
   useEffect(() => {
     const registerServiceWorker = async () => {
       if ("serviceWorker" in navigator) {
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        const isRegistered = registrations.some(
-          (registration) =>
-            registration.active &&
-            registration.scope === "/firebase-messaging-sw.js"
-        );
+        try {
+          // 특정 경로에 등록된 서비스 워커가 있는지 확인
+          const existingRegistration =
+            await navigator.serviceWorker.getRegistration(
+              "/firebase-messaging-sw.js"
+            );
 
-        if (!isRegistered) {
-          try {
-            await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-            console.log("Service Worker registered successfully");
-          } catch (err) {
-            console.error("Service Worker registration failed:", err);
+          if (existingRegistration) {
+            console.log("Service Worker already registered");
+            return;
           }
-        } else {
-          console.log("Service Worker already registered");
+
+          // 서비스 워커 등록
+          const registration = await navigator.serviceWorker.register(
+            "/firebase-messaging-sw.js"
+          );
+          console.log("Service Worker registered successfully:", registration);
+        } catch (err) {
+          console.error("Service Worker registration failed:", err);
         }
       }
     };
@@ -51,13 +54,18 @@ const CallBack = () => {
 
   useEffect(() => {
     const requestPermissionsAndToken = async () => {
+      console.log("유저 아이디는 : " + userId);
       if (userId) {
         try {
           await requestNotificationPermission();
           const token = await requestForToken();
+          alert("발급된 토큰은 : " + token);
+          console.log("발급된 토큰은 : " + token);
           if (token) {
+            alert("정보가 바뀌었으니 토큰 저장 메서드를 실행해");
+            console.log(token);
             setToken(token);
-            saveFcmToken(token, userId);
+            // saveFcmToken(token, userId);
           } else {
             console.warn("No token received");
           }

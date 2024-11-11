@@ -70,9 +70,6 @@ function App() {
   const fcmToken = useRecoilValue(firebaseTokenState);
   const queryClient = new QueryClient();
 
-
-  
-
   useEffect(() => {
     if (userId && fcmToken) {
       saveFcmToken(fcmToken, userId);

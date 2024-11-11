@@ -81,17 +81,12 @@ export const saveFcmToken = async (
     method: "patch",
     url: `${BASE_URL}/fcm-token/${userId}`,
     headers: {
-      Authorization:
-      sessionStorage.getItem("token"),
+      Authorization: sessionStorage.getItem("token"),
       "Content-Type": "application/json",
     },
     data: { fcmToken: fcmToken },
   });
 };
-
-
-
-
 
 // 커플코드로 fcm 토큰 조회
 export const getFcmToken = async (coupleCode: string): Promise<string> => {
