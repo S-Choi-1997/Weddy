@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
 import "./index.css";
@@ -67,9 +68,11 @@ function App() {
   return (
     <div className="container">
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
+        <RecoilRoot>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </RecoilRoot>
       </QueryClientProvider>
     </div>
   );
