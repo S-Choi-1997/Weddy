@@ -10,14 +10,14 @@ export const getToken = async (userId?: string): Promise<void> => {
     url: `${BASE_URL}/token/super`,
     params: {
       id: userId,
-    }
+    },
   });
 
   if (userId) {
     sessionStorage.setItem("userId", userId);
     sessionStorage.setItem("token", response.data.accessToken);
     sessionStorage.setItem("refreshToken", response.data.refreshToken);
-  };
+  }
 };
 
 //== 로그아웃 ==//
@@ -26,7 +26,7 @@ export const logout = () => {
     method: "post",
     url: `${BASE_URL}/logout`,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: sessionStorage.getItem("token"),
     },
   });
 };
@@ -37,7 +37,7 @@ export const getUserInfo = async (): Promise<userInformation[]> => {
     method: "get",
     url: BASE_URL,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: sessionStorage.getItem("token"),
     },
   });
   console.log(response.data.data);
@@ -52,13 +52,15 @@ export const editProfile = async (file: FormData): Promise<void> => {
     headers: {
       Authorization: sessionStorage.getItem("token"),
     },
-    data: file
-    });
-    console.log(response.data);
-  };
+    data: file,
+  });
+  console.log(response.data);
+};
 
 //== 회원 정보 수정 ==//
-export const editInformation = async ( userInfo?: userInformation ): Promise<void> => {
+export const editInformation = async (
+  userInfo?: userInformation
+): Promise<void> => {
   console.log(userInfo);
   // await axios({
   //   method: "patch",
@@ -75,6 +77,10 @@ export const saveFcmToken = async (
   fcmToken: string,
   userId: string
 ): Promise<void> => {
+export const saveFcmToken = async (
+  fcmToken: string,
+  userId: string
+): Promise<void> => {
   await axios({
     method: "patch",
     url: `${BASE_URL}/fcm-token/${userId}`,
@@ -83,6 +89,7 @@ export const saveFcmToken = async (
       sessionStorage.getItem("token"),
       "Content-Type": "application/json",
     },
+    data: { fcmToken: fcmToken },
     data: { fcmToken: fcmToken },
   });
 };
@@ -99,4 +106,4 @@ export const getFcmToken = async (coupleCode: string): Promise<string> => {
     },
   });
   return response.data.data;
-}
+};
