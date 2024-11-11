@@ -19,28 +19,29 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 // 백그라운드 메시지 수신 핸들러
-self.addEventListener("push", function (event) {
-  console.log("Push event received:", event);
+// self.addEventListener("push", function (event) {
+//   console.log("Push event received:", event);
 
-  let data = { title: "기본 제목", body: "기본 내용" };
+//   let data = { title: "기본 제목", body: "기본 내용" };
 
-  if (!event.data) return;
-  if (event.data) {
-    try {
-      data = JSON.parse(event.data.text());
-    } catch (e) {
-      console.error("Push data JSON parse error:", e);
-    }
-  }
+//   if (!event.data) return;
+//   if (event.data) {
+//     try {
+//       data = JSON.parse(event.data.text());
+//     } catch (e) {
+//       console.error("Push data JSON parse error:", e);
+//     }
+//   }
 
-  const options = {
-    body: data.body,
-    icon: "/default-icon.png",
-  };
+//   const options = {
+//     title: data.title,
+//     body: data.body,
+//     icon: "/default-icon.png",
+//   };
 
-  console.log("Attempting to show notification:", data.title, options);
-  event.waitUntil(self.registration.showNotification(data.title, options));
-});
+//   console.log("Attempting to show notification:", data.title, options);
+//   event.waitUntil(self.registration.showNotification(data.title, options));
+// });
 
 // PWA 캐싱 설정
 const CACHE_NAME = "weddy-cache-v1";

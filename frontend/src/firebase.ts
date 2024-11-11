@@ -81,9 +81,16 @@ export const onMessageListener = (): Promise<MessagePayload> => {
   return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
       console.log("Message received in foreground:", payload);
-      if (payload.data) {
-        alert(`Title: ${payload.data.title}\nBody: ${payload.data.body}`);
+
+      // 알림이 브라우저에서 지원되는지 확인 후, 수동으로 알림 표시
+      if (Notification.permission === "granted") {
+        const { title, body } = payload.notification || { title: "No title", body: "No body" };
+        console.log("payload:",payload)
+        new Notification(title, { body });
+      } else {
+        console.warn("Notification permission not granted.");
       }
+
       resolve(payload);
     });
   });
