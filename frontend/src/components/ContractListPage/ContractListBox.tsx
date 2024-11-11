@@ -28,7 +28,7 @@ const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) 
 
   const handlePayment = async() => {
     if (contractInfo) {
-      // await requestPayment(contractInfo);
+      await requestPayment(contractInfo);
       await changeStatus(contractInfo.id);
     }
   };
