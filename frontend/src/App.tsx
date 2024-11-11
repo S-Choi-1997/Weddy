@@ -75,7 +75,8 @@ function App() {
       saveFcmToken(fcmToken, userId);
       console.log("fcmToken saved");
     }
-  });
+  }, [userId, fcmToken]);
+  
 
   return (
     <div className="container">
