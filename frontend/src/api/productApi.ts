@@ -41,28 +41,26 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
 
 //== 상품 담기 ==//
 export const addProductToCart = async (productId?: string): Promise<void> => {
-  console.log(productId);
-  // const response = await axios({
-  //   method: 'post',
-  //   url: `${BASE_URL}/${productId}/cart`,
-  //   headers: {
-  //     Authorization: sessionStorage.getItem('token')
-  //   }
-  // });
-  // console.log(response.data);
+  const response = await axios({
+    method: 'post',
+    url: `${BASE_URL}/${productId}/cart`,
+    headers: {
+      Authorization: sessionStorage.getItem('token')
+    }
+  });
+  console.log(response.data);
 };
 
 //== 장바구니 삭제 ==//
 export const deleteFromCart = async (productId?: string): Promise<void> => {
-  console.log(productId);
-  // const response = await axios({
-  //   method: 'delete',
-  //   url: `${BASE_URL}/${productId}/cart`,
-  //   headers: {
-  //     Authorization: sessionStorage.getItem('token')
-  //   }
-  // });
-  // console.log(response.data);
+  const response = await axios({
+    method: 'delete',
+    url: `${BASE_URL}/${productId}/cart`,
+    headers: {
+      Authorization: sessionStorage.getItem('token')
+    }
+  });
+  console.log(response.data);
 };
 
 //== 장바구니 리스트 조회 ==//

@@ -1,4 +1,4 @@
-// import { aiRecommend } from "@/api/recommendApi";
+import { aiRecommend } from "@/api/recommendApi";
 import { recommendState } from "@/store/recommendState";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ const Prompt = () => {
   const [placeholder, setPlaceholder] = useState("");
   const text = "모던한 분위기의 500만원대 스튜디오 추천해줘";
   const [inputValue, setInputValue] = useState("");
-  const [recommendList, ] = useRecoilState(recommendState);
+  const [recommendList, setRecommendList] = useRecoilState(recommendState);
 
   const navigate = useNavigate();
 
@@ -20,9 +20,8 @@ const Prompt = () => {
   }, []);
 
   const toPlanner = async () => {
-    console.log(inputValue);
-    // const recommendList = await aiRecommend(inputValue);
-    // setRecommendList(recommendList);
+    const recommendList = await aiRecommend(inputValue);
+    setRecommendList(recommendList);
     navigate("/planner");
   };
 
