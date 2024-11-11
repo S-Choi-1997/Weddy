@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { changeStatus, contractInfo } from "../api/contractApi";
 import TodoButton from "../common/TodoButton";
@@ -7,12 +7,13 @@ import { mintNFT } from "../hooks/mintNFT";
 import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { useQuery } from "react-query";
-
+import NFTLoading from "./NFTLoadingPage";
 
 const Contract = () => {
   const { category, contractId } = useParams();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const date = new Date();
 
@@ -39,6 +40,7 @@ const Contract = () => {
     const hash = await uploadToPinata(contractImage, contract);
 
     await Promise.all([
+      setLoading(true),
       mintNFT(hash),
       changeStatus(contractId)
     ]);
@@ -57,8 +59,12 @@ const Contract = () => {
   }
 
   return (
-    <div>
-      <div className="bg-white border rounded-sm p-5 mx-5 mt-5" ref={pageRef}>
+    <>
+      {loading ? (
+        <NFTLoading/>
+      ) : (
+        <div>
+          <div className="bg-white border rounded-sm p-5 mx-5 mt-5" ref={pageRef}>
         <div className="text-center text-lg font-bold">
           계약서
         </div>
@@ -128,7 +134,9 @@ const Contract = () => {
       <div className="flex justify-end mt-3 mb-24 mr-5" onClick={handleSignature}>
         <TodoButton title="전자 서명" colorId={1} />
       </div>
-    </div>
+        </div>
+      )}
+    </>
   )
 }
 
