@@ -8,10 +8,10 @@ import CartBox from "./CartBox";
 
 interface CartListBoxProps {
   category: string;
-  productList: Product[];
+  productList?: Product[];
   selectedList: { [type: string]: Product | null };
   onProductChange: (category: string, product: Product | null) => void;
-  onRemove: (category: string, id: string) => void;
+  onRemove: (productId: string) => void;
 }
 
 const CartListBox = ({ category, productList, selectedList, onProductChange, onRemove }: CartListBoxProps) => {
@@ -24,7 +24,7 @@ const CartListBox = ({ category, productList, selectedList, onProductChange, onR
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    setIsChecked(!!productList.length);
+    setIsChecked(!!productList?.length);
   }, [productList]);
 
   const handleProductSelect = (product: Product | null) => {
@@ -79,13 +79,13 @@ const CartListBox = ({ category, productList, selectedList, onProductChange, onR
         </div>
       </AccordionSummary>
       {isChecked ? (
-        productList.map((item: Product, index) => (
+        productList?.map((item: Product, index) => (
           <div key={index}>
             <CartBox
               item={item}
               isSelected={selectedList[category]?.id === item.id}
               onProductSelect={handleProductSelect}
-              onRemove={() => onRemove(category, item.id)}
+              onRemove={() => onRemove(item.id)}
             />
           </div>
         ))
