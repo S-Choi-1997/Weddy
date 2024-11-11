@@ -4,6 +4,7 @@ import com.example.user.common.dto.ErrorCode;
 import com.example.user.common.exception.UserNotFoundException;
 import com.example.user.common.exception.UserTokenNotFoundException;
 import com.example.user.common.service.GCSImageService;
+import com.example.user.common.service.FcmService;
 import com.example.user.user.dto.response.UserCoupleTokenDto;
 import com.example.user.user.dto.response.UserResponseDTO;
 import com.example.user.user.entity.UserEntity;
@@ -24,9 +25,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final GCSImageService gcsImageService;
-    public UserService(UserRepository userRepository, GCSImageService gcsImageService){
+    private final FcmService fcmService;
+    public UserService(UserRepository userRepository, GCSImageService gcsImageService, FcmService fcmService){
         this.userRepository = userRepository;
         this.gcsImageService = gcsImageService;
+        this.fcmService = fcmService;
     }
 
     public List<UserResponseDTO> userInfo(UserEntity user) {
@@ -160,6 +163,7 @@ public class UserService {
     public void setFcmToken(Long userId, String fcmToken) {
         UserEntity userEntity = getUserEntity(userId);
         userEntity.updateFcmToken(fcmToken);
+        fcmService.sendPushNotification(fcmToken, "FCM 토큰 저장 성공", "FCM 토큰 저장 성공");
     }
 
 
