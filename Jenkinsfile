@@ -3,6 +3,11 @@ pipeline {
     agent any
 
     environment {
+
+        // ECR
+        ECR_REGISTRY = '654654308839.dkr.ecr.ap-northeast-2.amazonaws.com'
+        ECR_CREDENTIALS = 'ecr:ap-northeast-2:ECR'
+
         // Docker Hub
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials') // Docker Hub 자격 증명
 
@@ -11,13 +16,23 @@ pipeline {
         MATTERMOST_CHANNEL = 'c203-jenkins'
 
         // Docker 이미지 이름
-        CACHE_SCHEDULER_IMAGE = 'siokim002/weddy_cache_scheduler'
-        COMMON_LIB_IMAGE = 'siokim002/weddy_common_lib'
-        GATEWAY_IMAGE = 'siokim002/weddy_gateway'
-        PRODUCT_IMAGE = 'siokim002/weddy_product'
-        SCHEDULE_IMAGE = 'siokim002/weddy_schedule'
-        USER_IMAGE = 'siokim002/weddy_user'
-        FRONTEND_IMAGE = 'siokim002/weddy_frontend'
+        // CACHE_SCHEDULER_IMAGE = 'siokim002/weddy_cache_scheduler'
+        // COMMON_LIB_IMAGE = 'siokim002/weddy_common_lib'
+        // GATEWAY_IMAGE = 'siokim002/weddy_gateway'
+        // PRODUCT_IMAGE = 'siokim002/weddy_product'
+        // SCHEDULE_IMAGE = 'siokim002/weddy_schedule'
+        // USER_IMAGE = 'siokim002/weddy_user'
+        // FRONTEND_IMAGE = 'siokim002/weddy_frontend'
+
+
+        // ECR 이미지 이름
+        CACHE_SCHEDULER_IMAGE = 'weddy/cache_scheduler'
+        COMMON_LIB_IMAGE = 'weddy/common_lib'
+        GATEWAY_IMAGE = 'weddy/gateway'
+        PRODUCT_IMAGE = 'weddy/product'
+        SCHEDULE_IMAGE = 'weddy/schedule'
+        USER_IMAGE = 'weddy/user'
+        FRONTEND_IMAGE = 'weddy/frontend'
 
         // GitOps 저장소 주소
         GITOPS_REPO = 'git@github.com:zion0425/weddy_gitops.git' 
@@ -48,6 +63,15 @@ pipeline {
                 }
             }
         }
+
+        // // ECR Docker 초기화 docker.withRegisitry 할 때 자동으로 처리 됨
+        // stage('Setup Docker') {
+        //     steps {
+        //         script {
+        //             sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
+        //         }
+        //     }
+        // }
 
         stage('Checkout') {
             steps {
@@ -93,45 +117,61 @@ pipeline {
             steps {
                 script {
                     // Docker Hub 로그인
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    try {
+                    // ECR 레지스트리
+                        docker.withRegistry("https://${ECR_REGISTRY}", ECR_CREDENTIALS) {
+                            for (service in changedServices) {
+                                def imageName = ""
+                                def dirPath = ""
+                                if (service == 'frontend') {
+                                    imageName = FRONTEND_IMAGE
+                                    dirPath = 'frontend'
+                                } else if (service == 'cacheScheduler') {
+                                    imageName = CACHE_SCHEDULER_IMAGE
+                                    dirPath = 'backend/cacheScheduler'
+                                } else if (service == 'common-lib') {
+                                    imageName = COMMON_LIB_IMAGE
+                                    dirPath = 'backend/common-lib'
+                                } else if (service == 'gateway') {
+                                    imageName = GATEWAY_IMAGE
+                                    dirPath = 'backend/gateway'
+                                } else if (service == 'product') {
+                                    imageName = PRODUCT_IMAGE
+                                    dirPath = 'backend/product'
+                                } else if (service == 'schedule') {
+                                    imageName = SCHEDULE_IMAGE
+                                    dirPath = 'backend/schedule'
+                                } else if (service == 'user') {
+                                    imageName = USER_IMAGE
+                                    dirPath = 'backend/user'
+                                }
 
-                    for (service in changedServices) {
-                        def imageName = ""
-                        def dirPath = ""
-                        if (service == 'frontend') {
-                            imageName = FRONTEND_IMAGE
-                            dirPath = 'frontend'
-                        } else if (service == 'cacheScheduler') {
-                            imageName = CACHE_SCHEDULER_IMAGE
-                            dirPath = 'backend/cacheScheduler'
-                        } else if (service == 'common-lib') {
-                            imageName = COMMON_LIB_IMAGE
-                            dirPath = 'backend/common-lib'
-                        } else if (service == 'gateway') {
-                            imageName = GATEWAY_IMAGE
-                            dirPath = 'backend/gateway'
-                        } else if (service == 'product') {
-                            imageName = PRODUCT_IMAGE
-                            dirPath = 'backend/product'
-                        } else if (service == 'schedule') {
-                            imageName = SCHEDULE_IMAGE
-                            dirPath = 'backend/schedule'
-                        } else if (service == 'user') {
-                            imageName = USER_IMAGE
-                            dirPath = 'backend/user'
-                        }
+                                // Docker 이미지 빌드
+                                dir(dirPath) {
+                                    if (service != 'frontend') {
+                                        sh 'chmod +x ./gradlew'
+                                        sh './gradlew clean build -x test'
+                                    }
+                                    // Docker 이미지 빌드
+                                    // sh "docker build --no-cache -t ${imageName}:${env.BUILD_NUMBER} ."
 
-                        // Docker 이미지 빌드
-                        dir(dirPath) {
-                            if (service != 'frontend') {
-                                sh 'chmod +x ./gradlew'
-                                sh './gradlew clean build -x test'
+                                    // Docker hub에 이미지 푸시
+                                    // sh "docker push ${imageName}:${env.BUILD_NUMBER}"
+
+                                    // ECR 이미지 빌드
+                                    def app = docker.build("${ECR_REGISTRY}/${imageName}:${env.BUILD_NUMBER}", '.')
+
+                                    // ECR에 이미지 푸시
+                                    app.push("${env.BUILD_NUMBER}")
+                                }
+
+
                             }
-                            sh "docker build --no-cache -t ${imageName}:${env.BUILD_NUMBER} ."
                         }
-
-                        // Docker 이미지 푸시
-                        sh "docker push ${imageName}:${env.BUILD_NUMBER}"
+                    } catch (Exception e) {
+                        echo "Error during build/push: ${e.message}"
+                        throw e
                     }
                 }
             }
@@ -148,6 +188,14 @@ pipeline {
                             for (service in changedServices) {
                                 def imageName = ""
                                 def deploymentFile = ""
+
+                                // 변경 사안 확인
+                                def hasChanges = sh(script: 'git status --porcelain', returnStdout: true).trim()
+                                if (!hasChanges) {
+                                    echo 'No changes to commit'
+                                    return
+                                }
+
                                 if (service == 'frontend') {
                                     imageName = FRONTEND_IMAGE
                                     deploymentFile = 'frontend-deployment.yaml'
@@ -173,7 +221,7 @@ pipeline {
 
                                 // deployment.yaml 파일의 이미지 태그 업데이트
                                 sh """
-                                sed -i 's#image: .*#image: ${imageName}:${env.BUILD_NUMBER}#' ${deploymentFile}
+                                sed -i 's#image: .*#image: ${ECR_REGISTRY}/${imageName}:${env.BUILD_NUMBER}#' ${deploymentFile}
                                 """
                             }
 
