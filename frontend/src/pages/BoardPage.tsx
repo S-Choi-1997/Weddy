@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
@@ -8,37 +8,30 @@ import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
 
 const Board = () => {
-  const [filteredProductList, setFilteredProductList] = useState<Product[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category") || "studio";
 
-  const { data: allProductList = [] } = useQuery('allProducts', allProducts);
+  const { data: allProductList = [] } = useQuery("allProducts", allProducts);
 
   const handleTabChange = (value: string) => setSearchParams({ category: value });
 
   const handleRegionSelect = (value: string) => setSelectedRegion(value);
 
-  const handlePriceSelect = (value: string) => setSelectedPrice(parseInt(value.replace(/,/g, ""), 10));
+  const handlePriceSelect = (value: string) =>
+    setSelectedPrice(parseInt(value.replace(/,/g, ""), 10));
 
-  // 필터링 로직 함수
-  const filterProducts = () => {
+  const filteredProductList = useMemo(() => {
     return allProductList.filter((product: Product) => {
       const matchesRegion = selectedRegion ? product.address.includes(selectedRegion) : true;
       const matchesPrice = selectedPrice ? Number(product.price) <= selectedPrice : true;
       return matchesRegion && matchesPrice;
     });
-  };
+  }, [selectedRegion, selectedPrice, allProductList]);
 
-  // 필터링된 리스트 업데이트
-  useEffect(() => {
-    setFilteredProductList(filterProducts());
-  }, [selectedPrice, selectedRegion, allProductList]);
-
-   // Dummy data
-   const regions = [
+  const regions = [
     { value: "서울", label: "서울" },
     { value: "부산", label: "부산" },
     { value: "대구", label: "대구" },
@@ -72,7 +65,9 @@ const Board = () => {
           <TabsContent key={type} value={type}>
             <SDMList
               value={type}
-              productList={filteredProductList.filter((product) => product.type === type.toUpperCase())}
+              productList={filteredProductList.filter(
+                (product) => product.type === type.toUpperCase()
+              )}
             />
           </TabsContent>
         ))}
