@@ -3,8 +3,11 @@ import ContractListBox from "../components/ContractListPage/ContractListBox";
 import { ContractData } from "@/api/contract.type";
 import { myContract } from "@/api/contractApi";
 import { useEffect, useState } from "react";
+import { NftType } from "@/api/nft.type";
+import { getNFT } from "@/hooks/getNFT";
 
 const ContractList = () => {
+  const [ NFTList, setNFTLIst ] = useState<NftType[]>([]);
   const [ studioContract, setStudioContract ] = useState<ContractData>();
   const [ dressContract, setDressContract ] = useState<ContractData>();
   const [ makeupContract, setMakeupContract ] = useState<ContractData>();
@@ -17,11 +20,19 @@ const ContractList = () => {
     setMakeupContract(contractList?.find((contract: ContractData) => contract.product.type === "MAKEUP"));
   }, [contractList]);
   
+  useEffect(() => {
+    const update = async () => {
+      const myNFT = await getNFT();
+      setNFTLIst(myNFT);
+    };
+    update();
+  }, []);
+
   return (
     <div className="mt-12 mb-32 mx-5">
-      <ContractListBox type="STUDIO" contractInfo={studioContract}/>
-      <ContractListBox type="DRESS" contractInfo={dressContract}/>
-      <ContractListBox type="MAKEUP" contractInfo={makeupContract}/>
+      <ContractListBox type="STUDIO" NftData={NFTList?.find((nft: NftType) => nft.name === 'STUDIO')} contractInfo={studioContract}/>
+      <ContractListBox type="DRESS" NftData={NFTList?.find((nft: NftType) => nft.name === 'DRESS')} contractInfo={dressContract}/>
+      <ContractListBox type="MAKEUP" NftData={NFTList?.find((nft: NftType) => nft.name === 'MAKEUP')} contractInfo={makeupContract}/>
     </div>
   );
 };

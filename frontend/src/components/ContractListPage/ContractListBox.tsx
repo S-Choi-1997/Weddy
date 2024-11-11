@@ -8,13 +8,15 @@ import { Link } from "react-router-dom";
 import TodoButton from "../../common/TodoButton";
 import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
+import { NftType } from "@/api/nft.type";
 
 interface ContractListBoxProps {
   type: string;
+  NftData?: NftType;
   contractInfo?: ContractData;
 }
 
-const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
+const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) => {
   const handleChangeStatus = async () => {
     if (contractInfo) {
       await changeStatus(contractInfo.id);
@@ -22,9 +24,16 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
     window.location.reload();
   };
 
-  const handlePayment = () => {
+  const handlePayment = async() => {
     if (contractInfo) {
-      requestPayment(contractInfo);
+      await requestPayment(contractInfo);
+      await changeStatus(contractInfo.id);
+    }
+  };
+
+  const goNFT = () => {
+    if (NftData) {
+      window.location.href = NftData?.image;
     }
   };
 
@@ -107,7 +116,7 @@ const ContractListBox = ({ type, contractInfo }: ContractListBoxProps) => {
               )}
               {contractInfo.status === "PAYMENT_COMPLETED" && (
                 <div className="flex items-center">
-                  <div className="mr-2">
+                  <div className="mr-2" onClick={goNFT}>
                     <FileSelectIcon w={20} h={20} />
                   </div>
                   <Link to={`/review/${contractInfo.product.productId}`}>
