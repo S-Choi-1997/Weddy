@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
+import { onMessageListener } from "./firebase"; // 정확한 경로로 수정하세요
 import "./index.css";
 import BoardDetail from "./pages/BoardDetailPage";
 import Board from "./pages/BoardPage";
@@ -10,6 +13,8 @@ import CallBack from "./pages/CallBack";
 import Cart from "./pages/CartPage";
 import ContractList from "./pages/ContractListPage";
 import Contract from "./pages/ContractPage";
+import DressImg from "./pages/DressImgPage";
+import DressSketch from "./pages/DressSketchPage";
 import Login from "./pages/LoginPage";
 import Main from "./pages/MainPage";
 import Mypage from "./pages/MyPage";
@@ -22,18 +27,34 @@ import Review from "./pages/ReviewPage";
 import Schedule from "./pages/SchedulePage";
 import Sketch from "./pages/SketchPage";
 import UserInfo from "./pages/UserInfoPage";
-import DressSketch from "./pages/DressSketchPage";
-import DressImg from "./pages/DressImgPage";
-import { useRecoilValue } from "recoil";
 import { firebaseTokenState } from "./store/firebaseToken";
-import { useEffect } from "react";
-import { saveFcmToken } from "./api/userApi";
-import { onMessageListener } from "./firebase"; // 정확한 경로로 수정하세요
 
 function AppContent() {
+  const userId = sessionStorage.getItem("userId");
+  const fcmToken = useRecoilValue(firebaseTokenState);
   const location = useLocation();
   const currentPath = location.pathname.split("/")[1];
   const currentDetail = location.pathname.split("/")[2];
+
+  useEffect(() => {
+    // FCM 토큰 저장
+    if (userId && fcmToken) {
+      saveFcmToken(fcmToken, userId);
+      console.log("fcmToken saved");
+    }
+
+    // 포그라운드 메시지 리스너 설정
+    const initializeMessageListener = async () => {
+      try {
+        const payload = await onMessageListener();
+        console.log("Foreground message received:", payload);
+      } catch (error) {
+        console.error("Error in foreground message listener:", error);
+      }
+    };
+
+    initializeMessageListener();
+  }, [userId, fcmToken]);
 
   return (
     <>
@@ -68,39 +89,17 @@ function AppContent() {
 }
 
 function App() {
-  const userId = sessionStorage.getItem("userId");
-  const fcmToken = useRecoilValue(firebaseTokenState);
   const queryClient = new QueryClient();
-
-  useEffect(() => {
-    // FCM 토큰 저장
-    if (userId && fcmToken) {
-      saveFcmToken(fcmToken, userId);
-      console.log("fcmToken saved");
-    }
-
-    // 포그라운드 메시지 리스너 설정
-    const initializeMessageListener = async () => {
-      try {
-        const payload = await onMessageListener();
-        console.log("Foreground message received:", payload);
-      } catch (error) {
-        console.error("Error in foreground message listener:", error);
-      }
-    };
-
-    initializeMessageListener();
-  }, [userId, fcmToken]);
 
   return (
     <div className="container">
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <AppContent />
           </BrowserRouter>
-        </RecoilRoot>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </RecoilRoot>
     </div>
   );
 }

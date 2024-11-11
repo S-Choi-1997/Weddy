@@ -1,6 +1,6 @@
 import { getToken, getUserInfo } from "@/api/userApi";
-// import { requestForToken, requestNotificationPermission } from "@/firebase";
-// import { firebaseTokenState } from "@/store/firebaseToken";
+import { requestForToken, requestNotificationPermission } from "@/firebase";
+import { firebaseTokenState } from "@/store/firebaseToken";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
