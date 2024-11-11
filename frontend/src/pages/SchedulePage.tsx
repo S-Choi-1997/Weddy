@@ -51,7 +51,7 @@ const Schedule = () => {
         })}
       </div>
 
-      <div></div>
+      {/* <div></div> */}
 
       {!scheduleList || scheduleList?.length <= 0 ? (
         <ScheduleBox type="etc" title="일정이 없습니다." />
