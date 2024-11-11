@@ -77,10 +77,6 @@ export const saveFcmToken = async (
   fcmToken: string,
   userId: string
 ): Promise<void> => {
-export const saveFcmToken = async (
-  fcmToken: string,
-  userId: string
-): Promise<void> => {
   await axios({
     method: "patch",
     url: `${BASE_URL}/fcm-token/${userId}`,
@@ -90,9 +86,10 @@ export const saveFcmToken = async (
       "Content-Type": "application/json",
     },
     data: { fcmToken: fcmToken },
-    data: { fcmToken: fcmToken },
   });
 };
+
+
 
 
 
