@@ -1,9 +1,9 @@
 import { Product } from "@/api/product.type";
 import DropdownIcon from "@/icons/DropdownIcon";
-// import GotoIcon from "@/icons/Goto";
+import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartBox from "./CartBox";
 
 interface CartListBoxProps {
@@ -15,10 +15,11 @@ interface CartListBoxProps {
 }
 
 const CartListBox = ({ category, productList, selectedList, onProductChange, onRemove }: CartListBoxProps) => {
-  // const navigate = useNavigate();
-  // const goRecommend = () => {
-  //   navigate(`/planner/list/${category}`);
-  // };
+  const navigate = useNavigate();
+
+  const goboard = () => {
+    navigate(`/board?category=${category.toLowerCase()}`);
+  }
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -70,11 +71,10 @@ const CartListBox = ({ category, productList, selectedList, onProductChange, onR
               <DropdownIcon />
             </div>
           ) : (
-            // <div onClick={goRecommend} className="flex items-center">
-            //   <p className="mr-1">상품 보러가기</p>
-            //   <GotoIcon />
-            // </div>
-            <></>
+            <div onClick={goboard} className="flex items-center">
+              <p className="mr-1">상품 보러가기</p>
+              <GotoIcon />
+            </div>
           )}
         </div>
       </AccordionSummary>
