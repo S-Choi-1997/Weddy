@@ -23,7 +23,7 @@ public class ScheduleEventProducer {
     public void sendScheduleResultEvent(EventResult eventResult){
         log.info("EventResult : "+eventResult.toString());
         CompletableFuture<SendResult<String, EventResult>> send = kafkaTemplate.send(TOPIC, eventResult);
-        send.whenComplete((sendResult,ex)->{
+         send.whenComplete((sendResult,ex)->{
             if(ex!=null){
                 log.info("결제 이벤트 전달 실패."+ ex.getMessage());
             }else{
