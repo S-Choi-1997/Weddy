@@ -22,8 +22,13 @@ import Review from "./pages/ReviewPage";
 import Schedule from "./pages/SchedulePage";
 import Sketch from "./pages/SketchPage";
 import UserInfo from "./pages/UserInfoPage";
-import DressSketch from "./pages/DressSketchPage.tsx";
-import DressImg from "./pages/DressImgPage.tsx";
+import DressSketch from "./pages/DressSketchPage";
+import DressImg from "./pages/DressImgPage";
+import { useRecoilValue } from "recoil";
+import { firebaseTokenState } from "./store/firebaseToken";
+import { useEffect } from "react";
+import { saveFcmToken } from "./api/userApi";
+import { onMessageListener } from "./firebase"; // 정확한 경로로 수정하세요
 
 function AppContent() {
   const location = useLocation();
@@ -63,7 +68,29 @@ function AppContent() {
 }
 
 function App() {
+  const userId = sessionStorage.getItem("userId");
+  const fcmToken = useRecoilValue(firebaseTokenState);
   const queryClient = new QueryClient();
+
+  useEffect(() => {
+    // FCM 토큰 저장
+    if (userId && fcmToken) {
+      saveFcmToken(fcmToken, userId);
+      console.log("fcmToken saved");
+    }
+
+    // 포그라운드 메시지 리스너 설정
+    const initializeMessageListener = async () => {
+      try {
+        const payload = await onMessageListener();
+        console.log("Foreground message received:", payload);
+      } catch (error) {
+        console.error("Error in foreground message listener:", error);
+      }
+    };
+
+    initializeMessageListener();
+  }, [userId, fcmToken]);
 
   return (
     <div className="container">
