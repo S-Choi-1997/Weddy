@@ -7,7 +7,7 @@ interface CartBoxProps {
   item: Product;
   isSelected: boolean;
   onProductSelect: (product: Product | null) => void;
-  onRemove: (id: string) => void;
+  onRemove: (productId: string) => void;
 }
 
 const CartBox = ({ item, isSelected, onProductSelect, onRemove }: CartBoxProps) => {

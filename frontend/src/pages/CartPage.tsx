@@ -3,16 +3,13 @@ import { Product } from "@/api/product.type";
 import { deleteFromCart, getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartListBox from "@/components/CartPage/CartListBox";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const navigate = useNavigate();
-
-  const [studioList, setStudioList] = useState<Product[]>([]);
-  const [dressList, setDressList] = useState<Product[]>([]);
-  const [makeupList, setMakeupList] = useState<Product[]>([]);
+  const queryClient = new QueryClient();
 
   const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
     STUDIO: null,
@@ -22,13 +19,15 @@ const CartPage = () => {
 
   const { data: cartList } = useQuery("getCartItems", getCartItems);
 
-  useEffect(() => {
-    if (Array.isArray(cartList)) {
-      setStudioList(cartList.filter((item: Product) => item.type === "STUDIO"));
-      setDressList(cartList.filter((item: Product) => item.type === "DRESS"));
-      setMakeupList(cartList.filter((item: Product) => item.type === "MAKEUP"));
+  const deleteMutation = useMutation(deleteFromCart, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getCartItems");
     }
-  }, [cartList]);
+  })
+  
+  const handleRemoveItem = (productId: string) => {
+    deleteMutation.mutate(productId);
+  }
 
   //== 총 가격 계산 ==//
   const totalAmount = Object.values(selectedList).reduce((acc, item) => acc + (Number(item?.price) || 0), 0).toLocaleString();
@@ -48,43 +47,21 @@ const CartPage = () => {
     navigate("/contract/list");
   };
 
-  const deleteCartItem = async(category: string, id: string) => {
-    if (category === 'STUDIO') {
-      setStudioList(studioList.filter((item) => item.id !== id));
-    } else if (category === 'DRESS') {
-      setDressList(dressList.filter((item) => item.id !== id));
-    } else if (category === 'MAKEUP') {
-      setMakeupList(makeupList.filter((item) => item.id !== id));
-    }
-
-    await deleteFromCart(id);
-  };
-
   return (
     <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
 
-        <CartListBox
-          category="STUDIO"
-          productList={studioList}
+        {['STUDIO', 'DRESS', 'MAKEUP'].map((category: string) => (
+          <CartListBox
+          key={category}
+          category={category}
+          productList={cartList?.filter((item: Product) => item.type === category)}
           selectedList={selectedList}
           onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
-        <CartListBox
-          category="DRESS"
-          productList={dressList}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
-        <CartListBox
-          category="MAKEUP"
-          productList={makeupList}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={deleteCartItem}
-        />
+          onRemove={handleRemoveItem}
+          />
+        ))}
+
       </div>
       
       <div className="flex justify-end mr-10 mt-14">
