@@ -8,6 +8,7 @@ import { makeSignature } from "../hooks/signature";
 import { uploadToPinata } from "../hooks/uploadToPinata";
 import { useQuery } from "react-query";
 
+
 const Contract = () => {
   const { category, contractId } = useParams();
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Contract = () => {
 
     await makeSignature();
 
-    const hash = await uploadToPinata(contractImage, category);
+    const hash = await uploadToPinata(contractImage, contract);
 
     await Promise.all([
       mintNFT(hash),
@@ -46,10 +47,10 @@ const Contract = () => {
   };
 
   const type = {
-    STUDIO: "촬영",
-    DRESS: "드레스",
-    MAKEUP: "메이크업"
-  }[category as "STUDIO" | "DRESS" | "MAKEUP"];
+    studio: "촬영",
+    dress: "드레스",
+    makeup: "메이크업"
+  }[category as "studio" | "dress" | "makeup"];
 
   if (isLoading) {
     return <div>로딩중...</div>;

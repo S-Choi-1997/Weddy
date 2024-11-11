@@ -14,6 +14,7 @@ const ContractList = () => {
 
   const { data: contractList } = useQuery("myContract", myContract);
 
+  
   useEffect(() => {
     setStudioContract(contractList?.find((contract: ContractData) => contract.product.type === "STUDIO"));
     setDressContract(contractList?.find((contract: ContractData) => contract.product.type === "DRESS"));
@@ -27,12 +28,15 @@ const ContractList = () => {
     };
     update();
   }, []);
-
   return (
     <div className="mt-12 mb-32 mx-5">
-      <ContractListBox type="STUDIO" NftData={NFTList?.find((nft: NftType) => nft.name === 'STUDIO')} contractInfo={studioContract}/>
-      <ContractListBox type="DRESS" NftData={NFTList?.find((nft: NftType) => nft.name === 'DRESS')} contractInfo={dressContract}/>
-      <ContractListBox type="MAKEUP" NftData={NFTList?.find((nft: NftType) => nft.name === 'MAKEUP')} contractInfo={makeupContract}/>
+      {NFTList ? (
+        <>
+          <ContractListBox type="STUDIO" NftData={NFTList?.find((nft: NftType) => nft.contractId === studioContract?.id)} contractInfo={studioContract}/>
+          <ContractListBox type="DRESS" NftData={NFTList?.find((nft: NftType) => nft.contractId === dressContract?.id)} contractInfo={dressContract}/>
+          <ContractListBox type="MAKEUP" NftData={NFTList?.find((nft: NftType) => nft.contractId === makeupContract?.id)} contractInfo={makeupContract}/>
+        </>
+      ) : null}
     </div>
   );
 };

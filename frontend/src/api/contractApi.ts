@@ -4,6 +4,8 @@ import { Product } from "./product.type";
 
 const BASE_URL = 'http://localhost:8080/api/contracts'
 
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwidXNlck5hbWUiOiJb6rSR7KO8XzHrsJhfYzEwM1_snbTrs5HsiJhdIiwiY29kZSI6IkczNzFSTyIsImlhdCI6MTczMDQyNDQ1MSwiZXhwIjoxNzMzMDE2NDUxfQ.R7YFdmlN-IZkTeo0veuMA4W2eW_9-dXJJ-pGU8SRmPk'
+
 //== 계약서 생성 ==// 
 export const createContract = async (contractItems: Product[]): Promise<void> => {
   const contracts = contractItems.map((item) => {
@@ -37,10 +39,13 @@ export const createContract = async (contractItems: Product[]): Promise<void> =>
 export const requestContract = async (contractList: SentContractType[]): Promise<void> => {
   await axios({
     method: 'post',
-    url: `${BASE_URL}/${sessionStorage.getItem("userId")}`,
+    url: `${BASE_URL}/5`,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: `Bearer ${token}`
     },
+    // headers: {
+    //   Authorization: sessionStorage.getItem("token")
+    // },
     data: contractList
   });
 };
@@ -51,8 +56,11 @@ export const myContract = async (): Promise<ContractData[]> => {
     method: 'get',
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${token}`
     }
+    // headers: {
+    //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    // }
   });
   return response.data.data;
 };
@@ -63,8 +71,11 @@ export const contractInfo = async (contractId?: string): Promise<ContractData> =
     method: 'get',
     url: `${BASE_URL}/${contractId}`,
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${token}`
     }
+    // headers: {
+    //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    // }
   });
   return response.data.data;
 };
@@ -75,7 +86,10 @@ export const changeStatus = async (contractId?: string): Promise<void> => {
     method: 'patch',
     url: `${BASE_URL}/${contractId}`,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: `Bearer ${token}`
     }
+    // headers: {
+    //   Authorization: sessionStorage.getItem("token")
+    // }
   });
 };
