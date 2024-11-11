@@ -23,6 +23,10 @@ import Sketch from "./pages/SketchPage";
 import UserInfo from "./pages/UserInfoPage";
 import DressSketch from "./pages/DressSketchPage.tsx";
 import DressImg from "./pages/DressImgPage.tsx";
+import { useRecoilValue } from "recoil";
+import { firebaseTokenState } from "./store/firebaseToken.ts";
+import { useEffect } from "react";
+import { saveFcmToken } from "./api/userApi.ts";
 
 function AppContent() {
   const location = useLocation();
@@ -62,7 +66,19 @@ function AppContent() {
 }
 
 function App() {
+  const userId = sessionStorage.getItem("userId");
+  const fcmToken = useRecoilValue(firebaseTokenState);
   const queryClient = new QueryClient();
+
+
+  
+
+  useEffect(() => {
+    if (userId && fcmToken) {
+      saveFcmToken(fcmToken, userId);
+      console.log("fcmToken saved");
+    }
+  });
 
   return (
     <div className="container">

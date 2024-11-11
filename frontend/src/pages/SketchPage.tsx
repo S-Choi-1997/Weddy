@@ -1,84 +1,76 @@
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useThree } from '@react-three/fiber';
-import html2canvas from 'html2canvas';
 import { Leva, useControls } from 'leva';
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useState } from 'react';
+import '../App.css';
 
-function WeddingDress() {
-  const { scene } = useGLTF('../assets/dress_merge.glb');
-
-  // 상의에 대한 Leva 컨트롤 정의
-  const upperControls = useControls('상의', {
-    metalness: { value: 0.05, min: 0, max: 1, step: 0.01, label: '메탈니스' },
-    roughness: { value: 0.3, min: 0, max: 1, step: 0.01, label: '거칠기' },
-    emissiveIntensity: { value: 0.4, min: 0, max: 2, step: 0.1, label: '밝기' },
-    sleeveLength: { value: 1, min: 0.5, max: 1.5, step: 0.01, label: '소매 길이' },
-    neckHeight: { value: 1, min: 0.8, max: 3, step: 0.01, label: '목 높이' },
-    neckWidth: { value: 1, min: 0.8, max: 1.5, step: 0.01, label: '목 넓이' },
-    showArms: { value: false, label: 'Arms Visible' },
-    showLaceShirt: { value: false, label: 'Lace Shirt Visible' },
-    showTop: { value: false, label: 'Top Visible' },
-    showShoulder2: { value: false, label: 'Shoulder2 Visible' }
-  });
-
-  // 하의에 대한 Leva 컨트롤 정의
-  const lowerControls = useControls('하의', {
-    dressLength: { value: 0.5, min: 0.5, max: 1, step: 0.01, label: '드레스 넓이' },
-    dressWidth: { value: 1, min: 0.5, max: 2, step: 0.01, label: '드레스 폭' },
-    showSkirt: { value: false, label: 'Skirt Visible' },
-    showSkirt2: { value: false, label: 'Skirt2 Visible' },
-    showDress3: { value: false, label: 'Dress3 Visible' },
-    showTop3: { value: false, label: 'Top3 Visible' }
-  });
-
-  useEffect(() => {
-    scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        if (mesh.material) {
-          const material = mesh.material as THREE.MeshStandardMaterial;
-          material.metalness = upperControls.metalness;
-          material.roughness = upperControls.roughness;
-          material.emissive = new THREE.Color(0x888888);
-          material.emissiveIntensity = upperControls.emissiveIntensity;
-          material.side = THREE.DoubleSide;
-        }
-
-        // 상의 속성 조정
-        if (['left_arm', 'right_arm'].includes(mesh.name)) {
-          mesh.visible = upperControls.showArms;
-          mesh.scale.x = upperControls.sleeveLength;
-        }
-        if (mesh.name === 'lace_shirt') {
-          mesh.visible = upperControls.showLaceShirt;
-          mesh.scale.y = upperControls.neckHeight;
-          mesh.scale.z = upperControls.neckWidth;
-        }
-        if (mesh.name === 'top2') mesh.visible = upperControls.showTop;
-        if (mesh.name === 'shorder_2') mesh.visible = upperControls.showShoulder2;
-
-        // 하의 속성 조정
-        if (mesh.name === 'skirt') {
-          mesh.visible = lowerControls.showSkirt;
-          mesh.scale.z = lowerControls.dressWidth;
-          mesh.scale.x = lowerControls.dressLength;
-        }
-        if (mesh.name === 'skirt2') {
-          mesh.visible = lowerControls.showSkirt2;
-          mesh.scale.z = lowerControls.dressWidth;
-          mesh.scale.x = lowerControls.dressLength;
-        }
-        if (mesh.name === 'dress_3') mesh.visible = lowerControls.showDress3;
-        if (mesh.name === 'top_3') mesh.visible = lowerControls.showTop3;
-      }
-    });
-  }, [scene, upperControls, lowerControls]);
-
-  return <primitive object={scene} />;
+// ToggleButton의 Props 타입 정의
+interface ToggleButtonProps {
+  label: string;
+  image: string;
+  isVisible: boolean;
+  onClick: () => void;
 }
 
-function CameraSettings() {
+// 커스텀 이미지 버튼 컴포넌트
+const ToggleButton: React.FC<ToggleButtonProps> = ({ label, image, isVisible, onClick }) => {
+  return (
+    <div className={`toggle-button ${isVisible ? 'active' : ''}`} onClick={onClick}>
+      <img src={image} alt={label} className="toggle-button-image" />
+      <div className="toggle-button-label">{label}</div>
+    </div>
+  );
+};
+
+// PartMeshes의 Props 타입 정의
+interface PartMeshesProps {
+  visibility: Record<string, boolean>;
+  scaleAdjustments: { width?: number; depth?: number };
+  modelPath: string;
+}
+
+// 각 파트별 컴포넌트 (기본 크기를 유지하면서 scale 조절 가능하게 설정)
+const PartMeshes: React.FC<PartMeshesProps> = ({ visibility, scaleAdjustments, modelPath }) => {
+  const { scene } = useGLTF(modelPath) as any; // useGLTF 타입 문제로 any로 설정
+  const [initialScales, setInitialScales] = useState<Record<string, THREE.Vector3>>({});
+
+  useEffect(() => {
+    const newInitialScales: Record<string, THREE.Vector3> = { ...initialScales };
+
+    scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.visible = visibility[child.name];
+
+        // 각 child의 기본 스케일을 저장
+        if (!newInitialScales[child.name]) {
+          newInitialScales[child.name] = child.scale.clone(); // 기본 스케일을 복사해 저장
+        }
+
+        // 각 부위에 대한 scale 적용
+        if (newInitialScales[child.name]) {
+          const widthScale = scaleAdjustments.width || 1;
+          const depthScale = scaleAdjustments.depth || 1;
+
+          // 드레스와 어깨 각각의 축에 맞게 스케일을 설정
+          if (modelPath.includes("dress")) {
+            child.scale.set(
+              newInitialScales[child.name].x * widthScale, // X축 (넓이) 조정
+              newInitialScales[child.name].y * depthScale,  // Y축 (폭) 조정
+              newInitialScales[child.name].z                // Z축 고정
+            );
+          }
+        }
+      }
+    });
+
+    setInitialScales(newInitialScales); // 초기 스케일 저장
+  }, [scene, visibility, scaleAdjustments]);
+
+  return <primitive object={scene} />;
+};
+
+// CameraSettings 컴포넌트
+const CameraSettings: React.FC = () => {
   const { camera } = useThree();
   useEffect(() => {
     camera.position.set(0, 1, 5);
@@ -88,63 +80,161 @@ function CameraSettings() {
   }, [camera]);
 
   return null;
-}
+};
 
+// Sketch 컴포넌트
 const Sketch: React.FC = () => {
-  const captureRef = useRef<HTMLDivElement>(null);
+  const [visibility, setVisibility] = useState<Record<string, boolean>>({
+    dress_1: false,
+    dress_2: false,
+    dress_3: false,
+    dress_4: false,
+    dress_5: false,
+    top_1: false,
+    top_2: false,
+    top_3: false,
+    top_4: false,
+    top_5: false,
+    shoulder_1: false,
+    shoulder_2: false,
+    arm_1: false,
+    arm_2: false,
+    arm_3: false,
+  });
 
-  // 캡처 함수 정의
-  const handleCapture = () => {
-    if (captureRef.current) {
-      html2canvas(captureRef.current).then((canvas) => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'wedding_dress_capture.png';
-        link.click();
-      });
+  // Leva 슬라이더로 각 축별 스케일 값을 개별적으로 조정
+  const { dressWidthScale, dressDepthScale } = useControls({
+    dressWidthScale: {
+      value: 0.6,
+      min: 0.6,
+      max: 1,
+      step: 0.1,
+      label: "Dress Width Scale"
+    },
+    dressDepthScale: {
+      value: 1,
+      min: 1,
+      max: 1.5,
+      step: 0.1,
+      label: "Dress Depth Scale"
     }
+  });
+
+  const selectVisibility = (name: string, category: string) => {
+    setVisibility((prev) => {
+      const updatedVisibility = { ...prev };
+
+      // 선택된 항목의 상태를 토글
+      updatedVisibility[name] = !prev[name];
+
+      // 동일 카테고리의 다른 항목은 모두 false로 설정
+      Object.keys(updatedVisibility).forEach((key) => {
+        if (key.startsWith(category) && key !== name) {
+          updatedVisibility[key] = false;
+        }
+      });
+
+      return updatedVisibility;
+    });
   };
 
   return (
-    <>
-      <button
-        className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 rounded px-4 py-2 shadow-lg"
-        style={{ zIndex: 100 }}
-        onClick={handleCapture}
+    <div className="app-container">
+      <Canvas
+        shadows
+        camera={{ fov: 40, position: [0, 1, 5] }}
+        className="canvas"
       >
-        캡처하기
-      </button>
-      <div
-        ref={captureRef} // 캡처할 영역
-        style={{
-          width: 414,
-          height: 800,
-          display: 'flex',
-          position: 'relative',
-          backgroundImage: 'url(../assets/wedding-back2.jpeg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <Canvas shadows camera={{ fov: 40, position: [0, 1, 5] }}>
-          <hemisphereLight groundColor={'#eeeeee'} intensity={1.0} />
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1.2} />
-          <directionalLight position={[-5, 5, 5]} intensity={0.8} castShadow />
-          <spotLight position={[5, 15, 10]} angle={0.3} penumbra={1} intensity={1.2} castShadow />
+        <hemisphereLight groundColor={'#eeeeee'} intensity={1.0} />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} intensity={1.2} />
+        <directionalLight position={[-5, 5, 5]} intensity={0.8} castShadow />
+        <spotLight position={[5, 15, 10]} angle={0.3} penumbra={1} intensity={1.2} castShadow />
 
-          <WeddingDress />
+        <PartMeshes
+          visibility={visibility}
+          scaleAdjustments={{ width: dressWidthScale, depth: dressDepthScale }}
+          modelPath="../assets/dress.glb"
+        />
+        <PartMeshes
+          visibility={visibility}
+          scaleAdjustments={{}}
+          modelPath="../assets/shoulder.glb"
+        />
+        <PartMeshes
+          visibility={visibility}
+          scaleAdjustments={{}}
+          modelPath="../assets/top.glb"
+        />
+        <PartMeshes
+          visibility={visibility}
+          scaleAdjustments={{}}
+          modelPath="../assets/arm.glb"
+        />
 
-          <Environment preset="sunset" />
-          <CameraSettings />
-          <OrbitControls target={[0, 1, 0]} enablePan={false} />
-        </Canvas>
+        <Environment preset="sunset" />
+        <CameraSettings />
+        <OrbitControls target={[0, 1, 0]} enablePan={false} />
+      </Canvas>
 
-        <Leva collapsed={true} oneLineLabels={true} />
+      <div className="toggle-container">
+        <h3 className="toggle-title">Toggle Parts Visibility</h3>
 
+        <div className="toggle-group">
+          <h4>Dress</h4>
+          {[1, 2, 3, 4, 5].map((num) => (
+            <ToggleButton
+              key={`dress_${num}`}
+              label={`Dress ${num}`}
+              image="../assets/아기봇지.jfif"
+              isVisible={visibility[`dress_${num}`]}
+              onClick={() => selectVisibility(`dress_${num}`, 'dress')}
+            />
+          ))}
+        </div>
 
+        <div className="toggle-group">
+          <h4>Top</h4>
+          {[1, 2, 3, 4, 5].map((num) => (
+            <ToggleButton
+              key={`top_${num}`}
+              label={`Top ${num}`}
+              image="../assets/아기봇지.jfif"
+              isVisible={visibility[`top_${num}`]}
+              onClick={() => selectVisibility(`top_${num}`, 'top')}
+            />
+          ))}
+        </div>
+
+        <div className="toggle-group">
+          <h4>Shoulder</h4>
+          {[1, 2].map((num) => (
+            <ToggleButton
+              key={`shoulder_${num}`}
+              label={`Shoulder ${num}`}
+              image="../assets/아기봇지.jfif"
+              isVisible={visibility[`shoulder_${num}`]}
+              onClick={() => selectVisibility(`shoulder_${num}`, 'shoulder')}
+            />
+          ))}
+        </div>
+
+        <div className="toggle-group">
+          <h4>Arm</h4>
+          {[1, 2, 3].map((num) => (
+            <ToggleButton
+              key={`arm_${num}`}
+              label={`Arm ${num}`}
+              image="../assets/아기봇지.jfif"
+              isVisible={visibility[`arm_${num}`]}
+              onClick={() => selectVisibility(`arm_${num}`, 'arm')}
+            />
+          ))}
+        </div>
       </div>
-    </>
+
+      <Leva collapsed />
+    </div>
   );
 };
 
