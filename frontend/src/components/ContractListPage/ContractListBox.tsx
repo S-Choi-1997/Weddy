@@ -13,37 +13,43 @@ import { useEffect, useState } from "react";
 
 interface ContractListBoxProps {
   type: string;
-  NftData?: NftType;
+  nftList: NftType[];
   contractInfo?: ContractData;
+  onChange: (contractId: string) => void;
 }
 
-const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) => {
+const ContractListBox = ({ type, nftList, contractInfo, onChange }: ContractListBoxProps) => {
   const [showIcon, setShowIcon] = useState<Boolean>(false);
+  const [nftData, setNftData] = useState<NftType | undefined>();
+
   const handleChangeStatus = async () => {
     if (contractInfo) {
-      await changeStatus(contractInfo.id);
+      onChange(contractInfo.id);
     }
-    window.location.reload();
   };
 
   const handlePayment = async() => {
     if (contractInfo) {
       await requestPayment(contractInfo);
       await changeStatus(contractInfo.id);
+      onChange(contractInfo.id);
     }
   };
 
   const goNFT = () => {
-    if (NftData) {
-      window.open(NftData?.image);
+    if (nftData) {
+      window.open(nftData.image);
     }
   };
 
   useEffect(() => {
-    if (NftData){
+    if (nftList) {
+      setNftData(nftList.find((nft: NftType) => nft.type === contractInfo?.product.type));
+    }
+    if (nftData) {
       setShowIcon(true);
     }
-  }, [NftData]);
+  }, [nftList, nftData]);
 
   return (
     <div className="mb-5">
