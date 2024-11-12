@@ -1,6 +1,6 @@
+import { deleteFromCart, getCartItems } from "@/api/cartApi";
 import { createContract } from "@/api/contractApi";
 import { Product } from "@/api/product.type";
-import { deleteFromCart, getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartListBox from "@/components/CartPage/CartListBox";
 import { useState } from "react";

@@ -39,44 +39,6 @@ export const detailProduct = async (productId?: string): Promise<Product> => {
   return response.data.data;
 };
 
-//== 상품 담기 ==//
-export const addProductToCart = async (productId?: string): Promise<void> => {
-  const response = await axios({
-    method: 'post',
-    url: `${BASE_URL}/${productId}/cart`,
-    headers: {
-      Authorization: sessionStorage.getItem('token')
-    }
-  });
-  console.log(response.data);
-};
-
-//== 장바구니 삭제 ==//
-export const deleteFromCart = async (productId?: string): Promise<void> => {
-  console.log(productId);
-  const response = await axios({
-    method: 'delete',
-    url: `${BASE_URL}/${productId}/cart`,
-    headers: {
-      Authorization: sessionStorage.getItem('token')
-    }
-  });
-  console.log(response.data);
-};
-
-//== 장바구니 리스트 조회 ==//
-export const getCartItems = async (): Promise<Product[]> => {
-  const response = await axios({
-    method: 'get',
-    url: `${BASE_URL}/my`,
-    headers: {
-      Authorization: sessionStorage.getItem('token')
-    }
-  });
-  console.log(response.data);
-  return response.data;
-};
-
 //== 리뷰 조회 ==//
 export const getReviewList = async (productId?: string): Promise<ReviewData[]> => {
   const response = await axios({
