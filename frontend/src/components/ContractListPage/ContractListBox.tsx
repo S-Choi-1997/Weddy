@@ -13,12 +13,14 @@ import { useEffect, useState } from "react";
 
 interface ContractListBoxProps {
   type: string;
-  NftData?: NftType;
+  nftList: NftType[];
   contractInfo?: ContractData;
 }
 
-const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) => {
+const ContractListBox = ({ type, nftList, contractInfo }: ContractListBoxProps) => {
   const [showIcon, setShowIcon] = useState<Boolean>(false);
+  const [nftData, setNftData] = useState<NftType | undefined>();
+  
   const handleChangeStatus = async () => {
     if (contractInfo) {
       await changeStatus(contractInfo.id);
@@ -34,16 +36,19 @@ const ContractListBox = ({ type, NftData, contractInfo }: ContractListBoxProps) 
   };
 
   const goNFT = () => {
-    if (NftData) {
-      window.open(NftData?.image);
+    if (nftData) {
+      window.open(nftData.image);
     }
   };
 
   useEffect(() => {
-    if (NftData){
+    if (nftList) {
+      setNftData(nftList.find((nft: NftType) => nft.type === contractInfo?.product.type));
+    }
+    if (nftData) {
       setShowIcon(true);
     }
-  }, [NftData]);
+  }, [nftList, nftData]);
 
   return (
     <div className="mb-5">
