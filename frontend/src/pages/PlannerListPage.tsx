@@ -1,5 +1,5 @@
+import { addProductToCart } from "@/api/cartApi";
 import { Product } from "@/api/product.type";
-import { addProductToCart } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import RecommendBox from "@/components/PlannerPage/RecommendBox";
 import { RadioGroup } from "@/components/ui/radio-group";
