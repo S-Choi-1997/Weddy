@@ -160,7 +160,7 @@ pipeline {
                     sshagent (credentials: [GITOPS_CREDENTIALS]) {
                         dir('gitops') {
                             // GitOps 저장소 클론
-                            sh 'git clone -b main git@github.com:zion0425/weddy_gitops.git .'
+                            sh 'git clone -b main git@github.com:zion0425/weddy-gitops.git .'
 
                             for (service in changedServices) {
                                 def imageName = ""
