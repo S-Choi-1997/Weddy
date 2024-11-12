@@ -69,7 +69,7 @@ const Mypage = () => {
       } else if (userData.length === 2) {
         setIsconnected(true);
         setCoupleInfo(userData[1]);
-
+        //== 커플 이미지 업데이트 ==//
         if (userData[1].picture != null) {
           setCoupleImageSrc(userData[1].picture);
         }
