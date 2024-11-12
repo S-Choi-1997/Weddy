@@ -1,4 +1,4 @@
-import MakeImg, { PopoverDemo } from '@/components/SketchPage/MakeImg';
+import MakeImg from '@/components/SketchPage/MakeImg';
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Leva, useControls } from 'leva';
@@ -145,23 +145,27 @@ const Sketch: React.FC = () => {
     });
   };
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
-  const [imgURL, setImgURL] = useState<string>("");
+  // const [imgURL, setImgURL] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
+  const [blobData, setBlobData] = useState<Blob | null>(null);
 
   const captureImage = () => {
     if (canvasElement) {
       requestAnimationFrame(() => {
-        const dataURL = canvasElement.toDataURL("image/png");
+        const dataURL = canvasElement.toDataURL("image/jpeg", 0.8);
         const base64Data = dataURL.split(",")[1];
-        setImgURL(base64Data);
-        setIsOpen(true);
 
-        // 이미지 다운로드
-        // const link = document.createElement("a");
-        // console.log(link)
-        // link.href = dataURL;
-        // link.download = "canvas_image.png";
-        // link.click();
+        // Base64 데이터를 Blob으로 변환
+        const byteString = atob(base64Data);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+          uint8Array[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([uint8Array], { type: "image/jpeg" }); 
+        
+        setBlobData(blob); // Blob을 상태로 저장
+        setIsOpen(true);
       });
     }
   };
@@ -270,11 +274,9 @@ const Sketch: React.FC = () => {
 
       <div onClick={captureImage} className="plusIconButton">
         <button className='bg-main2 rounded-lg p-2 text-sm'>이미지 만들기</button>
-        {/* <PlusIcon /> */}
       </div>
       <div className='makeImg-modal'>
-        <MakeImg isOpen={isOpen} setIsOpen={setIsOpen} imgURL={imgURL} />
-      {/* <PopoverDemo isOpen={isOpen} setIsOpen={setIsOpen} imgURL={imgURL} /> */}
+        <MakeImg isOpen={isOpen} setIsOpen={setIsOpen} blobData={blobData} />
       </div>
     </div>
   );

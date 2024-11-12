@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { saveDress } from "@/api/dressApi";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,57 +12,56 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSetRecoilState } from "recoil";
 import { capturedImageState } from "@/store/imageState";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 interface PopoverDemoProps {
   isOpen: boolean;
-  imgURL: string;
+  blobData: File | null;
   setIsOpen: (open: boolean) => void;
 }
 
-// base64 데이터를 Blob으로 변환하는 함수
-const base64ToBlob = (base64: string, contentType: string) => {
-  const byteCharacters = atob(base64);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: contentType });
-};
-
-const MakeImg = ({ isOpen, setIsOpen, imgURL }: PopoverDemoProps) => {
+const MakeImg = ({ isOpen, setIsOpen, blobData }: PopoverDemoProps) => {
   const [studioName, setStudioName] = useState("");
   const [dressName, setDressName] = useState("");
   const setCapturedImageState = useSetRecoilState(capturedImageState);
-
   const navigate = useNavigate();
 
-  const onClick = () => {
-    if (imgURL) {
+  const onClick = async () => {
+    if (blobData) {
       try {
-        // base64 데이터를 Blob으로 변환
-        const blob = base64ToBlob(imgURL, "image/png");
-  
-        // Blob을 Recoil 상태로 저장
-        setCapturedImageState(blob);
+        // FormData 객체 생성 및 데이터 추가
+        const formData = new FormData();
+        const sketch = {
+          studio: studioName,
+          dressName: dressName,
+        };
+        formData.append("sketch", new Blob([JSON.stringify(sketch)], { type: "application/json" }));
+        const file = new File([blobData], "image.png", { type: "image/png" });
+
+      // 변환된 파일을 FormData에 추가
+      formData.append("image", file);
+
+        // saveDress 함수 호출하여 FormData 전송
+        await saveDress(formData);
+
+        // Blob을 Recoil 상태로 저장 (필요할 경우)
+        setCapturedImageState(blobData);
         setIsOpen(false);
         setStudioName("");
         setDressName("");
-  
-        navigate("/test");
+
+        // 전송 후 페이지 이동
+        navigate("/dress/img");
       } catch (error) {
-        console.error("Blob 변환 중 오류가 발생했습니다:", error);
+        console.error("이미지 저장 중 오류가 발생했습니다:", error);
       }
     } else {
       console.error("imgURL이 비어 있습니다. 캔버스 캡처 과정에서 문제가 있는지 확인하세요.");
     }
-  
-    // console.log(studioName, dressName, imgURL);
   };
-  
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
