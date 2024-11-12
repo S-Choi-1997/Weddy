@@ -5,7 +5,7 @@ import { RecoilRoot, useRecoilValue } from "recoil";
 import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
-import { onMessageListener } from "./firebase"; // 정확한 경로로 수정하세요
+import { onMessageListener } from "./firebase";
 import "./index.css";
 import BoardDetail from "./pages/BoardDetailPage";
 import Board from "./pages/BoardPage";
@@ -88,8 +88,9 @@ function AppContent() {
   );
 }
 
+const queryClient = new QueryClient();
+
 function App() {
-  const queryClient = new QueryClient();
 
   return (
     <div className="container">
