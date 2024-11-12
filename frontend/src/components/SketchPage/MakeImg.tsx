@@ -19,7 +19,7 @@ import { useSetRecoilState } from "recoil";
 
 interface PopoverDemoProps {
   isOpen: boolean;
-  blobData: File | null;
+  blobData: Blob | null;
   setIsOpen: (open: boolean) => void;
 }
 
