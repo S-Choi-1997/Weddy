@@ -6,7 +6,8 @@ import BoardReview from "../components/BoardDetailPage/BoardReview";
 import { MainCarousel } from "../components/MainPage/MainCarousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { useParams } from "react-router-dom";
-import { addProductToCart, detailProduct, getReviewList } from "@/api/productApi";
+import { detailProduct, getReviewList } from "@/api/productApi";
+import { addProductToCart } from "@/api/cartApi";
 
 const BoardDetail = () => {
   const { productId } = useParams();

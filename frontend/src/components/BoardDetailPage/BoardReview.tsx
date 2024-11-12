@@ -12,7 +12,7 @@ const BoardReview = ({ reviewList }: BoardReviewProp) => {
     <div className="m-5">
       {reviewList.length > 0 ? (
         reviewList.map((review, index) => (
-          <div key={index} className="bg-white h-[80px] rounded-xl px-5 justify-center flex flex-col">
+          <div key={index} className="bg-white h-[80px] rounded-xl px-5 justify-center flex flex-col mb-2">
             <div className="flex items-center">
             <span className="font-bold mr-3">
             {review.content}
