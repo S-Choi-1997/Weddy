@@ -38,7 +38,8 @@ public class UserService {
     private final FcmService fcmService;
     private RedisTemplate<String, String> redisTemplate;
 
-    public UserService(UserRepository userRepository, GCSImageService gcsImageService, FcmService fcmService, RedisTemplate<String, String> redisTemplate){
+    public UserService(KafkaTemplate<String, Object> kafkaTemplate, UserRepository userRepository, GCSImageService gcsImageService, FcmService fcmService, RedisTemplate<String, String> redisTemplate){
+        this.kafkaTemplate = kafkaTemplate;
         this.userRepository = userRepository;
         this.gcsImageService = gcsImageService;
         this.fcmService = fcmService;
