@@ -5,12 +5,17 @@ import com.example.user.cart.dto.response.CartResponseDto;
 import com.example.user.cart.entity.CartEntity;
 import com.example.user.cart.repository.CartRepository;
 import com.example.user.common.config.KafkaTopicProperties;
+import com.example.user.common.dto.ApiResponse;
+import com.example.user.common.dto.ErrorCode;
+import com.example.user.common.exception.CartNotFoundException;
+import com.example.user.common.exception.ConflictItemsException;
 import com.example.user.user.entity.UserEntity;
 import com.example.user.user.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -44,6 +49,9 @@ public class CartServiceImpl implements CartService {
     }
 
     public void addCart(Long productId, UserEntity userEntity){
+        if (cartRepository.existsByCoupleCodeAndProductId(userEntity.getCoupleCode(), productId)) {
+            throw new ConflictItemsException(ErrorCode.ITEM_NOT_FOUND);
+        }
         CartEntity cartEntity = CartEntity.builder()
                 .productId(productId)
                 .coupleCode(userEntity.getCoupleCode())
@@ -57,6 +65,7 @@ public class CartServiceImpl implements CartService {
         if (cartEntities != null && !cartEntities.isEmpty()) {
             cartRepository.deleteAll(cartEntities);
         }
+        else throw new CartNotFoundException(ErrorCode.ITEM_NOT_FOUND);
     }
 
     public List<CartProductDto> getCart(UserEntity userEntity) {
