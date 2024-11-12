@@ -27,12 +27,31 @@ public class RedisConfig {
     private final ObjectMapper objectMapper;
 
     @Bean // 스프링 컨텍스트에 RedisConnectionFactory 빈 등록
+    public RedisConnectionFactory redisUserConnectionFactory() {
+        // LettuceConnectionFactory를 사용하여 Redis 연결 팩토리 생성, 호스트와 포트 정보를 사용
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
+        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setDatabase(1); // DB 0번 사용
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+    }
+
+    @Bean // 스프링 컨텍스트에 RedisConnectionFactory 빈 등록
     public RedisConnectionFactory redisConnectionFactory() {
         // LettuceConnectionFactory를 사용하여 Redis 연결 팩토리 생성, 호스트와 포트 정보를 사용
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
         redisStandaloneConfiguration.setPassword(password);
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
+
+    @Bean
+    public RedisConnectionFactory redisScheduleConnectionFactory() {
+        // LettuceConnectionFactory를 사용하여 Redis 연결 팩토리 생성, 호스트와 포트 정보를 사용
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
+        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setDatabase(0); // DB 0번 사용
+        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+    }
+
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -57,7 +76,7 @@ public class RedisConfig {
     @Bean(name = "redisScheduleTemplate")
     public RedisTemplate<String, Object> redisScheduleTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisScheduleConnectionFactory());
 
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
         GenericJackson2JsonRedisSerializer jsonSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
@@ -75,7 +94,7 @@ public class RedisConfig {
     @Bean(name = "redisUserTemplate")
     public RedisTemplate<String, String> redisUserTemplate() {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisUserConnectionFactory());
 
         // 키와 값 직렬화 설정
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
