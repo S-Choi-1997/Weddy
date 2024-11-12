@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom";
 const CartPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data: cartList } = useQuery("getCartItems", getCartItems);
-  
+
   const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null; }>({
     STUDIO: null,
     DRESS: null,
     MAKEUP: null,
   });
+
+  const { data: cartList } = useQuery("getCartItems", getCartItems);
 
   const deleteMutation = useMutation(deleteFromCart, {
     onSuccess: () => {
@@ -53,7 +54,7 @@ const CartPage = () => {
           <CartListBox
             key={category}
             category={category}
-            productList={cartList?.filter((item: Product) => item.type === category)}
+            productList={Array.isArray(cartList) ? cartList?.filter((item: Product) => item.type === category) : []}
             selectedList={selectedList}
             onProductChange={handleProductChange}
             onRemove={handleRemove}
