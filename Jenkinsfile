@@ -166,13 +166,6 @@ pipeline {
                                 def imageName = ""
                                 def deploymentFile = ""
 
-                                // 변경 사안 확인
-                                def hasChanges = sh(script: 'git status --porcelain', returnStdout: true).trim()
-                                if (!hasChanges) {
-                                    echo 'No changes to commit'
-                                    return
-                                }
-
                                 if (service == 'frontend') {
                                     imageName = FRONTEND_IMAGE
                                     deploymentFile = 'base/frontend/deployment.yaml'
@@ -199,6 +192,12 @@ pipeline {
                                 """
                             }
 
+                            // 변경 사안 확인
+                            def hasChanges = sh(script: 'git status --porcelain', returnStdout: true).trim()
+                            if (!hasChanges) {
+                                echo 'No changes to commit'
+                                return
+                            }
                             // 변경 사항 커밋 및 푸시
                             sh """
                             git config user.name "Jenkins"
