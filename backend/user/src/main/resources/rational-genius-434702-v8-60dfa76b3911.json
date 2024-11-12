@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "rational-genius-434702-v8",
+  "private_key_id": "60dfa76b3911d9307a5f6aa0656c82a235fd36c2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC6epjstRJve/Cr\ng+ebYPSy+JR3/Rd41AkqaikyXNEJuzzR4JjAvvPuKHX10HmqTnwn0msEhxMEx5WJ\nV0K+3LXSTblDiBPyw1cHA/amwUUgQRmSp020jGaKMc03G3m237FLl7CR5mXOsCOf\nHsvmab9GfU358v2BasCa34prWtl2/gu1SdWxz67ePIuDBA876gE2euDT5xVbp3IY\nF7bKhSrwGZ6lY7zEOAMgwvmYU8htTicriFRqIO3/Z1hSKAvc1omFOKwO0Kujrbdh\nX9+KWr8uWby+xZDw/Knki7qQdz+SlWWpEFozYWkk9cCf0QDVc2Cy/S76QNyUvw0U\nLtAED4M1AgMBAAECggEAFyxE9KVLtS7hqW6qyVQzFEpvqLl6wTkYKn0mwWtnTp5F\n4I7YbJtOFLpSbkmJ1PAL3ab4RYfDhUSIAJknYjBrJ8cgzpOKZxB/MA/+BprdzDRK\nyT6hGV6ZH3Mw3Tg818zUa2BeQMMww45/3rYlAG0Dp+7KUdUwS3TImnZM7SpM+8w/\ndtDLEVy0sDSnVP/eDCcCL1vgHHgRa/3kvSlK98daOhIWyIGANgIU6yqEoEkb/l9V\nWoE4N2Kbh2fbYKnTT64FdqZDDsbVwZTSZzAtRwETuRCpFaz3rINkw3/V1f8i/8JS\nVFQERzgWaEwOy8CVxM6kYq4XxRcN0bnzHYsS8tSIAQKBgQDxLNq30HlMc26tPTJA\ngK5fTJ6h5qqtFRY6XhCQY5t+rntKejfO7A27DYhUSrcFuzXtZaQpPERnqe+X42rk\n5Y81Orh93UTRjK9jLuJ3VjIOvIvSlxqAYsGmD1MKb/gRp3IAQsZUWC0jW/Evu2LS\nALOljfD/ffNoxiye1h+5wGKEIQKBgQDF8Qn3FecLAGOCbtW8P1lbzcGbNOZ4Pgnm\n6FxlPJehJZG6b9CfJgzEY7fi03eoz2mWAYkMu1orfRgasfhgAMrwj4nvKrJvtBVW\n1l6WP8dIhMdPDFGfmPKM67Wg2u8Nw728M0rCG7IVfX+QpZTcrmLmW0m4L+Q+uLN5\nElwFu6UclQKBgEtq6WJ90NC1cDDAaEx/cQfgH+MlDM5fP7o03B0q6N8ulONvYLBW\nZNzPmIgzbRRfvLdmB3XVoNaB76ihtzWpC6VrnXHOlcypn9b2PF9xFupAz8Ck++aV\n+1SAiklDRmHO6Pln6DlL8aGTCNMSWA6vpX3p6ykaK9nhzuZEs1sU7DnBAoGAJRFz\nrUrzvpKvD/ETo7I1WMTaeedZNbFgh1aCXw8O0kXH2aMw7WzhvTFzcU3qvblB666T\n7Md1JmnBxtYHTms3lf87dIeJbPPLfzyb8AU3m7QJ4xrKelnZKlzF4b6+P9SlRoZQ\nfLNVEUM0TXFExGL/8GWuE4kcdEaAja7LfuNaE1UCgYBOTc9yjEp/HBjWjhf4HjRh\nu0P7ThA6LyhFqXZtC0nbE4Jn7B6Y4GzpllgwLZqbdrLuFqYX4i42icfpB5mIVcJ4\niLHTAffacB7kczm3HqFU9U+2Cwe/IAch4HRiN2uY4HkhLNoC6nLg99BfpPjKz+ae\n7azy3mbFx4sbei2w+4n6BA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "weddy-storage@rational-genius-434702-v8.iam.gserviceaccount.com",
+  "client_id": "114581041953039741961",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/weddy-storage%40rational-genius-434702-v8.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
