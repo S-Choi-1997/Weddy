@@ -4,30 +4,29 @@ import { deleteFromCart, getCartItems } from "@/api/productApi";
 import TodoButton from "@/common/TodoButton";
 import CartListBox from "@/components/CartPage/CartListBox";
 import { useState } from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const queryClient = new QueryClient();
-
-  const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null }>({
+  const queryClient = useQueryClient();
+  const { data: cartList } = useQuery("getCartItems", getCartItems);
+  
+  const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null; }>({
     STUDIO: null,
     DRESS: null,
     MAKEUP: null,
   });
 
-  const { data: cartList } = useQuery("getCartItems", getCartItems);
-
   const deleteMutation = useMutation(deleteFromCart, {
     onSuccess: () => {
       queryClient.invalidateQueries("getCartItems");
     }
-  })
-  
-  const handleRemoveItem = (productId: string) => {
+  });
+
+  const handleRemove = (productId: string) => {
     deleteMutation.mutate(productId);
-  }
+  };
 
   //== 총 가격 계산 ==//
   const totalAmount = Object.values(selectedList).reduce((acc, item) => acc + (Number(item?.price) || 0), 0).toLocaleString();
@@ -50,44 +49,47 @@ const CartPage = () => {
   return (
     <div className="flex flex-col relative">
       <div className="m-5 flex flex-col items-center">
-
-        {['STUDIO', 'DRESS', 'MAKEUP'].map((category: string) => (
+        {["STUDIO", "DRESS", "MAKEUP"].map((category: string) => (
           <CartListBox
-          key={category}
-          category={category}
-          productList={cartList?.filter((item: Product) => item.type === category)}
-          selectedList={selectedList}
-          onProductChange={handleProductChange}
-          onRemove={handleRemoveItem}
+            key={category}
+            category={category}
+            productList={cartList?.filter((item: Product) => item.type === category)}
+            selectedList={selectedList}
+            onProductChange={handleProductChange}
+            onRemove={handleRemove}
           />
         ))}
-
       </div>
-      
+
       <div className="flex justify-end mr-10 mt-14">
         <div className="flex flex-col mr-3">
-        {Object.entries(selectedList).map(([category, item]) =>
-          item?.name ? (
-            <span key={category} className="my-1">
-              {item.name}
-            </span>
-          ) : null
-        )}
+          {Object.entries(selectedList).map(([category, item]) =>
+            item?.name ? (
+              <span key={category} className="my-1">
+                {item.name}
+              </span>
+            ) : null
+          )}
           <span className="font-bold mt-2">총 가격: </span>
         </div>
         <div className="flex flex-col text-end">
-        {Object.entries(selectedList).map(([category, item]) =>
-          item?.price ? (
-            <span key={category} className="my-1">
-              {Number(item.price).toLocaleString()}원
-            </span>
-          ) : null
-        )}
-          <span className="font-bold mt-2">{totalAmount.toLocaleString()}원</span>
+          {Object.entries(selectedList).map(([category, item]) =>
+            item?.price ? (
+              <span key={category} className="my-1">
+                {Number(item.price).toLocaleString()}원
+              </span>
+            ) : null
+          )}
+          <span className="font-bold mt-2">
+            {totalAmount.toLocaleString()}원
+          </span>
         </div>
       </div>
-      
-      <div className="flex justify-end mr-10 mt-5 mb-24" onClick={handleCreateContract}>
+
+      <div
+        className="flex justify-end mr-10 mt-5 mb-24"
+        onClick={handleCreateContract}
+      >
         <TodoButton title="계약 요청" />
       </div>
     </div>
