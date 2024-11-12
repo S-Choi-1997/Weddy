@@ -10,11 +10,11 @@ import { useSearchParams } from "react-router-dom";
 const Board = () => {
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-
+  
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category") || "studio";
 
-  const { data: allProductList = [] } = useQuery("allProducts", allProducts);
+  const { data: allProductList } = useQuery("allProducts", allProducts);
 
   const handleTabChange = (value: string) => setSearchParams({ category: value });
 
@@ -24,7 +24,7 @@ const Board = () => {
     setSelectedPrice(parseInt(value.replace(/,/g, ""), 10));
 
   const filteredProductList = useMemo(() => {
-    return allProductList.filter((product: Product) => {
+    return allProductList?.filter((product: Product) => {
       const matchesRegion = selectedRegion ? product.address.includes(selectedRegion) : true;
       const matchesPrice = selectedPrice ? Number(product.price) <= selectedPrice : true;
       return matchesRegion && matchesPrice;
@@ -65,9 +65,9 @@ const Board = () => {
           <TabsContent key={type} value={type}>
             <SDMList
               value={type}
-              productList={filteredProductList.filter(
+              productList={Array.isArray(filteredProductList) ? filteredProductList.filter(
                 (product) => product.type === type.toUpperCase()
-              )}
+              ) : []}
             />
           </TabsContent>
         ))}
