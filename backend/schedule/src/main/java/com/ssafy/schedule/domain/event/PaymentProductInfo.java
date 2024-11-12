@@ -29,5 +29,10 @@ public class PaymentProductInfo {
     private LocalDate endDate;
     private Product product;
     private String paymentId;
+    private UserCoupleTokenDto userCoupleToken;
+
+    public void addFcmTokenInfo(UserCoupleTokenDto userCoupleToken) {
+        this.userCoupleToken = userCoupleToken;
+    }
 
 }

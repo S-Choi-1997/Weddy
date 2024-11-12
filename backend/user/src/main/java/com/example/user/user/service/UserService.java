@@ -4,11 +4,13 @@ import com.example.user.common.dto.ErrorCode;
 import com.example.user.common.exception.UserNotFoundException;
 import com.example.user.common.exception.UserTokenNotFoundException;
 import com.example.user.common.service.GCSImageService;
+import com.example.user.common.service.FcmService;
 import com.example.user.user.dto.response.UserCoupleTokenDto;
 import com.example.user.user.dto.response.UserResponseDTO;
 import com.example.user.user.entity.UserEntity;
 import com.example.user.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +26,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final GCSImageService gcsImageService;
-    public UserService(UserRepository userRepository, GCSImageService gcsImageService){
+    private final FcmService fcmService;
+    private RedisTemplate<String, String> redisTemplate;
+
+    public UserService(UserRepository userRepository, GCSImageService gcsImageService, FcmService fcmService, RedisTemplate<String, String> redisTemplate){
         this.userRepository = userRepository;
         this.gcsImageService = gcsImageService;
+        this.fcmService = fcmService;
+        this.redisTemplate = redisTemplate;
     }
 
     public List<UserResponseDTO> userInfo(UserEntity user) {
@@ -117,6 +124,14 @@ public class UserService {
         userRepository.save(otheruserEntity);
 
 
+        String beforeMyCoupleCode=  userEntity.getCoupleCode();
+
+        String myFcmToken = userEntity.getFcmToken();
+
+        //커플 코드 redis 추가 및 삭제
+        redisTemplate.opsForHash().delete("couple:"+beforeMyCoupleCode);
+        redisTemplate.opsForHash().put("couple:"+coupleCode,id,myFcmToken);
+
         // UserResponseDTO 빌드 및 반환
         return UserResponseDTO.builder()
                 .id(otheruserEntity.getId())
@@ -135,7 +150,7 @@ public class UserService {
      *  토큰 가져오기
      * @ 작성자   : 이병수
      * @ 작성일   : 2024-11-07
-     * @ 설명     : 커플 코드를 통해서 커플들의 fcm 토큰을 가져오기
+     * @ 설명     : 커플 코드를 통해서 커플들의 fcmadapter 토큰을 가져오기
 
      * @param coupleCode
      * @param myUserId
@@ -149,10 +164,10 @@ public class UserService {
     }
 
     /**
-     * fcm 토큰 저장
+     * fcmadapter 토큰 저장
      * @ 작성자   : 이병수
      * @ 작성일   : 2024-11-07
-     * @ 설명     : fcm 토큰 저장
+     * @ 설명     : fcmadapter 토큰 저장
 
      * @param userId
      * @param fcmToken
@@ -160,7 +175,15 @@ public class UserService {
     @Transactional
     public void setFcmToken(Long userId, String fcmToken) {
         UserEntity userEntity = getUserEntity(userId);
+        String beforeFcmToken = userEntity.getFcmToken();
         userEntity.updateFcmToken(fcmToken);
+        fcmService.sendPushNotification(fcmToken, "FCM 토큰 저장 성공", "FCM 토큰 저장 성공");
+
+        String coupleCode = userEntity.getCoupleCode();
+
+        redisTemplate.opsForHash().put("couple:"+coupleCode, userId, fcmToken);
+
+
     }
 
 
