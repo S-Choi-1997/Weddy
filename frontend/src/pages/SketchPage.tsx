@@ -1,3 +1,4 @@
+import MakeImg from '@/components/SketchPage/MakeImg';
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Leva, useControls } from 'leva';
@@ -103,6 +104,11 @@ const Sketch: React.FC = () => {
     arm_3: false,
   });
 
+  const dressList = ['../assets/dress/dress1.png', '../assets/dress/dress2.png', '../assets/dress/dress3.png', '../assets/dress/dress4.png', '../assets/dress/dress5.png'];
+  const topList = ['../assets/top/top1.png', '../assets/top/top2.png', '../assets/top/top3.png', '../assets/top/top4.png', '../assets/top/top5.png'];
+  const shoulderList = ['../assets/shoulder/shoulder1.png', '../assets/shoulder/shoulder2.png'];
+  const armList = ['../assets/arm/arm1.png', '../assets/arm/arm2.png', '../assets/arm/arm3.png'];
+
   // Leva 슬라이더로 각 축별 스케일 값을 개별적으로 조정
   const { dressWidthScale, dressDepthScale } = useControls({
     dressWidthScale: {
@@ -138,10 +144,40 @@ const Sketch: React.FC = () => {
       return updatedVisibility;
     });
   };
+  const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
+  // const [imgURL, setImgURL] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [blobData, setBlobData] = useState<Blob | null>(null);
+
+  const captureImage = () => {
+    if (canvasElement) {
+      requestAnimationFrame(() => {
+        const dataURL = canvasElement.toDataURL("image/jpeg", 0.8);
+        const base64Data = dataURL.split(",")[1];
+
+        // Base64 데이터를 Blob으로 변환
+        const byteString = atob(base64Data);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+          uint8Array[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([uint8Array], { type: "image/jpeg" }); 
+        
+        setBlobData(blob); // Blob을 상태로 저장
+        setIsOpen(true);
+      });
+    }
+  };
+
 
   return (
     <div className="app-container">
       <Canvas
+        onCreated={({ gl, scene, camera }) => {
+          setCanvasElement(gl.domElement); // 캔버스 엘리먼트를 상태에 저장
+          gl.render(scene, camera); // 초기 렌더링 강제 실행
+        }}
         shadows
         camera={{ fov: 40, position: [0, 1, 5] }}
         className="canvas"
@@ -179,62 +215,69 @@ const Sketch: React.FC = () => {
       </Canvas>
 
       <div className="toggle-container">
-        <h3 className="toggle-title">Toggle Parts Visibility</h3>
 
         <div className="toggle-group">
           <h4>Dress</h4>
-          {[1, 2, 3, 4, 5].map((num) => (
+          {dressList.map((dress, index) => (
             <ToggleButton
-              key={`dress_${num}`}
-              label={`Dress ${num}`}
-              image="../assets/아기봇지.jfif"
-              isVisible={visibility[`dress_${num}`]}
-              onClick={() => selectVisibility(`dress_${num}`, 'dress')}
+              key={`dress_${index + 1}`}
+              label={` ${index + 1}`}
+              image={dress}
+              isVisible={visibility[`dress_${index + 1}`]}
+              onClick={() => selectVisibility(`dress_${index + 1}`, 'dress')}
             />
           ))}
         </div>
 
         <div className="toggle-group">
           <h4>Top</h4>
-          {[1, 2, 3, 4, 5].map((num) => (
+          {topList.map((top, index) => (
             <ToggleButton
-              key={`top_${num}`}
-              label={`Top ${num}`}
-              image="../assets/아기봇지.jfif"
-              isVisible={visibility[`top_${num}`]}
-              onClick={() => selectVisibility(`top_${num}`, 'top')}
+              key={`top_${index + 1}`}
+              label={` ${index + 1}`}
+              image={top}
+              isVisible={visibility[`top_${index + 1}`]}
+              onClick={() => selectVisibility(`top_${index + 1}`, 'top')}
             />
           ))}
         </div>
 
         <div className="toggle-group">
           <h4>Shoulder</h4>
-          {[1, 2].map((num) => (
+          {shoulderList.map((shoulder, index) => (
             <ToggleButton
-              key={`shoulder_${num}`}
-              label={`Shoulder ${num}`}
-              image="../assets/아기봇지.jfif"
-              isVisible={visibility[`shoulder_${num}`]}
-              onClick={() => selectVisibility(`shoulder_${num}`, 'shoulder')}
+              key={`shoulder_${index + 1}`}
+              label={`${index + 1}`}
+              image={shoulder}
+              isVisible={visibility[`shoulder_${index + 1}`]}
+              onClick={() => selectVisibility(`shoulder_${index + 1}`, 'shoulder')}
             />
           ))}
         </div>
 
         <div className="toggle-group">
           <h4>Arm</h4>
-          {[1, 2, 3].map((num) => (
+          {armList.map((arm, index) => (
             <ToggleButton
-              key={`arm_${num}`}
-              label={`Arm ${num}`}
-              image="../assets/아기봇지.jfif"
-              isVisible={visibility[`arm_${num}`]}
-              onClick={() => selectVisibility(`arm_${num}`, 'arm')}
+              key={`arm_${index + 1}`}
+              label={` ${index + 1}`}
+              image={arm}
+              isVisible={visibility[`arm_${index + 1}`]}
+              onClick={() => selectVisibility(`arm_${index + 1}`, 'arm')}
             />
           ))}
         </div>
       </div>
+      <div className="leva-container">
+        <Leva collapsed />
+      </div>
 
-      <Leva collapsed />
+      <div onClick={captureImage} className="plusIconButton">
+        <button className='bg-main2 rounded-lg p-2 text-sm'>이미지 만들기</button>
+      </div>
+      <div className='makeImg-modal'>
+        <MakeImg isOpen={isOpen} setIsOpen={setIsOpen} blobData={blobData} />
+      </div>
     </div>
   );
 };
