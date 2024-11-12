@@ -41,7 +41,7 @@ public class    RedisConfiguration {
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-    @Bean(name = "redisScheduleTemplate")
+    @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>(); // RedisTemplate 인스턴스 생성
         redisTemplate.setConnectionFactory(redisConnectionFactory()); // Redis 연결 팩토리 설정
