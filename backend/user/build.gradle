@@ -72,3 +72,12 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+bootJar {
+	enabled = true
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+jar {
+	enabled = false
+}
