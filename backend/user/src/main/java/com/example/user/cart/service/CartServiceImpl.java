@@ -1,11 +1,9 @@
 package com.example.user.cart.service;
 
 import com.example.user.cart.dto.response.CartProductDto;
-import com.example.user.cart.dto.response.CartResponseDto;
 import com.example.user.cart.entity.CartEntity;
 import com.example.user.cart.repository.CartRepository;
 import com.example.user.common.config.KafkaTopicProperties;
-import com.example.user.common.dto.ApiResponse;
 import com.example.user.common.dto.ErrorCode;
 import com.example.user.common.exception.CartNotFoundException;
 import com.example.user.common.exception.ConflictItemsException;
@@ -14,16 +12,11 @@ import com.example.user.user.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
-
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
 
 import java.util.List;
 import java.util.concurrent.*;
@@ -34,14 +27,14 @@ public class CartServiceImpl implements CartService {
 
 
     private final CartRepository cartRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final KafkaTopicProperties kafkaTopicProperties;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UserRepository userRepository;
     private ConcurrentHashMap<String, CompletableFuture<List<CartProductDto>>> pendingRequests = new ConcurrentHashMap<>();
 
 
-    public CartServiceImpl(CartRepository cartRepository, KafkaTemplate<String, String> kafkaTemplate, KafkaTopicProperties kafkaTopicProperties, UserRepository userRepository) {
+    public CartServiceImpl(CartRepository cartRepository, KafkaTemplate<String, Object> kafkaTemplate, KafkaTopicProperties kafkaTopicProperties, UserRepository userRepository) {
         this.cartRepository = cartRepository;
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaTopicProperties = kafkaTopicProperties;
@@ -96,9 +89,10 @@ public class CartServiceImpl implements CartService {
             return response;
 
         } catch (Exception e) {
-            System.out.println("에러가 발생했습니다: " + e.getMessage());
+
+            throw new CartNotFoundException(ErrorCode.ITEM_NOT_FOUND);
         }
-        return null; // 오류 발생 시 null 반환
+//        return null; // 오류 발생 시 null 반환
     }
 
 
@@ -107,8 +101,9 @@ public class CartServiceImpl implements CartService {
     @KafkaListener(topics = "#{@kafkaTopicProperties.cartResponseTopic.name}", groupId = "cart-response-group")
     public void onResponseReceived(
             @Header(KafkaHeaders.RECEIVED_KEY) String correlationId, // Key를 Header로 받아옴
-            String jsonResponse
+            Object message
     ) {
+        String jsonResponse = message.toString();
         log.info("correlationId : {}, jsonResponse : {}", correlationId, jsonResponse);
         CompletableFuture<List<CartProductDto>> future = pendingRequests.get(correlationId);
         log.info("들어옴?{}", future == null ? "no" : "yes");
