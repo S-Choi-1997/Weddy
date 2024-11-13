@@ -5,7 +5,6 @@ const BASE_URL = "http://localhost:8080/api/users/cart";
 
 //== 상품 담기 ==//
 export const addProductToCart = async (productId?: string): Promise<void> => {
-  console.log(productId);
   const response = await axios({
     method: "post",
     url: `${BASE_URL}/add/${productId}`,
@@ -25,7 +24,7 @@ export const getCartItems = async (): Promise<Product[]> => {
       Authorization: sessionStorage.getItem("token")
     },
   });
-  console.log(response.data.data);
+  console.log(response.data);
   return response.data.data;
 };
 
