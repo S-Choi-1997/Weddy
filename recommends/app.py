@@ -211,7 +211,8 @@ def recommend_studios(user_input: str) -> List[Dict[str, Any]]:
             "type": studio["type"],
             "name": studio["name"],
             "price": f"{studio['price']:,}",
-            "address": studio["address"]
+            "address": studio["address"],
+            "images": studio.get("images", [])  # 이미지 정보 추가
         }
         formatted_studios.append(formatted_studio)
     
