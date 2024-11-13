@@ -46,8 +46,8 @@ public class Review {
     }
 
     @Builder
-    public Review(ReviewRequestDto reviewRequestDto, Product product) {
-        this.userId = 1L;
+    public Review(ReviewRequestDto reviewRequestDto, Product product, Long userId) {
+        this.userId = userId;
         this.content = reviewRequestDto.content();
         this.score = reviewRequestDto.score();
         this.product = product;

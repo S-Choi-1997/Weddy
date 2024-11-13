@@ -1,6 +1,8 @@
 package com.example.user.cart.dto.response;
 
+import com.example.user.cart.entity.CartEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,5 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartResponseDto {
-    Long id;
+    String coupleCode;
+    Long productId;
+    Long userId;
+
+    public CartResponseDto(CartEntity cartEntity) {
+        this.coupleCode = cartEntity.getCoupleCode();
+        this.productId = cartEntity.getProductId();
+        this.userId = cartEntity.getUserId();
+    }
 }
