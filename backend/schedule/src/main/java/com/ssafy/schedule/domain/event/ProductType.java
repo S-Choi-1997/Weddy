@@ -1,5 +1,5 @@
 package com.ssafy.schedule.domain.event;
 
 public enum ProductType {
-    DRESS,MAKEUP,STUDIO;
+    DRESS,MAKEUP,STUDIO,WEDDING;
 }
