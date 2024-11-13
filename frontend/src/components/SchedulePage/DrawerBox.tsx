@@ -11,12 +11,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import DatePick from "./DatePick";
 
 interface AlertDialogDemoProps {
   isOpen: boolean;
+  addSchedule: () => void;
   onClose: () => void;
 }
 
@@ -25,13 +26,29 @@ const FlexCenterWrapper = styled.div`
   justify-content: center;
 `;
 
-export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
+export function AlertDialogDemo({ isOpen, addSchedule, onClose }: AlertDialogDemoProps) {
+  const firebaseToken = sessionStorage.getItem('firebaseToken');
+
   const [scheduleInfo, setScheduleInfo] = useState<Schedule>({
     startDate: null,
     endDate: null,
     content: '',
     type: '',
+    userCoupleToken: {
+      myFcmToken: ""
+    },
   });
+
+  useEffect(() => {
+    if (firebaseToken) {
+      setScheduleInfo((prev) => ({
+        ...prev,
+        userCoupleToken: {
+          myFcmToken: firebaseToken,
+        },
+      }));
+    }
+  }, [firebaseToken]);
 
   function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -54,6 +71,7 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
   
   const updateSchedule = async () => {
     await schedule(scheduleInfo);
+    addSchedule();
     onClose();
   };
 
