@@ -67,7 +67,6 @@ export const editInformation = async (
     },
     data: userInfo,
   });
-  alert("회원 정보가 수정되었습니다.");
 };
 
 //== 커플 코드 연결 ==//

@@ -1,3 +1,4 @@
+import AlertBox from "@/common/AlertBox";
 import MakeImg from '@/components/SketchPage/MakeImg';
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useThree } from '@react-three/fiber';
@@ -5,6 +6,7 @@ import { Leva, useControls } from 'leva';
 import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import '../App.css';
+
 
 // ToggleButton의 Props 타입 정의
 interface ToggleButtonProps {
@@ -31,41 +33,41 @@ interface PartMeshesProps {
   modelPath: string;
 }
 
+
+
 // 각 파트별 컴포넌트 (기본 크기를 유지하면서 scale 조절 가능하게 설정)
 const PartMeshes: React.FC<PartMeshesProps> = ({ visibility, scaleAdjustments, modelPath }) => {
-  const { scene } = useGLTF(modelPath) as any; // useGLTF 타입 문제로 any로 설정
+  const { scene } = useGLTF(modelPath);
   const [initialScales, setInitialScales] = useState<Record<string, THREE.Vector3>>({});
 
   useEffect(() => {
     const newInitialScales: Record<string, THREE.Vector3> = { ...initialScales };
 
-    scene.traverse((child: any) => {
-      if (child.isMesh) {
-        child.visible = visibility[child.name];
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.visible = visibility[mesh.name];
 
-        // 각 child의 기본 스케일을 저장
-        if (!newInitialScales[child.name]) {
-          newInitialScales[child.name] = child.scale.clone(); // 기본 스케일을 복사해 저장
+        if (!newInitialScales[mesh.name]) {
+          newInitialScales[mesh.name] = mesh.scale.clone();
         }
 
-        // 각 부위에 대한 scale 적용
-        if (newInitialScales[child.name]) {
+        if (newInitialScales[mesh.name]) {
           const widthScale = scaleAdjustments.width || 1;
           const depthScale = scaleAdjustments.depth || 1;
 
-          // 드레스와 어깨 각각의 축에 맞게 스케일을 설정
           if (modelPath.includes("dress")) {
-            child.scale.set(
-              newInitialScales[child.name].x * widthScale, // X축 (넓이) 조정
-              newInitialScales[child.name].y * depthScale,  // Y축 (폭) 조정
-              newInitialScales[child.name].z                // Z축 고정
+            mesh.scale.set(
+              newInitialScales[mesh.name].x * widthScale,
+              newInitialScales[mesh.name].y * depthScale,
+              newInitialScales[mesh.name].z
             );
           }
         }
       }
     });
 
-    setInitialScales(newInitialScales); // 초기 스케일 저장
+    setInitialScales(newInitialScales);
   }, [scene, visibility, scaleAdjustments]);
 
   return <primitive object={scene} />;
@@ -154,7 +156,7 @@ const Sketch: React.FC = () => {
       requestAnimationFrame(() => {
         const dataURL = canvasElement.toDataURL("image/png"); // PNG로 설정
         const base64Data = dataURL.split(",")[1];
-  
+
         // Base64 데이터를 Blob으로 변환
         const byteString = atob(base64Data);
         const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -163,16 +165,27 @@ const Sketch: React.FC = () => {
           uint8Array[i] = byteString.charCodeAt(i);
         }
         const blob = new Blob([uint8Array], { type: "image/png" }); // Blob 타입을 PNG로 설정
-        
+
         setBlobData(blob); // Blob을 상태로 저장
         setIsOpen(true);
       });
     }
   };
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleSave = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+  };
 
 
   return (
     <div className="app-container">
+      {showAlert && <AlertBox title="3D 스케치" description="스케치 저장 완료!" />}
+
+
       <Canvas
         onCreated={({ gl, scene, camera }) => {
           setCanvasElement(gl.domElement); // 캔버스 엘리먼트를 상태에 저장
@@ -276,7 +289,7 @@ const Sketch: React.FC = () => {
         <button className='bg-main2 rounded-lg p-2 text-sm'>이미지 만들기</button>
       </div>
       <div className='makeImg-modal'>
-        <MakeImg isOpen={isOpen} setIsOpen={setIsOpen} blobData={blobData} />
+        <MakeImg isOpen={isOpen} setIsOpen={setIsOpen} blobData={blobData} onSave={handleSave}/>
       </div>
     </div>
   );

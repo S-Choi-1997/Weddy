@@ -40,24 +40,19 @@ function AppContent() {
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
-    // 비로그인 상태일 경우 로그인 페이지로 리다이렉트
     if (!token && currentPath !== "login" && currentPath !== "callback") {
       navigate("/login");
     }
 
-    // FCM 토큰 저장
     if (userId && fcmToken) {
       saveFcmToken(fcmToken, userId);
-      console.log("fcmToken saved");
     }
 
-    // 포그라운드 메시지 리스너 설정
     const initializeMessageListener = async () => {
       try {
-        const payload = await onMessageListener();
-        console.log("Foreground message received:", payload);
-      } catch (error) {
-        console.error("Error in foreground message listener:", error);
+        await onMessageListener();
+      } catch {
+        // 포그라운드 메시지 리스너 오류 처리 로직
       }
     };
 
