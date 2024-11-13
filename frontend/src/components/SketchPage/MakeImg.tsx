@@ -21,9 +21,10 @@ interface PopoverDemoProps {
   isOpen: boolean;
   blobData: Blob | null;
   setIsOpen: (open: boolean) => void;
+  onSave: () => void;
 }
 
-const MakeImg = ({ isOpen, setIsOpen, blobData }: PopoverDemoProps) => {
+const MakeImg = ({ isOpen, setIsOpen, blobData, onSave }: PopoverDemoProps) => {
   const [studioName, setStudioName] = useState("");
   const [dressName, setDressName] = useState("");
   const setCapturedImageState = useSetRecoilState(capturedImageState);
@@ -41,8 +42,8 @@ const MakeImg = ({ isOpen, setIsOpen, blobData }: PopoverDemoProps) => {
         formData.append("sketch", new Blob([JSON.stringify(sketch)], { type: "application/json" }));
         const file = new File([blobData], "image.png", { type: "image/png" });
 
-      // 변환된 파일을 FormData에 추가
-      formData.append("image", file);
+        // 변환된 파일을 FormData에 추가
+        formData.append("image", file);
 
         // saveDress 함수 호출하여 FormData 전송
         await saveDress(formData);
@@ -52,7 +53,8 @@ const MakeImg = ({ isOpen, setIsOpen, blobData }: PopoverDemoProps) => {
         setIsOpen(false);
         setStudioName("");
         setDressName("");
-
+        onSave(); 
+        setIsOpen(false);
         // 전송 후 페이지 이동
         navigate("/dress");
       } catch (error) {
@@ -64,36 +66,38 @@ const MakeImg = ({ isOpen, setIsOpen, blobData }: PopoverDemoProps) => {
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
-        <Button style={{ display: "none" }} variant="outline"></Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>스케치 이미지 만들기</AlertDialogTitle>
-          <AlertDialogDescription style={{ display: "flex", flexDirection: "column" }}>
-            <Input
-              id="studioName"
-              placeholder="스튜디오명"
-              className="col-span-2 h-10 my-2"
-              value={studioName}
-              onChange={(e) => setStudioName(e.target.value)}
-            />
-            <Input
-              id="dressName"
-              placeholder="드레스명"
-              className="col-span-2 h-10 my-2"
-              value={dressName}
-              onChange={(e) => setDressName(e.target.value)}
-            />
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction onClick={onClick}>스케치 저장</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogTrigger asChild>
+          <Button style={{ display: "none" }} variant="outline"></Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>스케치 이미지 만들기</AlertDialogTitle>
+            <AlertDialogDescription style={{ display: "flex", flexDirection: "column" }}>
+              <Input
+                id="studioName"
+                placeholder="스튜디오명"
+                className="col-span-2 h-10 my-2"
+                value={studioName}
+                onChange={(e) => setStudioName(e.target.value)}
+              />
+              <Input
+                id="dressName"
+                placeholder="드레스명"
+                className="col-span-2 h-10 my-2"
+                value={dressName}
+                onChange={(e) => setDressName(e.target.value)}
+              />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction onClick={onClick}>스케치 저장</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
