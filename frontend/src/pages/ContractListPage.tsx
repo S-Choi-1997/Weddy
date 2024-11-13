@@ -25,7 +25,6 @@ const ContractList = () => {
   useEffect(() => {
     const update = async () => {
       const myNFT = await getNFT();
-      console.log(myNFT);
       setNftLIst(myNFT);
     };
     update();
