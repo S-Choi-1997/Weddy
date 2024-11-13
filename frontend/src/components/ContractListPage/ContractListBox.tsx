@@ -19,7 +19,6 @@ interface ContractListBoxProps {
 }
 
 const ContractListBox = ({ type, nftList, contractInfo, onChange }: ContractListBoxProps) => {
-  console.log(nftList);
   const [showIcon, setShowIcon] = useState<Boolean>(false);
   const [nftData, setNftData] = useState<NftType | undefined>();
 
