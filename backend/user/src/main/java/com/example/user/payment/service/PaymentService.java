@@ -52,14 +52,14 @@ public class PaymentService {
     public void paymentSuccess(ContractInfoRequestDto contractInfoRequestDto) {
         UserEntity userEntity = userRepository.findById(contractInfoRequestDto.getUserId()).orElse(null);
         if (userEntity == null) return ;
-          contractInfoRequestDto.setCode(userEntity.getCoupleCode());
-//        boolean isValidatedPayment = validatePayment(contractInfoRequestDto);
-//        if(!isValidatedPayment) {
-//            //결제 취소 로직 작성
-//            String reason = " 결제 인증 실패";
-//            paymentCancel(contractInfoRequestDto.getPaymentId(), reason);
-//            return ;
-//        }
+        contractInfoRequestDto.setCode(userEntity.getCoupleCode());
+        boolean isValidatedPayment = validatePayment(contractInfoRequestDto);
+        if(!isValidatedPayment) {
+            //결제 취소 로직 작성
+            String reason = " 결제 인증 실패";
+            paymentCancel(contractInfoRequestDto.getPaymentId(), reason);
+            return ;
+        }
 
         log.info("결제성공" + contractInfoRequestDto.toString());
         contractService.changeContractStatus(contractInfoRequestDto.getId());
