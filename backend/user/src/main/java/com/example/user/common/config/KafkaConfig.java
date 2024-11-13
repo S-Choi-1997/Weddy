@@ -69,7 +69,7 @@ public class KafkaConfig {
 
     // 상품정보용 Kafka 컨슈머 설정
     @Bean
-    public ConsumerFactory<String, Object> defaultConsumerFactory() {
+    public ConsumerFactory<String, CartProductDto> cartConsumerFactory(){
 
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAPSERVERS);
@@ -77,16 +77,16 @@ public class KafkaConfig {
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class); // 값 역직렬화 (JSON)
 
         // JsonDeserializer 설정
-        JsonDeserializer<Object> deserializer = new JsonDeserializer<>(Object.class);
+        JsonDeserializer<CartProductDto> deserializer = new JsonDeserializer<>(CartProductDto.class);
         deserializer.addTrustedPackages("*"); // 모든 패키지에서 오는 클래스 신뢰
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> defaultKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(defaultConsumerFactory());
+    public ConcurrentKafkaListenerContainerFactory<String, CartProductDto> cartKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, CartProductDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(cartConsumerFactory());
         return factory;
     }
 
