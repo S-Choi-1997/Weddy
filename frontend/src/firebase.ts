@@ -74,7 +74,7 @@ export const requestForToken = async (): Promise<string | null> => {
 
 // 포그라운드 메시지 수신 리스너
 export const onMessageListener = (): Promise<MessagePayload> => {
-  console.log("Message received in foreground");
+  // console.log("Message received in foreground");
   return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
       console.log("Message received in foreground:", payload);
