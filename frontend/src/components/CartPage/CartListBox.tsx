@@ -11,7 +11,7 @@ interface CartListBoxProps {
   productList?: Product[];
   selectedList: { [type: string]: Product | null };
   onProductChange: (category: string, product: Product | null) => void;
-  onRemove: (productId: string) => void;
+  onRemove: () => void;
 }
 
 const CartListBox = ({ category, productList, selectedList, onProductChange, onRemove }: CartListBoxProps) => {
@@ -85,7 +85,7 @@ const CartListBox = ({ category, productList, selectedList, onProductChange, onR
               item={item}
               isSelected={selectedList[category]?.id === item.id}
               onProductSelect={handleProductSelect}
-              onRemove={() => onRemove(item.id)}
+              onRemove={() => onRemove()}
             />
           </div>
         ))
