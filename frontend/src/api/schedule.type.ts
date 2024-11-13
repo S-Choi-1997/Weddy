@@ -4,6 +4,9 @@ export interface Schedule {
   endDate: string | null;
   content: string;
   productId?: string;
+  userCoupleToken: {
+    myFcmToken: string;
+  };
 }
 
 export interface GetSchedule {
