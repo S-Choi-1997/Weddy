@@ -28,4 +28,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Optional <Schedule> findById(Long id);
 
+    List<Schedule> findByCode(String coupleCode);
 }

@@ -13,5 +13,5 @@ public interface ScheduleOutPutPort {
     List<Schedule> getSchedules(String coupleId, LocalDate time);
     Optional<Schedule> getSchedule(Long scheduleId);
     Schedule save(Schedule schedule);
-
+    List<Schedule> getSchedulesByCoupleCode(String coupleCode);
 }
