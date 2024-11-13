@@ -63,7 +63,6 @@ const CallBack = () => {
           console.log("발급된 토큰은 : " + token);
           if (token) {
             sessionStorage.setItem('firebaseToken', token);
-            // console.log(token);
             // saveFcmToken(token, userId);
           } else {
             console.warn("No token received");
