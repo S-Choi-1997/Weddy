@@ -17,6 +17,7 @@ import DatePick from "./DatePick";
 
 interface AlertDialogDemoProps {
   isOpen: boolean;
+  addSchedule: () => void;
   onClose: () => void;
 }
 
@@ -25,7 +26,7 @@ const FlexCenterWrapper = styled.div`
   justify-content: center;
 `;
 
-export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
+export function AlertDialogDemo({ isOpen, addSchedule, onClose }: AlertDialogDemoProps) {
   const firebaseToken = sessionStorage.getItem('firebaseToken');
 
   const [scheduleInfo, setScheduleInfo] = useState<Schedule>({
@@ -43,7 +44,6 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
       setScheduleInfo((prev) => ({
         ...prev,
         userCoupleToken: {
-          // ...prev.userCoupleCodeToken,
           myFcmToken: firebaseToken,
         },
       }));
@@ -71,6 +71,7 @@ export function AlertDialogDemo({ isOpen, onClose }: AlertDialogDemoProps) {
   
   const updateSchedule = async () => {
     await schedule(scheduleInfo);
+    addSchedule();
     onClose();
   };
 

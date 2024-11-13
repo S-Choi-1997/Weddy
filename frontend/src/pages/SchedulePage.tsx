@@ -1,13 +1,14 @@
 import { GetSchedule } from "@/api/schedule.type";
 import { getSchedule } from "@/api/scheduleApi";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import CalenderBox from "../components/SchedulePage/CalenderBox";
 import { AlertDialogDemo } from "../components/SchedulePage/DrawerBox";
 import ScheduleBox from "../components/SchedulePage/ScheduleBox";
 import PlusIcon from "../icons/PlusIcon";
 
 const Schedule = () => {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [ selectedDate, setSelectedDate ] = useState<Date>(new Date());
   const [ formattedDate, setFormattedDate ] = useState<string>('');
@@ -32,6 +33,10 @@ const Schedule = () => {
     () => getSchedule(formattedDate),
     { enabled: !!formattedDate}
   );
+
+  const handleAddSchedule = () => {
+    queryClient.invalidateQueries('getSchedule');
+  };
 
   const handleCloseDialog = () => {
     setIsOpen(false);
@@ -63,7 +68,7 @@ const Schedule = () => {
         <PlusIcon />
       </div>
 
-      <AlertDialogDemo isOpen={isOpen} onClose={handleCloseDialog} />
+      <AlertDialogDemo isOpen={isOpen} addSchedule={handleAddSchedule} onClose={handleCloseDialog} />
     </div>
   )
 }

@@ -5,7 +5,6 @@ const BASE_URL = "http://localhost:8082/api/schedules";
 
 //== 일정 등록 ==//
 export const schedule = async (scheduleData?: Schedule): Promise<void> => {
-  console.log(scheduleData);
   await axios({
     method: "post",
     url: BASE_URL,
