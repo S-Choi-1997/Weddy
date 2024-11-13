@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
@@ -19,7 +19,6 @@ import Login from "./pages/LoginPage";
 import Main from "./pages/MainPage";
 import Mypage from "./pages/MyPage";
 import NFTLoading from "./pages/NFTLoadingPage";
-// import PlannerList from "./pages/PlannerListPage";
 import Planner from "./pages/PlannerPage";
 import Prompt from "./pages/PromptPage";
 import RecommendLoading from "./pages/RecommendLoadingPage";
@@ -33,12 +32,19 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   const userId = sessionStorage.getItem("userId");
+  const token = sessionStorage.getItem("token");
   const fcmToken = useRecoilValue(firebaseTokenState);
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.split("/")[1];
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
+    // 비로그인 상태일 경우 로그인 페이지로 리다이렉트
+    if (!token && currentPath !== "login" && currentPath !== "callback") {
+      navigate("/login");
+    }
+
     // FCM 토큰 저장
     if (userId && fcmToken) {
       saveFcmToken(fcmToken, userId);
@@ -56,7 +62,7 @@ function AppContent() {
     };
 
     initializeMessageListener();
-  }, [userId, fcmToken]);
+  }, [token, userId, fcmToken]);
 
   return (
     <>
@@ -71,7 +77,6 @@ function AppContent() {
         <Route path="/board/detail/:productId" element={<BoardDetail />} />
         <Route path="/prompt" element={<Prompt />} />
         <Route path="/planner" element={<Planner />} />
-        {/* <Route path="/planner/list/:category" element={<PlannerList />} /> */}
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/dress" element={<DressSketch />} />
         <Route path="/dress/img" element={<DressImg />} />
