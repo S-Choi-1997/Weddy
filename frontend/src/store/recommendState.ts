@@ -1,7 +1,7 @@
-import { Product } from "@/api/product.type";
+import { RecommendData } from "@/api/recommend.type";
 import { atom } from "recoil";
 
-export const recommendState = atom<Product[]>({
+export const recommendState = atom<RecommendData[]>({
   key: 'recommendState',
   default: [],
 });
