@@ -12,7 +12,6 @@ export const allProducts = async (): Promise<Product[]> => {
       Authorization: sessionStorage.getItem('token')
     }
   });
-  console.log(response.data);
   return response.data.data;
 };
 
