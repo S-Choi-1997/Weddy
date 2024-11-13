@@ -9,7 +9,6 @@ import com.ssafy.product.global.util.RedisUtil;
 import com.ssafy.product.global.util.exception.ImageInvalidException;
 import com.ssafy.product.global.util.exception.ProductNotFoundExpception;
 import com.ssafy.product.global.util.response.ErrorCode;
-import com.ssafy.product.product.constant.KeyType;
 import com.ssafy.product.product.domain.Product;
 import com.ssafy.product.product.domain.ProductImage;
 import com.ssafy.product.product.domain.Review;
@@ -31,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import weddy.commonlib.dto.response.ProductResponseDto;
 import weddy.commonlib.dto.response.ReviewResponseDto;
-
+import weddy.commonlib.constant.KeyType;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -48,10 +47,11 @@ public class ProductServiceImpl implements ProductService{
     private final SyncService syncService;
     private final ObjectMapper mapper;
     private final JwtUtil jwtUtil;
-    private final ProducerUtil<String,ProductResponseDto> producerUtil;
+    private final ProducerUtil<String,List<ProductResponseDto>> producerUtil;
 
     @Override
     public List<ProductResponseDto> getList() {
+//        log.info("value : {}", redisUtil.getAllHashValuesList(KeyType.PRODUCT.name()));
         return mapper.convertValue(redisUtil.getAllHashValues(KeyType.PRODUCT.name()).values(), new TypeReference<List<ProductResponseDto>>(){});
     }
 
@@ -131,7 +131,6 @@ public class ProductServiceImpl implements ProductService{
                     return product.getProduct(product);
                 })
                 .toList();
-        log.info("전송완료");
         producerUtil.sendCartListTopic(key,cartList);
     }
 }
