@@ -59,10 +59,10 @@ const CallBack = () => {
         try {
           await requestNotificationPermission();
           const token = await requestForToken();
+          setToken(token);
           console.log("발급된 토큰은 : " + token);
           if (token) {
-            console.log(token);
-            setToken(token);
+            sessionStorage.setItem('firebaseToken', token);
             // saveFcmToken(token, userId);
           } else {
             console.warn("No token received");

@@ -26,7 +26,6 @@ export const metadataUpload = async (imageCID: string, contract?: ContractData):
   if (!contract) {
     return '';
   }
-  console.log(imageCID);
 
   const metadata = {
     name: contract.product.productName,
