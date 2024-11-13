@@ -10,14 +10,14 @@ export const getToken = async (userId?: string): Promise<void> => {
     url: `${BASE_URL}/token/super`,
     params: {
       id: userId,
-    }
+    },
   });
 
   if (userId) {
     sessionStorage.setItem("userId", userId);
     sessionStorage.setItem("token", response.data.accessToken);
     sessionStorage.setItem("refreshToken", response.data.refreshToken);
-  };
+  }
 };
 
 //== 로그아웃 ==//
@@ -26,7 +26,7 @@ export const logout = () => {
     method: "post",
     url: `${BASE_URL}/logout`,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: sessionStorage.getItem("token"),
     },
   });
 };
@@ -37,53 +37,69 @@ export const getUserInfo = async (): Promise<userInformation[]> => {
     method: "get",
     url: BASE_URL,
     headers: {
-      Authorization: sessionStorage.getItem("token")
+      Authorization: sessionStorage.getItem("token"),
     },
   });
-  console.log(response.data.data);
   return response.data.data;
 };
 
 //== 회원 프로필 수정 ==//
 export const editProfile = async (file: FormData): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: "patch",
     url: `${BASE_URL}/picture`,
     headers: {
       Authorization: sessionStorage.getItem("token"),
     },
-    data: file
-    });
-    console.log(response.data);
-  };
-
-//== 회원 정보 수정 ==//
-export const editInformation = async ( userInfo?: userInformation ): Promise<void> => {
-  console.log(userInfo);
-  // await axios({
-  //   method: "patch",
-  //   url: BASE_URL,
-  //   headers: {
-  //     Authorization: sessionStorage.getItem("token"),
-  //   },
-  //   data: userInfo
-  // });
+    data: file,
+  });
 };
 
-//fcm 토큰 저장
-export const saveFcmToken = async (fcmToken: string, userId:string): Promise<void> => {
+//== 회원 정보 수정 ==//
+export const editInformation = async (
+  userInfo?: userInformation
+): Promise<void> => {
+  await axios({
+    method: "patch",
+    url: BASE_URL,
+    headers: {
+      Authorization: sessionStorage.getItem("token"),
+    },
+    data: userInfo,
+  });
+};
+
+//== 커플 코드 연결 ==//
+export const connectCoupleCode = async (code: string): Promise<void> => {
+  await axios({
+    method: 'patch',
+    url: `${BASE_URL}/couple-connect`,
+    headers: {
+      Authorization: sessionStorage.getItem("token")
+    },
+    data: {
+      "code": code
+    }
+  });
+};
+
+//== FCM 토큰 저장 ==//
+export const saveFcmToken = async (
+  fcmToken: string,
+  userId: string
+): Promise<void> => {
   await axios({
     method: "patch",
     url: `${BASE_URL}/fcm-token/${userId}`,
     headers: {
       Authorization: sessionStorage.getItem("token"),
-      'Content-Type': 'text/plain',
+      "Content-Type": "application/json",
     },
-    data: fcmToken 
+    data: { fcmToken: fcmToken },
   });
-}
+};
 
-// 커플코드로 fcm 토큰 조회
+//== 커플코드로 FCM 토큰 조회 ==//
 export const getFcmToken = async (coupleCode: string): Promise<string> => {
   const response = await axios({
     method: "get",
@@ -93,4 +109,4 @@ export const getFcmToken = async (coupleCode: string): Promise<string> => {
     },
   });
   return response.data.data;
-}
+};

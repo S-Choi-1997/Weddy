@@ -1,10 +1,10 @@
-import { Product, ReviewData } from "@/api/product.type";
-import { submitReview } from "@/api/productApi";
+import { ReviewData } from "@/api/product.type";
+import { detailProduct, submitReview } from "@/api/productApi";
 import Separate from "@/common/Separate";
 import TodoButton from "@/common/TodoButton";
 import RatingBox from "@/components/ReviewPage/RatingBox";
 import { useState } from "react";
-// import { useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Review = () => {
@@ -19,23 +19,11 @@ const Review = () => {
   });
 
   //== 상품 정보 ==//
-  // const { data: productData } = useQuery(
-  //   ['detailProduct', productId],
-  //   () => detailProduct(productId),
-  //   {enabled: !!productId}
-  // );
-
-  const productData: Product = {
-    id: "1",
-      type: "DRESS",
-      name: "웨딩 드레스 대여",
-      price: "1500000",
-      address: "서울 강남구",
-      content: "고급스러운 웨딩 드레스 대여 서비스입니다.",
-      vendorName: "Elegant Bridal",
-      vendorId: "vendor1",
-      images: [],
-  }
+  const { data: productData } = useQuery(
+    ['detailProduct', productId],
+    () => detailProduct(productId),
+    {enabled: !!productId}
+  );
 
   //== 상태 업데이트 ==//
   const updateReviewData = (key: keyof ReviewData, value: any) => {

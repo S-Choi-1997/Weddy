@@ -1,13 +1,14 @@
 import { GetSchedule } from "@/api/schedule.type";
 import { getSchedule } from "@/api/scheduleApi";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import CalenderBox from "../components/SchedulePage/CalenderBox";
 import { AlertDialogDemo } from "../components/SchedulePage/DrawerBox";
 import ScheduleBox from "../components/SchedulePage/ScheduleBox";
 import PlusIcon from "../icons/PlusIcon";
 
 const Schedule = () => {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [ selectedDate, setSelectedDate ] = useState<Date>(new Date());
   const [ formattedDate, setFormattedDate ] = useState<string>('');
@@ -27,11 +28,15 @@ const Schedule = () => {
   }, [selectedDate]);
   
 
-  const { data: scheduleList } = useQuery(
+  const { data: scheduleList = [] } = useQuery(
     ['getSchedule', formattedDate],
     () => getSchedule(formattedDate),
     { enabled: !!formattedDate}
   );
+
+  const handleAddSchedule = () => {
+    queryClient.invalidateQueries('getSchedule');
+  };
 
   const handleCloseDialog = () => {
     setIsOpen(false);
@@ -51,36 +56,19 @@ const Schedule = () => {
         })}
       </div>
 
-      <div></div>
-
-      {!scheduleList || scheduleList?.length <= 0 ? (
-        <ScheduleBox type="etc" title="일정이 없습니다." />
+      {scheduleList.length > 0 ? (
+        scheduleList.map((schedule: GetSchedule) => (
+          <ScheduleBox key={schedule.id} type={schedule.contractType} title={schedule.content}/>
+        ))
       ) : (
-        scheduleList?.map((schedule: GetSchedule) => {
-          switch (schedule.contractType) {
-            case 'STUDIO':
-              return <ScheduleBox key={schedule.id} type="studio" title={schedule.content} />;
-            
-            case 'DRESS':
-              return <ScheduleBox key={schedule.id} type="dress" title="드레스 피팅" />;
-
-            case 'MAKEUP':
-              return <ScheduleBox key={schedule.id} type="makeup" title="메이크업" />;
-            
-            case 'WEDDING':
-              return <ScheduleBox key={schedule.id} type="wedding" title="예식일"/>
-
-            default:
-              return <ScheduleBox key={schedule.id} type="etc" title={schedule.content} />;
-          }
-        })
+        <ScheduleBox type="etc" title="일정이 없습니다." />
       )}
 
       <div onClick={() => { setIsOpen(true); }} className="plusIconButton">
         <PlusIcon />
       </div>
 
-      <AlertDialogDemo isOpen={isOpen} onClose={handleCloseDialog} />
+      <AlertDialogDemo isOpen={isOpen} addSchedule={handleAddSchedule} onClose={handleCloseDialog} />
     </div>
   )
 }

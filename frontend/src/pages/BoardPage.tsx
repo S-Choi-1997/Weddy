@@ -1,32 +1,36 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { ComboboxDemo } from "../common/Filter";
 import SDMList from "../components/BoardPage/SDMList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { allProducts } from "@/api/productApi";
 import { Product } from "@/api/product.type";
 import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
 
 const Board = () => {
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [filteredProductList, setFilteredProductList] = useState<Product[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-  const [studioList, setStudioList] = useState<Product[]>([]);
-  const [dressList, setDressList] = useState<Product[]>([]);
-  const [makeupList, setMakeupList] = useState<Product[]>([]);
+  
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category") || "studio";
 
-  const { data: allProductList } = useQuery('allProducts', allProducts);
+  const { data: allProductList } = useQuery("allProducts", allProducts);
 
-  const handleRegionSelect = (value: string) => {
-    setSelectedRegion(value);
-  };
+  const handleTabChange = (value: string) => setSearchParams({ category: value });
 
-  const handlePriceSelect = (value: string) => {
-    const price = parseInt(value.replace(/,/g, ""), 10);
-    setSelectedPrice(price);
-  };
+  const handleRegionSelect = (value: string) => setSelectedRegion(value);
 
-  // Dummy data
+  const handlePriceSelect = (value: string) =>
+    setSelectedPrice(parseInt(value.replace(/,/g, ""), 10));
+
+  const filteredProductList = useMemo(() => {
+    return allProductList?.filter((product: Product) => {
+      const matchesRegion = selectedRegion ? product.address.includes(selectedRegion) : true;
+      const matchesPrice = selectedPrice ? Number(product.price) <= selectedPrice : true;
+      return matchesRegion && matchesPrice;
+    });
+  }, [selectedRegion, selectedPrice, allProductList]);
+
   const regions = [
     { value: "서울", label: "서울" },
     { value: "부산", label: "부산" },
@@ -43,36 +47,9 @@ const Board = () => {
     { value: "15000000", label: "15,000,000" },
   ];
 
-  useEffect(() => {
-    if (allProductList) {
-      setProductList(allProductList);
-      setFilteredProductList(allProductList);
-    }
-  }, [allProductList]);
-
-  useEffect(() => {
-    if (productList) {
-      const filtered = productList.filter((product: Product) => {
-        const matchesRegion = selectedRegion ? product.address.includes(selectedRegion) : true;
-        const matchesPrice = selectedPrice ? Number(product.price) <= selectedPrice : true;
-        
-        return matchesRegion && matchesPrice;
-      });
-      setFilteredProductList(filtered);
-    }
-  }, [selectedPrice, selectedRegion, productList]);
-
-  useEffect(() => {
-    if (filteredProductList) {
-      setStudioList(filteredProductList.filter((product: Product) => product.type === "STUDIO"));
-      setDressList(filteredProductList.filter((product: Product) => product.type === "DRESS"));
-      setMakeupList(filteredProductList.filter((product: Product) => product.type === "MAKEUP"));
-    }
-  }, [filteredProductList]);
-
   return (
     <div className="mb-20 mt-5">
-      <Tabs defaultValue="studio">
+      <Tabs defaultValue={category} onValueChange={handleTabChange}>
         <TabsList className="flex justify-center">
           <TabsTrigger value="studio">스튜디오</TabsTrigger>
           <TabsTrigger value="dress">드레스</TabsTrigger>
@@ -84,17 +61,16 @@ const Board = () => {
           <ComboboxDemo lists={prices} title="가격" onSelect={handlePriceSelect} />
         </div>
 
-        <TabsContent value="studio">
-          <SDMList value="studio" productList={studioList} />
-        </TabsContent>
-
-        <TabsContent value="dress">
-          <SDMList value="dress" productList={dressList} />
-        </TabsContent>
-
-        <TabsContent value="makeup">
-          <SDMList value="makeup" productList={makeupList} />
-        </TabsContent>
+        {["studio", "dress", "makeup"].map((type) => (
+          <TabsContent key={type} value={type}>
+            <SDMList
+              value={type}
+              productList={Array.isArray(filteredProductList) ? filteredProductList.filter(
+                (product) => product.type === type.toUpperCase()
+              ) : []}
+            />
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );

@@ -1,29 +1,30 @@
 import { Product } from "@/api/product.type";
 import DropdownIcon from "@/icons/DropdownIcon";
-// import GotoIcon from "@/icons/Goto";
+import GotoIcon from "@/icons/Goto";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartBox from "./CartBox";
 
 interface CartListBoxProps {
   category: string;
-  productList: Product[];
+  productList?: Product[];
   selectedList: { [type: string]: Product | null };
   onProductChange: (category: string, product: Product | null) => void;
-  onRemove: (category: string, id: string) => void;
+  onRemove: (productId: string) => void;
 }
 
 const CartListBox = ({ category, productList, selectedList, onProductChange, onRemove }: CartListBoxProps) => {
-  // const navigate = useNavigate();
-  // const goRecommend = () => {
-  //   navigate(`/planner/list/${category}`);
-  // };
+  const navigate = useNavigate();
+
+  const goboard = () => {
+    navigate(`/board?category=${category.toLowerCase()}`);
+  }
 
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    setIsChecked(!!productList.length);
+    setIsChecked(!!productList?.length);
   }, [productList]);
 
   const handleProductSelect = (product: Product | null) => {
@@ -70,22 +71,21 @@ const CartListBox = ({ category, productList, selectedList, onProductChange, onR
               <DropdownIcon />
             </div>
           ) : (
-            // <div onClick={goRecommend} className="flex items-center">
-            //   <p className="mr-1">상품 보러가기</p>
-            //   <GotoIcon />
-            // </div>
-            <></>
+            <div onClick={goboard} className="flex items-center">
+              <p className="mr-1">상품 보러가기</p>
+              <GotoIcon />
+            </div>
           )}
         </div>
       </AccordionSummary>
       {isChecked ? (
-        productList.map((item: Product, index) => (
+        productList?.map((item: Product, index) => (
           <div key={index}>
             <CartBox
               item={item}
               isSelected={selectedList[category]?.id === item.id}
               onProductSelect={handleProductSelect}
-              onRemove={() => onRemove(category, item.id)}
+              onRemove={() => onRemove(item.id)}
             />
           </div>
         ))

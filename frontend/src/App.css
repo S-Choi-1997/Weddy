@@ -1,0 +1,117 @@
+.app-container {
+  width: 414px;
+  height: 100vh;
+  position: relative;
+}
+
+.makeImg-button{
+  position: fixed;
+  bottom: 20%;
+  right: 5%;
+  z-index: 1000;
+}
+
+.makeImg-modal{
+  position: fixed;
+  bottom: 20%;
+  right: 20%;
+  z-index: 1000;
+}
+
+.leva-container {
+  position: absolute;
+  top: 18%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.input-container {
+  position: absolute;
+  top: 20%;
+  left: 22%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.canvas {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  
+  z-index: 0;
+}
+
+.toggle-container {
+  position: absolute;
+  top: 1px;
+  z-index: 10;
+  pointer-events: auto;
+  width: 414px;
+  overflow-x: auto;
+  white-space: nowrap;
+  background-color: #F9F9F4;
+  padding: 10px;
+  border-radius: 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+.toggle-container::-webkit-scrollbar {
+  display: none;
+  /* 웹킷 브라우저에서 스크롤바 숨기기 */
+}
+
+.toggle-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.toggle-group {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 15px;
+}
+
+.toggle-group h4 {
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+}
+
+.toggle-button {
+  cursor: pointer;
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid #FCCD2A;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+  width: 60px;
+}
+
+.toggle-button.active {
+  border-color: #ff3300;
+  transform: scale(1.05);
+  box-shadow: 0px 0px 10px rgba(243, 219, 2, 0.3);
+}
+
+.toggle-button-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.toggle-button-label {
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+
