@@ -90,10 +90,10 @@ public class CustomExceptionHandler {
                 .body(ApiResponse.error(HttpStatus.CONFLICT,ex.getMessage()));
     }
 
-    @ExceptionHandler(JsonProcessingException.class)
-    public ResponseEntity<ApiResponse<String>> handleJsonProcessingException(JsonProcessingException ex) {
-        log.error("JSON 처리 중 오류 발생: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.PROCESSING)
-                .body(ApiResponse.error(HttpStatus.PROCESSING,ex.getMessage()));
-    }
+//    @ExceptionHandler(JsonProcessingException.class)
+//    public ResponseEntity<ApiResponse<String>> handleJsonProcessingException(JsonProcessingException ex) {
+//        log.error("JSON 처리 중 오류 발생: {}", ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.PROCESSING)
+//                .body(ApiResponse.error(HttpStatus.PROCESSING,ex.getMessage()));
+//    }
 }
