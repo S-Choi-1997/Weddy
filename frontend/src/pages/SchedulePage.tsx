@@ -27,7 +27,7 @@ const Schedule = () => {
   }, [selectedDate]);
   
 
-  const { data: scheduleList } = useQuery(
+  const { data: scheduleList = [] } = useQuery(
     ['getSchedule', formattedDate],
     () => getSchedule(formattedDate),
     { enabled: !!formattedDate}
@@ -51,29 +51,12 @@ const Schedule = () => {
         })}
       </div>
 
-      {/* <div></div> */}
-
-      {!scheduleList || scheduleList?.length <= 0 ? (
-        <ScheduleBox type="etc" title="일정이 없습니다." />
+      {scheduleList.length > 0 ? (
+        scheduleList.map((schedule: GetSchedule) => (
+          <ScheduleBox key={schedule.id} type={schedule.contractType} title={schedule.content}/>
+        ))
       ) : (
-        scheduleList?.map((schedule: GetSchedule) => {
-          switch (schedule.contractType) {
-            case 'STUDIO':
-              return <ScheduleBox key={schedule.id} type="studio" title={schedule.content} />;
-            
-            case 'DRESS':
-              return <ScheduleBox key={schedule.id} type="dress" title="드레스 피팅" />;
-
-            case 'MAKEUP':
-              return <ScheduleBox key={schedule.id} type="makeup" title="메이크업" />;
-            
-            case 'WEDDING':
-              return <ScheduleBox key={schedule.id} type="wedding" title="예식일"/>
-
-            default:
-              return <ScheduleBox key={schedule.id} type="etc" title={schedule.content} />;
-          }
-        })
+        <ScheduleBox type="etc" title="일정이 없습니다." />
       )}
 
       <div onClick={() => { setIsOpen(true); }} className="plusIconButton">

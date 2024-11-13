@@ -1,14 +1,14 @@
 interface ScheduleProps {
-  type: "studio" | "dress" | "makeup" | "wedding" |"etc";
+  type: "STUDIO" | "DRESS" | "MAKEUP" | "WEDDING" |"etc";
   title: string;
 }
 
 const ScheduleBox = ({ type,title }: ScheduleProps) => {
   const backgroundColor = {
-    studio: "bg-main3",
-    dress: "bg-main1",
-    makeup: "bg-main4",
-    wedding: "bg-red-500",
+    STUDIO: "bg-main3",
+    DRESS: "bg-main1",
+    MAKEUP: "bg-main4",
+    WEDDING: "bg-red-400",
     etc: "bg-gray-200",
   }[type];
 
