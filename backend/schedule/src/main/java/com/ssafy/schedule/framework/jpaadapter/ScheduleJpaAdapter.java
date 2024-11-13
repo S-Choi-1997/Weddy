@@ -45,4 +45,9 @@ public class ScheduleJpaAdapter implements ScheduleOutPutPort {
     public Schedule save(Schedule schedule) {
             return scheduleRepository.save(schedule);
     }
+
+    @Override
+    public List<Schedule> getSchedulesByCoupleCode(String coupleCode) {
+        return scheduleRepository.findByCode(coupleCode);
+    }
 }
