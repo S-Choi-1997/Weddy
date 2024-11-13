@@ -12,6 +12,7 @@ export const addProductToCart = async (productId?: string): Promise<void> => {
       Authorization: sessionStorage.getItem("token")
     },
   });
+  alert("담기 완료");
 };
 
 //== 장바구니 리스트 조회 ==//
@@ -23,18 +24,16 @@ export const getCartItems = async (): Promise<Product[]> => {
       Authorization: sessionStorage.getItem("token")
     },
   });
-  console.log(response.data);
   return response.data.data;
 };
 
 //== 장바구니 삭제 ==//
 export const deleteFromCart = async (productId?: string): Promise<void> => {
-  const response = await axios({
+  await axios({
     method: "delete",
     url: `${BASE_URL}/delete/${productId}`,
     headers: {
       Authorization: sessionStorage.getItem("token")
     },
   });
-  console.log(response.data);
 };
