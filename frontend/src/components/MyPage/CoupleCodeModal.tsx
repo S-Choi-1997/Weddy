@@ -1,8 +1,8 @@
+import { connectCoupleCode } from '@/api/userApi';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { connectCoupleCode } from "@/api/coupleApi";
 
 const style = {
   position: 'absolute',
