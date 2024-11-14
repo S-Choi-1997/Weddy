@@ -41,7 +41,7 @@ function AppContent() {
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (!token && currentPath !== "login" && currentPath !== "callback") {
+    if (!token && currentPath !== "/api/oauth2/authorization/google" && currentPath !== "callback") {
       navigate("/login");
     }
 
