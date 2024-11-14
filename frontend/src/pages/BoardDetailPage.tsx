@@ -1,16 +1,18 @@
 import { useQuery } from "react-query";
 import FooterButton from "@/components/BoardDetailPage/FooterButton";
-import BoardAsk from "../components/BoardDetailPage/BoardAsk";
 import BoardContent from "../components/BoardDetailPage/BoardContent";
 import BoardReview from "../components/BoardDetailPage/BoardReview";
 import { MainCarousel } from "../components/MainPage/MainCarousel";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { useParams } from "react-router-dom";
 import { detailProduct, getReviewList } from "@/api/productApi";
 import { addProductToCart } from "@/api/cartApi";
+import Separate from "@/common/Separate";
+import AlertBox from "@/common/AlertBox";
+import { useState } from "react";
 
 const BoardDetail = () => {
   const { productId } = useParams();
+  const [showAlert, setShowAlert] = useState(false);
 
   //== 상품 상세 데이터 ==//
   const { data: productDetail } = useQuery(
@@ -29,32 +31,26 @@ const BoardDetail = () => {
   //== 장바구니 담기 ==//
   const addToCart = async () => {
     await addProductToCart(productId);
+    setShowAlert(true); // 알림 상태를 true로 설정
+    setTimeout(() => setShowAlert(false), 2000); // 3초 후 알림 상태를 false로 변경
   };
 
   return (
     <div>
+      {showAlert && <AlertBox title="상품 담기" description="장바구니에 상품 담기 완료!"/>}
       <MainCarousel imageList={productDetail?.images} />
-      <Tabs className="mt-5" defaultValue="info">
-        <TabsList className="flex justify-center">
-          <TabsTrigger value="info">상품 정보</TabsTrigger>
-          <TabsTrigger value="review">리뷰</TabsTrigger>
-          <TabsTrigger value="ask">문의 정보</TabsTrigger>
-        </TabsList>
 
-        <TabsContent value="info">
-          <BoardContent product={productDetail} />
-        </TabsContent>
-        <TabsContent value="review">
-          <BoardReview reviewList={reviewList ?? []} />
-        </TabsContent>
-        <TabsContent value="ask">
-          <BoardAsk />
-        </TabsContent>
+      <BoardContent product={productDetail} />
+      <div className="mx-5 mb-5">
+      <Separate />
+      </div>
+      <span className="m-5 font-bold">Review</span>
+      <BoardReview reviewList={reviewList ?? []} />
 
-        <div onClick={addToCart}>
-          <FooterButton />
-        </div>
-      </Tabs>
+      <div onClick={addToCart}>
+        <FooterButton />
+      </div>
+
     </div>
   );
 };
