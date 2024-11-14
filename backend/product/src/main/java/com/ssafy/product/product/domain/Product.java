@@ -1,11 +1,11 @@
 package com.ssafy.product.product.domain;
 
-import com.ssafy.product.product.constant.ProductType;
 import com.ssafy.product.product.dto.request.ProductRegistRequestDto;
-import com.ssafy.product.product.dto.response.ProductImageResponseDto;
-import com.ssafy.product.product.dto.response.ProductResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import weddy.commonlib.constant.ProductType;
+import weddy.commonlib.dto.response.ProductImageResponseDto;
+import weddy.commonlib.dto.response.ProductResponseDto;
 
 import java.util.List;
 
@@ -31,11 +31,18 @@ public class Product {
     @Column(nullable = false, length = 100)
     private String address;
 
+    @Column
+    private String description;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductImage> productImages;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> reviews;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vender_id")
+    private Vender vender;
 
     public ProductResponseDto getProduct(Product product) {
         List<ProductImageResponseDto> images = product.productImages.stream()
@@ -46,19 +53,25 @@ public class Product {
         return ProductResponseDto.builder()
                 .id(product.id)
                 .name(product.name)
-                .type(product.type)
                 .price(product.price)
+                .type(product.type)
                 .address(product.address)
+                .description(product.description)
                 .images(images)
+                .vendorName(product.vender.getName())
+                .vendorPhone(product.vender.getPhone())
+                .vendorAddress(product.vender.getAddress())
+                .vendorId(product.vender.getId())
                 .build();
     }
 
     @Builder
-    public Product(ProductRegistRequestDto productRegistRequestDto){
+    public Product(ProductRegistRequestDto productRegistRequestDto, Vender vender){
         this.name = productRegistRequestDto.name();
         this.type = productRegistRequestDto.type();
         this.price = productRegistRequestDto.price();
         this.address = productRegistRequestDto.address();
+        this.vender = vender;
     }
 
     public ProductResponseDto registProductResponseDto(Product product, List<ProductImage> images) {
@@ -74,6 +87,10 @@ public class Product {
                 .name(product.getName())
                 .price(product.getPrice())
                 .images(imagesDto)
+                .vendorName(product.vender.getName())
+                .vendorPhone(product.vender.getPhone())
+                .vendorAddress(product.vender.getAddress())
+                .vendorId(product.vender.getId())
                 .build();
     }
 }
