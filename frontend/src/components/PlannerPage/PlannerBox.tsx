@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface PlannerBoxProps {
   title: string;
   type: string;
-  cartItem: Product[];
+  cartItem?: Product[];
   onAmountChange: (type: string, selectedProduct: Product | null) => void;
 }
 
@@ -17,14 +17,14 @@ const PlannerBox = ({ title, type, cartItem, onAmountChange }: PlannerBoxProps) 
     const isSelected = selectedIndex === index;
     setSelectedIndex(isSelected ? null : index);
     
-    const selectedItem = isSelected ? null : cartItem[index];
+    const selectedItem = isSelected || !cartItem ? null : cartItem[index];
     onAmountChange(type, selectedItem);
   };
   
   return (
     <div className="m-5">
       <h2 className="font-bold text-lg mb-3">{title}</h2>
-      {cartItem.map((item, index) => (
+      {cartItem?.map((item, index) => (
         <div
           key={item.id}
           className="mx-1 my-5 bg-white h-[70px] w-auto rounded-lg px-5 py-3 flex justify-between"
@@ -44,9 +44,6 @@ const PlannerBox = ({ title, type, cartItem, onAmountChange }: PlannerBoxProps) 
           <div>
             {Number(item.price).toLocaleString()}원
           </div>
-          {/* <div>
-            <button className="text-sm">삭제</button>
-          </div> */}
         </div>
       ))}
     </div>

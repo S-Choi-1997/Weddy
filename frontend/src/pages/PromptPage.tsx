@@ -19,7 +19,7 @@ const Prompt = () => {
     if (recommendList.length > 0) {
       navigate("/planner");
     }
-  }, []);
+  }, [recommendList, navigate]);
 
   const toPlanner = async () => {
     setLoading(true);
