@@ -2,7 +2,8 @@ import axios from "axios"
 import { ContractData, ContractProduct, SentContractType } from "./contract.type";
 import { Product } from "./product.type";
 
-const BASE_URL = 'http://localhost:8080/api/contracts'
+const URL = process.env.VITE_PUBLIC_URL
+const BASE_URL = `${URL}/api/contracts`
 
 //== 계약서 생성 ==// 
 export const createContract = async (contractItems: Product[]): Promise<void> => {

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Product } from "./product.type";
 
-const BASE_URL = "http://localhost:8007/api/recommends";
+const URL = process.env.VITE_PUBLIC_URL
+const BASE_URL = `${URL}/api/recommends`
 
 export const aiRecommend = async (message: string): Promise<Product[]> => {
   const response = await axios({
