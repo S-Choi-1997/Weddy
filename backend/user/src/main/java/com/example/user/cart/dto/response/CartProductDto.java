@@ -21,6 +21,7 @@ public class CartProductDto {
     String address;
     String vendorName;
     String vendorPhone;
+    String description;
     String vendorAddress;
     Long vendorId;
     List<productImageResponseDto> images;
