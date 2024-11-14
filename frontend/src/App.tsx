@@ -35,15 +35,15 @@ function AppContent() {
   const userId = sessionStorage.getItem("userId");
   const token = sessionStorage.getItem("token");
   const fcmToken = useRecoilValue(firebaseTokenState);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.split("/")[1];
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (!token && currentPath !== "login" && currentPath !== "callback") {
-      navigate("/login");
-    }
+    // if (!token && currentPath !== "login" && currentPath !== "callback") {
+    //   navigate("/login");
+    // }
 
     if (userId && fcmToken) {
       saveFcmToken(fcmToken, userId);
