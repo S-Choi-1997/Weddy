@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil";
 const PlannerPage = () => {
   const navigate = useNavigate();
   const recommendList = useRecoilValue(recommendState);
-  
+
   const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null; }>({
     studio: null,
     dress: null,
@@ -25,7 +25,7 @@ const PlannerPage = () => {
 
   const totalAmount = Object.values(selectedAmounts).reduce((acc, amount) => acc + amount, 0);
 
-  const handleAmountChange = ( type: string, selectedCartItem: Product | null ) => {
+  const handleAmountChange = (type: string, selectedCartItem: Product | null) => {
     const amount = selectedCartItem ? parseInt(selectedCartItem.price) : 0;
 
     setSelectedAmounts((prev) => ({ ...prev, [type]: amount }));
@@ -52,17 +52,20 @@ const PlannerPage = () => {
           </span>
         </div>
       </div>
+
       <div className="mt-10">
-        {recommendList.length > 0 ? (
+        {Array.isArray(recommendList) && recommendList.length > 0 ? (
           <>
             {["STUDIO", "DRESS", "MAKEUP"].map((category: string) => (
               <PlannerBox
                 key={category}
                 title={category}
                 type={category}
-                cartItem={recommendList.filter(
-                  (item: Product) => item.type === category
-                )}
+                cartItem={
+                  recommendList.filter(
+                    (item: Product) => item.type === category
+                  )
+                }
                 onAmountChange={handleAmountChange}
               />
             ))}
@@ -80,11 +83,12 @@ const PlannerPage = () => {
           <div className="flex flex-col m-5">
             <p className="text-center mb-5">추천받은 상품이 없습니다.</p>
             <div className="ml-auto" onClick={goPrompt}>
-              <TodoButton title="추천 받기"/>
+              <TodoButton title="추천 받기" />
             </div>
           </div>
         )}
-        
+
+
       </div>
     </>
   );

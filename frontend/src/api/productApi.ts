@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Product, ReviewData } from "./product.type";
 
-const BASE_URL = 'http://localhost:8083/api/products'
+const URL = process.env.VITE_PUBLIC_URL
+const BASE_URL = `${URL}/api/products`
 
 //== 모든 상품 조회 ==//
 export const allProducts = async (): Promise<Product[]> => {
@@ -12,6 +13,7 @@ export const allProducts = async (): Promise<Product[]> => {
       Authorization: sessionStorage.getItem('token')
     }
   });
+  
   return response.data.data;
 };
 

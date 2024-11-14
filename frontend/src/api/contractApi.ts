@@ -2,7 +2,8 @@ import axios from "axios"
 import { ContractData, ContractProduct, SentContractType } from "./contract.type";
 import { Product } from "./product.type";
 
-const BASE_URL = 'http://localhost:8080/api/contracts'
+const URL = process.env.VITE_PUBLIC_URL
+const BASE_URL = `${URL}/api/contracts`
 
 //== 계약서 생성 ==// 
 export const createContract = async (contractItems: Product[]): Promise<void> => {
@@ -51,7 +52,7 @@ export const myContract = async (): Promise<ContractData[]> => {
     method: 'get',
     url: BASE_URL,
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization:sessionStorage.getItem("token")
     }
   });
   return response.data.data;
@@ -63,7 +64,7 @@ export const contractInfo = async (contractId?: string): Promise<ContractData> =
     method: 'get',
     url: `${BASE_URL}/${contractId}`,
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: sessionStorage.getItem("token")
     }
   });
   return response.data.data;

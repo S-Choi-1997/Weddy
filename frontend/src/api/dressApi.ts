@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Dress } from "./dress.type";
 
-const BASE_URL = "http://localhost:8080/api/users/sketch";
+
+const URL = process.env.VITE_PUBLIC_URL
+const BASE_URL = `${URL}/api/users/sketch`
 
 // 드레스 전체 조회
 export const getDressList = async (): Promise<Dress[]> => {
