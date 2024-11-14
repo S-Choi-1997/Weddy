@@ -40,7 +40,7 @@ public class SecurityConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+                configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174","https://weddy.info"));
                 configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("*"));
                 configuration.setAllowCredentials(true);
@@ -54,6 +54,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers(
                         "/",
+                        "/oauth2",
+                        "/api/oauth2",
                         "/login",
                         "/login/**",
                         "/users/token",
