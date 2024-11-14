@@ -67,7 +67,21 @@ export const editInformation = async (
     },
     data: userInfo,
   });
-  alert("회원 정보가 수정되었습니다.");
+};
+
+//== 커플 코드 연결 ==//
+export const connectCoupleCode = async (code: string): Promise<void> => {
+  const response = await axios({
+    method: 'patch',
+    url: `${BASE_URL}/couple-connect`,
+    headers: {
+      Authorization: sessionStorage.getItem("token")
+    },
+    data: {
+      "code": code
+    }
+  });
+  console.log(response.data);
 };
 
 //== FCM 토큰 저장 ==//
