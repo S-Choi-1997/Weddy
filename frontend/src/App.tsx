@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
@@ -35,15 +35,15 @@ function AppContent() {
   const userId = sessionStorage.getItem("userId");
   const token = sessionStorage.getItem("token");
   const fcmToken = useRecoilValue(firebaseTokenState);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.split("/")[1];
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
-    // if (!token && currentPath !== "login" && currentPath !== "callback") {
-    //   navigate("/login");
-    // }
+    if (!token && currentPath !== "login" && currentPath !== "callback") {
+      navigate("/login");
+    }
 
     if (userId && fcmToken) {
       saveFcmToken(fcmToken, userId);
