@@ -72,9 +72,6 @@ pipeline {
                         if (changes.contains('cacheScheduler/')) {
                             changedServices.add('cacheScheduler')
                         }
-                        if (changes.contains('common-lib/')) {
-                            changedServices.add('common-lib')
-                        }
                         if (changes.contains('gateway/')) {
                             changedServices.add('gateway')
                         }
