@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
