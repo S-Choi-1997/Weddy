@@ -41,7 +41,7 @@ function AppContent() {
   const currentDetail = location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (!token && currentPath !== "/api/oauth2/authorization/google" && currentPath !== "callback") {
+    if (!token && currentPath !== "api/oauth2/authorization/google" && currentPath !== "callback") {
       navigate("/login");
     }
 
@@ -58,7 +58,7 @@ function AppContent() {
     };
 
     initializeMessageListener();
-  }, [token, userId, fcmToken]);
+  }, [token, userId, fcmToken, currentPath]);
 
   return (
     <>
