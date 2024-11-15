@@ -39,9 +39,10 @@ function AppContent() {
   const location = useLocation();
   const currentPath = location.pathname.split("/")[1];
   const currentDetail = location.pathname.split("/")[2];
+  const nowPath = location.pathname;
 
   useEffect(() => {
-    if (!token && currentPath !== "api/oauth2/authorization/google" && currentPath !== "callback") {
+    if (!token && nowPath !== "/api/oauth2/authorization/google" && nowPath !== "/callback") {
       navigate("/login");
     }
 
@@ -58,7 +59,7 @@ function AppContent() {
     };
 
     initializeMessageListener();
-  }, [token, userId, fcmToken, currentPath]);
+  }, [token, userId, fcmToken, nowPath]);
 
   return (
     <>
