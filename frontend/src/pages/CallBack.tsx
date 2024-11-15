@@ -51,7 +51,9 @@ const CallBack = () => {
         try {
           await requestNotificationPermission();
           const token = await requestForToken();
+          
           if (token) {
+            sessionStorage.setItem('fcmToken', token);
             setToken(token);
           }
         } catch{
