@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dress } from "./dress.type";
 
 
-const URL = process.env.VITE_PUBLIC_URL
+const URL = import.meta.env.VITE_PUBLIC_URL
 const BASE_URL = `${URL}/api/users/sketch`
 
 // 드레스 전체 조회

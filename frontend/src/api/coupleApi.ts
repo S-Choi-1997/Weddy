@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = process.env.VITE_PUBLIC_URL
+const URL = import.meta.env.VITE_PUBLIC_URL
 const BASE_URL = `${URL}/api/users`
 
 //== 커플 코드 연결 ==//

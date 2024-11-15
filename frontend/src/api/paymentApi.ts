@@ -3,7 +3,7 @@ import axios from "axios";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { ContractData } from "./contract.type";
 
-const URL = process.env.VITE_PUBLIC_URL
+const URL = import.meta.env.VITE_PUBLIC_URL
 const BASE_URL = `${URL}/api/payments`
 const PORTONE_CHANNEL_KEY = import.meta.env.VITE_PORTONE_CHANNEL_KEY;
 const PORTONE_STORE_ID = import.meta.env.VITE_PORTONE_STORE_ID;

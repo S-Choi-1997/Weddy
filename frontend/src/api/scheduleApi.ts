@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetSchedule, Schedule } from "./schedule.type";
 
-const URL = process.env.VITE_PUBLIC_URL
+const URL = import.meta.env.VITE_PUBLIC_URL
 const BASE_URL = `${URL}/api/schedules`
 
 //== 일정 등록 ==//
