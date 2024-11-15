@@ -2,7 +2,7 @@ import axios from "axios"
 import { ContractData, ContractProduct, SentContractType } from "./contract.type";
 import { Product } from "./product.type";
 
-const URL = process.env.VITE_PUBLIC_URL
+const URL = import.meta.env.VITE_PUBLIC_URL
 const BASE_URL = `${URL}/api/contracts`
 
 //== 계약서 생성 ==// 
