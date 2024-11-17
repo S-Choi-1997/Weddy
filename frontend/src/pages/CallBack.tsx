@@ -1,4 +1,4 @@
-import { getUserInfo } from "@/api/userApi";
+import { getToken, getUserInfo } from "@/api/userApi";
 import { requestForToken, requestNotificationPermission } from "@/firebase";
 import { firebaseTokenState } from "@/store/firebaseToken";
 import { useEffect, useState } from "react";
@@ -11,16 +11,16 @@ const CallBack = () => {
   const params = new URLSearchParams(useLocation().search);
   const userId = params.get("id");
 
-  const [userInfoEnabled,] = useState(false);
+  const [userInfoEnabled, setUserInfoEnabled] = useState(false);
 
   const setToken = useSetRecoilState(firebaseTokenState);
 
-  // useQuery(["getToken", userId], () => getToken(userId ?? undefined), {
-  //   enabled: !!userId,
-  //   onSuccess: () => {
-  //     setUserInfoEnabled(true);
-  //   },
-  // });
+  useQuery(["getToken", userId], () => getToken(userId ?? undefined), {
+    enabled: !!userId,
+    onSuccess: () => {
+      setUserInfoEnabled(true);
+    },
+  });
 
   useEffect(() => {
     const registerServiceWorker = async () => {
