@@ -27,13 +27,7 @@ public class JWTFilter implements WebFilter {
         String path = exchange.getRequest().getURI().getPath();
         String method = String.valueOf(exchange.getRequest().getMethod());
         log.info("[요청 경로]: {}, [HTTP 메서드]: {}", path, method);
-        log.info("[요청 경로]: {}", path);
 
-        // OPTIONS 요청은 바로 통과
-        if ("OPTIONS".equalsIgnoreCase(method)) {
-            log.info("[JWTFilter] OPTIONS 요청입니다. 필터를 통과합니다.");
-            return chain.filter(exchange);
-        }
         // 제외할 경로 설정
         List<String> excludedPaths = List.of(
                 "/login", "/api/oauth2",
@@ -41,8 +35,7 @@ public class JWTFilter implements WebFilter {
                 "/users/token",
                 "/users/token/**",
                 "/api/users/token",
-                "/api/users/token/**",
-                "/api/schedules"
+                "/api/users/token/**"
         );
 
         // 제외할 경로인 경우 다음 필터로 이동
