@@ -12,6 +12,7 @@ export const schedule = async (scheduleData?: Schedule): Promise<void> => {
     url: BASE_URL,
     headers: {
       Authorization: sessionStorage.getItem("token"),
+      withCredentials: true,
     },
     data: scheduleData,
   });
