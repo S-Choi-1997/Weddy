@@ -38,6 +38,7 @@ public class JWTFilter implements WebFilter {
 
         // 제외할 경로인 경우 다음 필터로 이동
         if (excludedPaths.stream().anyMatch(path::startsWith)) {
+            log.info("path : {}", exchange.getRequest().getPath().value());
             return chain.filter(exchange);
         }
 
