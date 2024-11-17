@@ -1,8 +1,7 @@
 import axios from "axios";
 import { userInformation } from "./user.type";
 
-const URL = import.meta.env.VITE_PUBLIC_URL
-const BASE_URL = `${URL}/api/users`
+const BASE_URL = `/api/users`
 
 //== 토큰 정보 ==//
 export const getToken = async (userId?: string): Promise<void> => {
