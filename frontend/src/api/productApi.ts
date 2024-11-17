@@ -26,6 +26,7 @@ export const getRankedProducts = async (): Promise<Product[]> => {
       Authorization: sessionStorage.getItem('token')
     }
   });
+  console.log(URL)
   return response.data.data;
 };
 
