@@ -9,8 +9,8 @@ export const contractUpload = async (formData: FormData, contract?: ContractData
     method: 'post',
     url: `${BASE_URL}/pinFileToIPFS`,
     headers: {
-      'pinata_api_key': '1810c5b5b6dbf8a680d6',
-      'pinata_secret_api_key': 'af57f7c6da01fda5e12b8f98faff332366ed6b452ad5ae9d13d1e484510fadb3',
+      'pinata_api_key': '1c9ede9de3e383e16ea0',
+      'pinata_secret_api_key': 'f35cf4a5b1176d50c767c43766e426e8ba35c4fddd27be6434b8ecdaa4c96b5b',
     },
     data: formData
   });
@@ -39,8 +39,8 @@ export const metadataUpload = async (imageCID: string, contract?: ContractData):
     method: 'post',
     url: `${BASE_URL}/pinJSONToIPFS`,
     headers: {
-      'pinata_api_key': '1810c5b5b6dbf8a680d6',
-      'pinata_secret_api_key': 'af57f7c6da01fda5e12b8f98faff332366ed6b452ad5ae9d13d1e484510fadb3',
+      'pinata_api_key': '1c9ede9de3e383e16ea0',
+      'pinata_secret_api_key': 'f35cf4a5b1176d50c767c43766e426e8ba35c4fddd27be6434b8ecdaa4c96b5b',
     },
     data: metadata
   });
