@@ -21,7 +21,7 @@ export const allProducts = async (): Promise<Product[]> => {
 export const getRankedProducts = async (): Promise<Product[]> => {
   const response = await axios({
     method: 'get',
-    url: `${BASE_URL}/ranking`,
+    url: `/api/products/ranking`,
     headers: {
       Authorization: sessionStorage.getItem('token')
     }
