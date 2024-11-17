@@ -1,8 +1,7 @@
 import axios from "axios";
 import { Product } from "./product.type";
 
-const URL = import.meta.env.VITE_PUBLIC_URL
-const BASE_URL = `${URL}/api/recommends`
+const BASE_URL = `/api/recommends`
 
 export const aiRecommend = async (message: string): Promise<Product[]> => {
   const response = await axios({

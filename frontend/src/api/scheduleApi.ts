@@ -1,8 +1,7 @@
 import axios from "axios";
 import { GetSchedule, Schedule } from "./schedule.type";
 
-const URL = import.meta.env.VITE_PUBLIC_URL
-const BASE_URL = `${URL}/api/schedules`
+const BASE_URL = `/api/schedules`
 
 //== 일정 등록 ==//
 export const schedule = async (scheduleData?: Schedule): Promise<void> => {
