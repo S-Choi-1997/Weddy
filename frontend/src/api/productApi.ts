@@ -23,7 +23,7 @@ export const getRankedProducts = async (): Promise<Product[]> => {
     method: 'get',
     url: `/api/products/ranking`,
     headers: {
-      Authorization: sessionStorage.getItem('token')
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywidXNlck5hbWUiOiLstZzsirntmLgiLCJjb3VwbGVDb2RlIjoiamM3VllhIiwiaWF0IjoxNzMxNDgwNjEwLCJleHAiOjE3MzQwNzI2MTB9.Cyd6ujpcIBHibkdfBBq-OApOHykmVdlzRnRfyp5rfXI"
     }
   });
   console.log(URL)
