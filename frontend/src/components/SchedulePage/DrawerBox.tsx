@@ -69,11 +69,27 @@ export function AlertDialogDemo({ isOpen, addSchedule, onClose }: AlertDialogDem
     });
   };
   
-  const updateSchedule = async () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+const updateSchedule = async () => {
+  if (isSubmitting) return; // 중복 요청 방지
+  setIsSubmitting(true);
+  try {
     await schedule(scheduleInfo);
     addSchedule();
     onClose();
-  };
+  } catch (error) {
+    console.error("Failed to update schedule:", error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+  // const updateSchedule = async () => {
+  //   await schedule(scheduleInfo);
+  //   addSchedule();
+  //   onClose();
+  // };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
