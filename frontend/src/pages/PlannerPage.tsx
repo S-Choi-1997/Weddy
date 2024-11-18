@@ -77,9 +77,23 @@ const PlannerPage = () => {
               onAmountChange={handleAmountChange}
             /> */}
 
-            <PlannerBox title="STUDIO" type="STUDIO" cartItem={studioList} onAmountChange={handleAmountChange}/>
-            <PlannerBox title="DRESS" type="DRESS" cartItem={dressList} onAmountChange={handleAmountChange}/>
-            <PlannerBox title="makeup" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange}/>
+            {studioList.length > 0 ? (
+              <PlannerBox title="STUDIO" type="STUDIO" cartItem={studioList} onAmountChange={handleAmountChange}/>
+            ) : (
+              null
+            )}
+            
+            {dressList.length > 0 ? (
+              <PlannerBox title="DRESS" type="DRESS" cartItem={dressList} onAmountChange={handleAmountChange}/>
+            ) : (
+              null
+            )}
+            
+            {makeupList.length > 0 ? (
+              <PlannerBox title="makeup" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange}/>
+            ) : (
+              null
+            )}
 
             <div className="flex justify-between mt-10 mx-10">
               <span className="text-lg font-bold">
