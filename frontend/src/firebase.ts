@@ -49,6 +49,7 @@ export const requestForToken = async (): Promise<string | null> => {
   }
 };
 
+
 export const onMessageListener = (): Promise<MessagePayload> => {
   return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
