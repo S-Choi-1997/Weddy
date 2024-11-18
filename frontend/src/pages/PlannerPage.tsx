@@ -3,13 +3,22 @@ import { Product } from "@/api/product.type";
 import TodoButton from "@/common/TodoButton";
 import PlannerBox from "@/components/PlannerPage/PlannerBox";
 import { recommendState } from "@/store/recommendState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 const PlannerPage = () => {
   const navigate = useNavigate();
   const recommendList = useRecoilValue(recommendState);
+  const [ studioList, setStudioList ] = useState<Product[]>([]);
+  const [ dressList, setDressList ] = useState<Product[]>([]);
+  const [ makeupList, setMakeupList ] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setStudioList(recommendList.filter((item: Product) => item.type === 'STUDIO'));
+    setDressList(recommendList.filter((item: Product) => item.type === 'DRESS'));
+    setMakeupList(recommendList.filter((item: Product) => item.type === 'MAKEUP'));
+  }, [recommendList]);
 
   const [selectedList, setSelectedList] = useState<{ [type: string]: Product | null; }>({
     studio: null,
@@ -56,7 +65,7 @@ const PlannerPage = () => {
       <div className="mt-10">
         {Array.isArray(recommendList) && recommendList.length > 0 ? (
           <>
-            <PlannerBox
+            {/* <PlannerBox
               key={"STUDIO"}
               title={"STUDIO"}
               type={"STUDIO"}
@@ -66,7 +75,11 @@ const PlannerPage = () => {
                 )
               }
               onAmountChange={handleAmountChange}
-            />
+            /> */}
+
+            <PlannerBox title="STUDIO" type="STUDIO" cartItem={studioList} onAmountChange={handleAmountChange}/>
+            <PlannerBox title="DRESS" type="DRESS" cartItem={dressList} onAmountChange={handleAmountChange}/>
+            <PlannerBox title="makeup" type="makeup" cartItem={makeupList} onAmountChange={handleAmountChange}/>
 
             <div className="flex justify-between mt-10 mx-10">
               <span className="text-lg font-bold">
