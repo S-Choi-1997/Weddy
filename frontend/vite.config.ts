@@ -5,6 +5,7 @@ import tailwindcss from "tailwindcss";
 import path from 'path';
 
 export default defineConfig({
+  publicDir: 'public', 
   plugins: [
     react(),
     VitePWA({
