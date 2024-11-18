@@ -54,6 +54,7 @@ function AppContent() {
       alert("메시지 리스너 실행");
       try {
         await onMessageListener();
+        alert("메시지 리스너 실행 완료");
       } catch {
         alert("메시지 리스너 오류");
         // 포그라운드 메시지 리스너 오류 처리 로직
