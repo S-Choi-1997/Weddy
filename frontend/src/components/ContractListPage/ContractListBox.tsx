@@ -10,6 +10,7 @@ import GotoIcon from "../../icons/Goto";
 import ProgressBar from "./ProgressBar";
 import { NftType } from "@/api/nft.type";
 import { useEffect, useState } from "react";
+import AlertBox from "@/common/AlertBox";
 
 interface ContractListBoxProps {
   type: string;
@@ -21,6 +22,7 @@ interface ContractListBoxProps {
 const ContractListBox = ({ type, nftList, contractInfo, onChange }: ContractListBoxProps) => {
   const [showIcon, setShowIcon] = useState<Boolean>(false);
   const [nftData, setNftData] = useState<NftType | undefined>();
+  const [showAlert, setShowAlert] = useState(false); // AlertBox 상태 추가
 
   const handleChangeStatus = async () => {
     if (contractInfo) {
@@ -28,11 +30,19 @@ const ContractListBox = ({ type, nftList, contractInfo, onChange }: ContractList
     }
   };
 
-  const handlePayment = async() => {
+  const handlePayment = async () => {
     if (contractInfo) {
       await requestPayment(contractInfo);
       await changeStatus(contractInfo.id);
       onChange(contractInfo.id);
+
+      // AlertBox 열기
+      setShowAlert(true);
+
+      // 2초 후 AlertBox 닫기
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
     }
   };
 
@@ -53,6 +63,7 @@ const ContractListBox = ({ type, nftList, contractInfo, onChange }: ContractList
 
   return (
     <div className="mb-5">
+      {showAlert && <AlertBox title="결제" description="결제가 완료되었습니다." />}
       <Accordion
         sx={{
           boxShadow: "none",
