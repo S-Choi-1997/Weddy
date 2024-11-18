@@ -40,16 +40,6 @@ public class SecurityConfig {
                         .anyExchange().authenticated()) // 나머지 요청은 인증 필요
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterAt(new JWTFilter(jwtUtil), SecurityWebFiltersOrder.AUTHENTICATION) // JWTFilter를 추가
-                .exceptionHandling()
-                .authenticationEntryPoint((exchange, e) -> {
-                    String path = exchange.getRequest().getPath().value();
-                    String method = exchange.getRequest().getMethodValue();
-                    log.warn("[인증 실패] 요청 경로: {}, HTTP 메서드: {}", path, method);
-                    return Mono.fromRunnable(() -> {
-                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                    });
-                })
-                .and()
                 .build();
     }
 
