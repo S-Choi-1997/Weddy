@@ -20,18 +20,25 @@ const messaging = firebase.messaging();
 
 // 백그라운드 메시지 수신 핸들러
 self.addEventListener("push", function (event) {
-  console.log("Push event received:", event);
+  console.log("푸시 이벤트 수신:", event);
 
-  let data = { title: "기본 제목", body: "기본 내용" };
-
-  if (!event.data) return;
   if (event.data) {
-    try {
-      data = JSON.parse(event.data.text());
-    } catch (e) {
-      console.error("Push data JSON parse error:", e);
-    }
+    const data = event.data.json(); // JSON 데이터로 파싱
+    console.log("푸시 데이터:", data);
+
+    // 알림 생성
+    const options = {
+      body: data.notification.body,
+      icon: data.notification.icon || "/default-icon.png",
+      data: data.data, // 클릭 이벤트에서 사용할 추가 데이터
+    };
+
+    event.waitUntil(
+      self.registration.showNotification(data.notification.title, options)
+    );
   }
+});
+
 
   const options = {
     title: data.title,
