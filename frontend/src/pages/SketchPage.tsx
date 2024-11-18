@@ -89,16 +89,18 @@ const CameraSettings: React.FC = () => {
 // Sketch 컴포넌트
 const Sketch: React.FC = () => {
   const [visibility, setVisibility] = useState<Record<string, boolean>>({
-    dress_1: false,
+    dress_1: true,
     dress_2: false,
     dress_3: false,
     dress_4: false,
     dress_5: false,
-    top_1: false,
+    dress_6: false,
+    top_1: true,
     top_2: false,
     top_3: false,
     top_4: false,
     top_5: false,
+    top_6: false,
     shoulder_1: false,
     shoulder_2: false,
     arm_1: false,
@@ -106,15 +108,15 @@ const Sketch: React.FC = () => {
     arm_3: false,
   });
 
-  const dressList = ['../assets/dress/dress1.png', '../assets/dress/dress2.png', '../assets/dress/dress3.png', '../assets/dress/dress4.png', '../assets/dress/dress5.png'];
-  const topList = ['../assets/top/top1.png', '../assets/top/top2.png', '../assets/top/top3.png', '../assets/top/top4.png', '../assets/top/top5.png'];
+  const dressList = ['../assets/dress/dress1.PNG', '../assets/dress/dress2.png', '../assets/dress/dress3.png', '../assets/dress/dress4.png', '../assets/dress/dress5.png','../assets/dress/dress6.png'];
+  const topList = ['../assets/top/top1.PNG', '../assets/top/top2.png', '../assets/top/top3.png', '../assets/top/top4.png', '../assets/top/top5.png','../assets/top/top6.png'];
   const shoulderList = ['../assets/shoulder/shoulder1.png', '../assets/shoulder/shoulder2.png'];
   const armList = ['../assets/arm/arm1.png', '../assets/arm/arm2.png', '../assets/arm/arm3.png'];
 
   // Leva 슬라이더로 각 축별 스케일 값을 개별적으로 조정
   const { dressWidthScale, dressDepthScale } = useControls({
     dressWidthScale: {
-      value: 0.6,
+      value: 1,
       min: 0.6,
       max: 1,
       step: 0.1,
@@ -146,8 +148,8 @@ const Sketch: React.FC = () => {
       return updatedVisibility;
     });
   };
+
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
-  // const [imgURL, setImgURL] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [blobData, setBlobData] = useState<Blob | null>(null);
 
@@ -180,11 +182,9 @@ const Sketch: React.FC = () => {
     }, 2000);
   };
 
-
   return (
     <div className="app-container">
       {showAlert && <AlertBox title="3D 스케치" description="스케치 저장 완료!" />}
-
 
       <Canvas
         onCreated={({ gl, scene, camera }) => {
@@ -222,13 +222,19 @@ const Sketch: React.FC = () => {
           modelPath="../assets/arm.glb"
         />
 
+        {/* Always visible mnk.glb */}
+        <PartMeshes
+          visibility={{}} // Always visible
+          scaleAdjustments={{}} // No scaling adjustments
+          modelPath="../assets/mnk.glb"
+        />
+
         <Environment preset="sunset" />
         <CameraSettings />
         <OrbitControls target={[0, 1, 0]} enablePan={false} />
       </Canvas>
 
       <div className="toggle-container">
-
         <div className="toggle-group">
           <h4>Dress</h4>
           {dressList.map((dress, index) => (
