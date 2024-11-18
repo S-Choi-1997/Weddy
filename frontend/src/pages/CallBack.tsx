@@ -72,7 +72,7 @@ const CallBack = () => {
       }
     };
     requestPermissionsAndToken();
-  }, [setToken, userId]);
+  }, [userId, userInfo, navigate, setToken]);
 
   return null;
 };
