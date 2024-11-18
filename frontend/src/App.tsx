@@ -27,7 +27,6 @@ import Schedule from "./pages/SchedulePage";
 import Sketch from "./pages/SketchPage";
 import UserInfo from "./pages/UserInfoPage";
 import { firebaseTokenState } from "./store/firebaseToken";
-import Test from "./pages/TestPage";
 
 const queryClient = new QueryClient();
 
@@ -67,7 +66,6 @@ function AppContent() {
       {currentPath !== "login" && currentPath !== "userinfo" && <Navbar />}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/test" element={<Test />} />
         <Route path="/review/:productId" element={<Review />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />

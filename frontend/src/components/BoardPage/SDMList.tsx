@@ -1,7 +1,7 @@
 import Search from "@/common/Search";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "@/api/product.type";
 import SDMBox from "./SDMBox";
 
@@ -14,16 +14,38 @@ const SDMList = ({ value, productList }: SDMListProps) => {
   const [searchTerm, setSearchTerm] = useState<string>();
   const [filteredList, setFilteredList] = useState<Product[]>([]);
 
-  const search = (searchTerm: string) => {
-    const data = productList.filter((product: Product) => product.name === searchTerm);
-    setFilteredList(data);
-    setSearchTerm(searchTerm);
-  };
+  // const search = (searchTerm: string) => {
+  //   const data = productList.filter((product: Product) => product.name === searchTerm);
+  //   setFilteredList(data);
+  //   setSearchTerm(searchTerm);
+  // };
+
+  // const search = (searchTerm: string) => {
+  //   const data = productList.filter((product: Product) =>
+  //     product.name.includes(searchTerm)
+  //   );
+  //   setFilteredList(data);
+  //   setSearchTerm(searchTerm);
+  // };
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filteredData = productList.filter((product: Product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 검색
+      );
+      setFilteredList(filteredData);
+    } else {
+      setFilteredList(productList);
+    }
+  }, [searchTerm, productList]);
+  
 
   return (
     <div>
       <TabsContent value={value} className="flex flex-wrap justify-center gap-8">
-        <Search search={search} />
+      <Search
+          search={(term: string) => setSearchTerm(term)} // 검색어를 실시간 업데이트
+        />
 
         {searchTerm ? (
           filteredList && filteredList.length > 0 ? (
