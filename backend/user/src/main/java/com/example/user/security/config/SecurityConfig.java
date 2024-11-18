@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         // 소셜 로그인 설정
         http.oauth2Login((oAuth2) -> oAuth2
-                .loginPage("http://weddy.info/login")
+                .loginPage("http://localhost:5173/login")
                 .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                         .userService(customOAuth2UserService))
                 .successHandler(customSuccessHandler));
