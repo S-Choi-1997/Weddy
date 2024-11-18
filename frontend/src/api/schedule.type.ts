@@ -4,11 +4,14 @@ export interface Schedule {
   endDate: string | null;
   content: string;
   productId?: string;
+  userCoupleToken: {
+    myFcmToken: string;
+  };
 }
 
 export interface GetSchedule {
   id: string;
-  contractType: string;
+  contractType: "STUDIO" | "DRESS" | "MAKEUP" | "WEDDING";
   startDate: Date;
   endDate: Date;
   content: string;

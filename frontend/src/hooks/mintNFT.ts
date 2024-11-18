@@ -1,5 +1,5 @@
 import { BrowserProvider, ethers } from "ethers";
-import MyNFT from '../../../blockchain/NFT/build/contracts/MyNFT.json';
+import MyNFT from '@/hooks/contracts/MyNFT.json';
 
 interface WindowWithEthereum extends Window {
   ethereum?: any;
@@ -8,8 +8,8 @@ interface WindowWithEthereum extends Window {
 declare let window: WindowWithEthereum;
 
 export const mintNFT = async (CID?: string) => {
-  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-  const metadataURI = `https://ipfs.io/ipfs/${CID}`;
+  const contractAddress = '0xAD30D0d050D7071B3Ce8077ada6d9D5F907a0B08';
+  const metadataURI = `https://fuchsia-changing-flamingo-499.mypinata.cloud/ipfs/${CID}`;
   const contractABI = MyNFT.abi;
 
   const provider = new BrowserProvider(window.ethereum);

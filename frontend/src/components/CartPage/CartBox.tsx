@@ -2,17 +2,23 @@ import { Product } from "@/api/product.type";
 import { AccordionDetails } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Checkbox } from "../ui/checkbox";
+import { deleteFromCart } from "@/api/cartApi";
 
 interface CartBoxProps {
   item: Product;
   isSelected: boolean;
   onProductSelect: (product: Product | null) => void;
-  onRemove: (id: string) => void;
+  onRemove: () => void;
 }
 
 const CartBox = ({ item, isSelected, onProductSelect, onRemove }: CartBoxProps) => {
   const handleCheckboxChange = () => {
     onProductSelect(isSelected ? null : item);
+  };
+
+  const deleteItem = async (productId: string) => {
+    await deleteFromCart(productId);
+    onRemove();
   };
 
   return (
@@ -29,7 +35,7 @@ const CartBox = ({ item, isSelected, onProductSelect, onRemove }: CartBoxProps) 
             <span className="font-bold">{Number(item.price).toLocaleString()}원</span>
           </div>
         </Link>
-        <button className="ml-auto mr-3 rounded-full w-[35px] h-[35px] bg-gray-100" onClick={() => onRemove(item.id)}>
+        <button className="ml-auto mr-3 rounded-full w-[35px] h-[35px] bg-gray-100" onClick={() => deleteItem(item.id)}>
           삭제
         </button>
       </div>

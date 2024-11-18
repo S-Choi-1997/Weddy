@@ -3,7 +3,7 @@ import axios from "axios";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { ContractData } from "./contract.type";
 
-const BASE_URL = "http://localhost:8080/api/payments";
+const BASE_URL = `/api/payments`
 const PORTONE_CHANNEL_KEY = import.meta.env.VITE_PORTONE_CHANNEL_KEY;
 const PORTONE_STORE_ID = import.meta.env.VITE_PORTONE_STORE_ID;
 const redirectUrl = import.meta.env.VITE_PUBLIC_URL;
@@ -43,7 +43,7 @@ export const requestPayment = async (
       // 결제 성공 시 서버로 정보 전송
       await sendPaymentSuccessToServer(contractInfo, paymentId);
     } else {
-      alert(`결제 실패: ${response.message}`);
+      console.error(`결제 실패: ${response.message}`);
     }
   }
 };
@@ -74,19 +74,18 @@ const sendPaymentSuccessToServer = async (
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`, // ACCESS_TOKEN 추가
+          Authorization: sessionStorage.getItem("token"), // ACCESS_TOKEN 추가
         },
       }
     );
 
     if (response.status === 200) {
-      alert("결제 성공 정보 서버 전송 완료");
+      console.log("결제 성공 정보 서버 전송 완료");
     } else {
-      alert("서버 전송 실패");
+      console.warn("서버 전송 실패");
     }
   } catch (error) {
     console.error("서버 전송 오류:", error);
-    alert("서버 전송 중 오류가 발생했습니다.");
   }
 };
 

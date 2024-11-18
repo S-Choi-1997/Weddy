@@ -13,14 +13,13 @@ const Main = () => {
     '/main/main4.png',
   ];
 
-
   //== 베스트 ==//
   const { data: getRankedProductList } = useQuery('getRankedProducts', getRankedProducts);
 
   return (
     <div className="flex flex-col items-center mb-24">
       <MainCarousel imageList={dummyMain} />
-      <div className="grid grid-cols-2 gap-8 mt-10">
+      <div className="grid grid-cols-2 gap-10 mt-10">
 
         {getRankedProductList?.map((product: Product, index) => (
           <Link to={`/board/detail/${product.id}`} key={index}>

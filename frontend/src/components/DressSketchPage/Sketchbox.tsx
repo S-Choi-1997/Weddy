@@ -1,17 +1,28 @@
 import GotoIcon from "@/icons/Goto";
 import { Link } from "react-router-dom";
 
-const SketchBox = () => {
+interface SketchBoxProps {
+  studioName: string;
+  dressName: string;
+  imgSrc?: string;
+}
+
+const SketchBox = ({ studioName, dressName, imgSrc }: SketchBoxProps) => {
   return (
     <>
       <div className="bg-white h-[70px] rounded-lg w-[350px] my-3 p-5 flex justify-between items-center">
-        <span>스튜디오명 _ 드레스명</span>
-        <Link to="/dress/img">
-        <GotoIcon />
+        <span>{studioName} _ {dressName}</span>
+        <Link 
+          to={{
+            pathname: "/dress/img",
+          }}
+          state={{ imgSrc, studioName, dressName }}
+        >
+          <GotoIcon />
         </Link>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default SketchBox;

@@ -17,13 +17,13 @@ function Calendar({
 }: CalendarProps) {
   
   // `eventDays` 배열에서 날짜가 이벤트에 해당하는지 확인하는 함수
-  const isEventDay = (day: Date) => {
-    const result = eventDays.some((eventDay: Date) =>
-      eventDay.toDateString() === day.toDateString()
-    );
-    console.log(`Date: ${day.toDateString()}, Is Event Day: ${result}`);
-    return result;
-  };
+  // const isEventDay = (day: Date) => {
+  //   const result = eventDays.some((eventDay: Date) =>
+  //     eventDay.toDateString() === day.toDateString()
+  //   );
+  //   console.log(`Date: ${day.toDateString()}, Is Event Day: ${result}`);
+  //   return result;
+  // };
 
   return (
     <DayPicker
@@ -67,14 +67,15 @@ function Calendar({
         IconLeft: () => <ChevronLeftIcon className="h-4 w-4" />,
         IconRight: () => <ChevronRightIcon className="h-4 w-4" />,
       }}
-      renderDay={(day: Date) => (
-        <div className="relative">
-          {day.getDate()}
-          {isEventDay(day) && (
-            <div className="bg-red-500 rounded-full h-2 w-2 absolute bottom-1 left-1/2 transform -translate-x-1/2"></div>
-          )}
-        </div>
-      )}
+      
+      // renderDay={(day: Date) => (
+      //   <div className="relative">
+      //     {day.getDate()}
+      //     {isEventDay(day) && (
+      //       <div className="bg-red-500 rounded-full h-2 w-2 absolute bottom-1 left-1/2 transform -translate-x-1/2"></div>
+      //     )}
+      //   </div>
+      // )}
       {...props}
     />
   );
