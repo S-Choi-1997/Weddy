@@ -27,22 +27,22 @@ const PlannerBox = ({ title, type, cartItem, onAmountChange }: PlannerBoxProps) 
       {cartItem.map((item, index) => (
         <div
           key={item.id}
-          className="mx-1 my-5 bg-white h-[70px] w-auto rounded-lg px-5 py-3 flex justify-between"
+          className="mx-1 my-5 bg-white h-[70px] w-auto rounded-lg px-5 py-3 flex"
         >
-          <div className="flex items-center">
             <Checkbox
               checked={selectedIndex === index}
               onCheckedChange={() => handleCheckboxChange(index)}
             />
+          <div className="flex flex-col ml-3">
             <Link to={`/board/detail/${item.id}`}>
-              <div className="flex flex-col ml-3">
-                <span className="font-bold">{item.name}</span>
+              <div className="flex items-center flex-col ml-3">
+                <span className="font-bold text-sm">{item.name}</span>
                 <span className="text-sm text-gray-600">{item.vendorName}</span>
               </div>
             </Link>
+          <div className='text-sm ml-3 my-1'>
+            \ {item.price}원
           </div>
-          <div>
-            {Number(item.price).toLocaleString()}원
           </div>
           {/* <div>
             <button className="text-sm">삭제</button>
