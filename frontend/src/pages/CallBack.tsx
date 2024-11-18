@@ -55,6 +55,11 @@ const CallBack = () => {
           if (token) {
             sessionStorage.setItem('fcmToken', token);
             setToken(token);
+            if (userInfo && userInfo[0]?.date != null) {
+              navigate("/");
+            } else if (userInfo) {
+              navigate("/userInfo");
+            }
           }
         } catch{
           // 권한 요청이나 토큰 발급 실패시 에러 처리 로직
@@ -67,14 +72,6 @@ const CallBack = () => {
   const { data: userInfo } = useQuery("getUserInfo", getUserInfo, {
     enabled: userInfoEnabled,
   });
-
-  useEffect(() => {
-    if (userInfo && userInfo[0]?.date != null) {
-      navigate("/");
-    } else if (userInfo) {
-      navigate("/userInfo");
-    }
-  }, [userInfo, navigate]);
 
   return null;
 };
