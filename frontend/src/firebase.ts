@@ -52,14 +52,23 @@ export const requestForToken = async (): Promise<string | null> => {
 export const onMessageListener = (): Promise<MessagePayload> => {
   return new Promise((resolve) => {
     onMessage(messaging, (payload: MessagePayload) => {
+      // 디버깅 로그 추가
+      console.log("Foreground message payload:", payload);
+
       if (Notification.permission === "granted") {
         const title = payload.notification?.title ?? "No title";
         const body = payload.notification?.body ?? "No body";
+
+        // 브라우저 알림 표시
         new Notification(title, { body });
+      } else {
+        console.warn("Notification permission not granted");
       }
-      resolve(payload);
+
+      resolve(payload); // 메시지 반환
     });
   });
 };
+
 
 export { messaging };
