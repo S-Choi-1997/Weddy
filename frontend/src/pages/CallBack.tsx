@@ -28,22 +28,19 @@ const CallBack = () => {
 
   useEffect(() => {
     const registerServiceWorker = async () => {
-      if ("serviceWorker" in navigator) {
-        try {
-          const existingRegistration =
-            await navigator.serviceWorker.getRegistration(
-              "/firebase-messaging-sw.js"
-            );
-
-          if (existingRegistration) {
-            return;
-          }
-
-          await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-        } catch  {
-          // 서비스 워커 등록 실패시 에러 처리 로직
-        }
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        console.log("푸시 알림 지원");
+        // 푸시 알림 및 서비스 워커 관련 초기화 코드 실행
+        navigator.serviceWorker.register("/firebase-messaging-sw.js").then(() => {
+          console.log("Service Worker 등록 성공");
+        }).catch((error) => {
+          console.error("Service Worker 등록 실패:", error);
+        });
+      } else {
+        console.log("푸시 알림 미지원");
+        // 지원하지 않는 환경에 대한 처리 (예: 사용자에게 알림 표시)
       }
+      
     };
 
     registerServiceWorker();
