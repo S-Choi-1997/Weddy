@@ -5,7 +5,7 @@ import { RecoilRoot, useRecoilValue } from "recoil";
 import { saveFcmToken } from "./api/userApi";
 import Footer from "./common/Footer";
 import Navbar from "./common/Navbar";
-// import { onMessageListener } from "./firebase";
+import { onMessageListener } from "./firebase";
 import "./index.css";
 import BoardDetail from "./pages/BoardDetailPage";
 import Board from "./pages/BoardPage";
@@ -50,17 +50,16 @@ function AppContent() {
       saveFcmToken(fcmToken, userId);
     }
 
-    // const initializeMessageListener = async () => {
-    //   try {
-    //     await onMessageListener();
-    //     alert("메시지 리스너 실행 완료");
-    //   } catch {
-    //     alert("메시지 리스너 오류");
-    //     // 포그라운드 메시지 리스너 오류 처리 로직
-    //   }
-    // };
+    const initializeMessageListener = async () => {
+      try {
+        await onMessageListener();
+      } catch {
+        alert("포그라운드 메시지 리스너 오류 발생");
+        // 포그라운드 메시지 리스너 오류 처리 로직
+      }
+    };
 
-    // initializeMessageListener();
+    initializeMessageListener();
   }, [token, userId, fcmToken, nowPath]);
 
   return (
