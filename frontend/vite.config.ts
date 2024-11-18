@@ -30,8 +30,10 @@ export default defineConfig({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 5242880,
-      }
-    }),
+      },
+      filename: 'firebase-messaging-sw.js', // 서비스 워커 파일 이름 변경
+    })
+    ,
   ],
   css: {
     postcss: {
