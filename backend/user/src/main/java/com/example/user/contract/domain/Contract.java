@@ -74,11 +74,7 @@ public class Contract {
 
 
     public boolean validation(Long totalMount){
-        if(this.totalMount != totalMount){
-            return false;
-        }
-
-        return true;
+        return this.totalMount.equals(totalMount);
     }
 
 
