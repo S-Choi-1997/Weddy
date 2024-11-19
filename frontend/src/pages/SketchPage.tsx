@@ -108,8 +108,8 @@ const Sketch: React.FC = () => {
     arm_3: false,
   });
 
-  const dressList = ['../assets/dress/dress1.PNG', '../assets/dress/dress2.png', '../assets/dress/dress3.png', '../assets/dress/dress4.png', '../assets/dress/dress5.png','../assets/dress/dress6.png'];
-  const topList = ['../assets/top/top1.PNG', '../assets/top/top2.png', '../assets/top/top3.png', '../assets/top/top4.png', '../assets/top/top5.png','../assets/top/top6.png'];
+  const dressList = ['../assets/dress/dress1.png', '../assets/dress/dress2.png', '../assets/dress/dress3.png', '../assets/dress/dress4.png', '../assets/dress/dress5.png','../assets/dress/dress6.png'];
+  const topList = ['../assets/top/top1.png', '../assets/top/top2.png', '../assets/top/top3.png', '../assets/top/top4.png', '../assets/top/top5.png','../assets/top/top6.png'];
   const shoulderList = ['../assets/shoulder/shoulder1.png', '../assets/shoulder/shoulder2.png'];
   const armList = ['../assets/arm/arm1.png', '../assets/arm/arm2.png', '../assets/arm/arm3.png'];
 
@@ -117,8 +117,8 @@ const Sketch: React.FC = () => {
   const { dressWidthScale, dressDepthScale } = useControls({
     dressWidthScale: {
       value: 1,
-      min: 0.6,
-      max: 1,
+      min: 1,
+      max: 1.5,
       step: 0.1,
       label: "Dress Width Scale"
     },
